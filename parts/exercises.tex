@@ -292,3 +292,91 @@ Gruppe mit 3 Elementen: 55.67
 Gruppe mit 4 Elementen: 34.00
 Gruppe mit 6 Elementen: 48.17
 \end{mybox}
+
+
+
+
+\chapter{Finde die jüngste Person}
+
+\TopicLevel{Strukturen, Pointer}{3}\vspace{10pt}
+
+Erstellen Sie eine Funktion, welche aus einem Array an Personen nach der
+jüngsten Person sucht. Die Funktion soll einen Pointer auf ein Array übergeben
+bekommen, welches seinerseits Pointer auf Strukturen von Personen enthält. Jede
+Person-Struktur enthält einen Vornamen, einen Nachnamen und ein Alter.
+
+Die Funktion soll nun die Einträge des Arrays nach der jüngsten Person
+durchsuchen und einen Pointer auf diesen Array-Eintrag zurückliefern.
+
+\Vorlage
+\begin{minted}{c}
+#include <stdio.h>
+
+typedef struct {
+    char firstName[50];
+    char lastName[50];
+    int age;
+} Person;
+
+int main(void) {
+    Person person1 = {"Max", "Mustermann", 30};
+    Person person2 = {"Anna", "Schmidt", 25};
+    Person person3 = {"John", "Doe", 40};
+
+    Person *persons[] = {&person1, &person2, &person3};
+
+    int size = sizeof(persons) / sizeof(persons[0]);
+
+    Person *youngest = findYoungestPerson(persons, size);
+
+    printf("Name: %s %s, Age: %d\n", youngest->firstName, youngest->lastName, youngest->age);
+
+    return 0;
+}
+\end{minted}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+    Name: Anna Schmidt, Age: 25
+\end{mybox}
+
+
+Man kann sich die Struktur also wie folgt vorstellen:
+
+\begin{figure}[htb!]
+\begin{tikzpicture}[font=\ttfamily]
+    % Definiere Stil für die Array-Boxen
+    \tikzstyle{array} = [rectangle, draw, minimum width=1cm, minimum height=1cm, anchor=north]
+
+    % Definiere Stil für die Pointer
+    \tikzstyle{pointer} = [circle, fill, inner sep=2pt]
+
+    % Definiere Stil für die Struktur-Boxen
+    \tikzstyle{struct} = [rectangle split, rectangle split parts=3, draw, text centered, minimum width=3cm, anchor=west]
+
+    % Definiere Stil für die Pfeile
+    \tikzstyle{arrow} = [-{Latex[length=3mm, width=2mm]}]
+
+    % Erste Array-Box, Pointer und Struktur
+    \node[array] (array0) at (0,0) {};
+    \node[pointer] (pointer0) at (array0.center) {};
+    \node[struct] (struct0) at (2, 0) {Max\nodepart{second}Mustermann\nodepart{third}30};
+
+    % Zweite Array-Box, Pointer und Struktur
+    \node[array] (array1) [below=0cm of array0] {};
+    \node[pointer] (pointer1) at (array1.center) {};
+    \node[struct] (struct1) at (2, -2) {Anna\nodepart{second}Schmidt\nodepart{third}25};
+
+    % Dritte Array-Box, Pointer und Struktur
+    \node[array] (array2) [below=0cm of array1] {};
+    \node[pointer] (pointer2) at (array2.center) {};
+    \node[struct] (struct2) at (2, -4) {John\nodepart{second}Doe\nodepart{third}40};
+
+    % Zeichne Pfeile von Pointern zu Strukturen
+    \foreach \x in {0,1,2}
+        \draw[arrow] (pointer\x) -- (struct\x.text west);
+
+    % Beschriftung der Array-Elemente
+    \foreach \x in {0,1,2}
+        \node at (array\x.west) [left] {persons[\x]};
+\end{tikzpicture}
+\end{figure}

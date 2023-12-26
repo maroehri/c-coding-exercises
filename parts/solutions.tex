@@ -655,3 +655,54 @@ int main(void) {
     return 0;
 }
 \end{minted}
+
+
+
+
+
+\chapter{Finde die jüngste Person}
+
+Die Funktion \mintinline{c}{findYoungestPerson()} nimmt zwei Parameter entgegen:
+einmal einen Pointer auf ein Array von Personen und einmal einen Integer, der
+die Größe des Arrays angibt. Machen Sie sich klar, dass das erste
+Funktionsargument auch wie folgt hätte deklariert werden können:
+
+\mintinline{c}{Person **persons}
+
+Die Funktion gibt einen Pointer auf eine \mintinline{c}{Person}-Struktur zurück
+-- nämlich genau diejenige mit dem niedrigsten Alter.
+
+Innerhalb der Funktion findet zuerst eine Plausibilitätsprüfung der übergebenen
+Größe (\mintinline{c}{size}) statt. Falls die Größe kleiner oder gleich 0 ist,
+gibt die Funktion NULL zurück, was bedeutet, dass kein gültiges Ergebnis
+gefunden werden kann.
+
+Der Pointer \mintinline{c}{youngest} wird initialisiert und auf das erste
+Element des Arrays gesetzt. Dies dient als Startpunkt für den Vergleich, um die
+jüngste Person zu finden. Die Schleife durchläuft jedes Element des Arrays. Für
+jedes Element wird überprüft, ob das Alter (\mintinline{c}{age}) des aktuellen
+Elements (\mintinline{c}{persons[i]}) geringer ist als das Alter der derzeit
+jüngsten Person (\mintinline{c}{youngest}). Wenn dies der Fall ist, wird
+\mintinline{c}{youngest} aktualisiert, um auf das aktuelle Element zu zeigen, da
+dieses Element eine jüngere Person repräsentiert.
+
+Nachdem das gesamte Array durchlaufen wurde, gibt die Funktion den Pointer
+\mintinline{c}{youngest} zurück. Dieser zeigt auf die Struktur der jüngsten
+Person im Array.
+
+\begin{minted}{c}
+Person *findYoungestPerson(Person *persons[], int size) {
+    if (size <= 0) {
+        return NULL;
+    }
+
+    Person *youngest = persons[0];
+    for (int i = 0; i < size; i++) {
+        if (persons[i]->age < youngest->age) {
+            youngest = persons[i];
+        }
+    }
+
+    return youngest;
+}
+\end{minted}
