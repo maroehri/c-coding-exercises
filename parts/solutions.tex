@@ -305,6 +305,50 @@ Zeichen des Strings am Index \mintinline{c}{i}. Da wir die Groß-/Kleinschreibun
 nicht berücksichtigen wollen, wenden wir auf beide Zeichen die
 \mintinline{c}{tolower()}-Funktion an.
 
+\begin{figure}[htb!]
+    \begin{tikzpicture}[font=\ttfamily, node distance=0mm, every node/.style={minimum size=1cm, align=center}]
+        % Erste Zeile von Quadraten
+        \node[draw] (s1) {F};
+        \node[draw, right=of s1] (s2) {i};
+        \node[draw, right=of s2] (s3) {s};
+        \node[draw, right=of s3] (s4) {c};
+        \node[draw, right=of s4] (s5) {h};
+        \node[draw, right=of s5] (s6) {e};
+        \node[draw, right=of s6] (s7) {r};
+        \node[draw, right=of s7] (s8) {s};
+        \node[draw, right=of s8] (s9) {};
+        \node[draw, right=of s9] (s10) {F};
+        \node[draw, right=of s10] (s11) {r};
+        \node[draw, right=of s11] (s12) {i};
+        % Spezialbox mit gestrichelten Linien und ohne rechte Linie
+        \node[right=of s12, minimum height=1cm, minimum width=1cm, align=center] (s13) {$\cdots$};
+        \draw[dashed] (s13.north west) -- (s13.north east);
+        \draw[dashed] (s13.south west) -- (s13.south east);
+
+        % Beschriftung für die erste Zeile
+        \node[above=0.3cm of s1, minimum size=0, draw=none] {i};
+        \draw[-{Latex[length=2mm,width=2mm]}] ([yshift=0.35cm]s1.north) -- (s1.north);
+
+        % Beschriftung links von der ersten Zeile
+        \node[left=of s1, minimum size=0, draw=none] {string};
+
+        % Zweite Zeile von Quadraten
+        \node[draw, below=1cm of s1] (w1) {F};
+        \node[draw, right=of w1] (w2) {i};
+        \node[draw, right=of w2] (w3) {s};
+        \node[draw, right=of w3] (w4) {c};
+        \node[draw, right=of w4] (w5) {h};
+        \node[draw, right=of w5] (w6) {e};
+
+        % Beschriftung für die zweite Zeile
+        \node[above=0.3cm of w1, minimum size=0, draw=none] {j};
+        \draw[-{Latex[length=2mm,width=2mm]}] ([yshift=0.35cm]w1.north) -- (w1.north);
+
+        % Beschriftung links von der zweiten Zeile
+        \node[left=of w1, minimum size=0, draw=none] {word};
+    \end{tikzpicture}
+\end{figure}
+
 Falls die beiden Zeichen nicht übereinstimmen, entspricht das gerade untersuchte
 Wort im String nicht unserem Suchwort. Wir setzen daher unseren booleschen Wert
 \mintinline{c}{validWord} auf \mintinline{c}{false} und brechen aus der inneren
