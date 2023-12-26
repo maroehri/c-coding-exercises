@@ -154,6 +154,7 @@
 \usepackage{pgffor}
 \newcommand{\TopicLevel}[2]{%
     \noindent\makebox[\textwidth]{%
+    \sffamily%
     \textbf{Thema:} #1 \hfill \textbf{Schwierigkeitsgrad:}
     \foreach \n in {1,...,#2}{\Large\textbf{$\bullet$}}%
     \foreach \n in {1,...,\numexpr5-#2}{\Large\textbf{$\circ$}}%
@@ -188,7 +189,7 @@
 
 \newcommand{\Vorlage}{
     \vspace{\baselineskip} % Doppelter Zeilenabstand zum vorherigen Text
-    \noindent\textbf{Vorlage:}
+    \noindent\textsf{Vorlage:}
     %\vspace{-\baselineskip} % Entfernt den zusätzlichen Abstand zur minted-Umgebung
 }
 
