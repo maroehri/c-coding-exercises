@@ -1,0 +1,295 @@
+\chapter{Finde die kleinste Zahl in einem Array}
+
+\TopicLevel{Arrays}{1}
+
+\begin{enumerate}
+  \item Erstellen Sie ein Programm, welches aus einem gegebenen Array aus
+  Zahlen die kleinste Zahl ermittelt.
+
+\Vorlage
+\begin{minted}{c}
+#include <stdio.h>
+
+int main(void) {
+    int myArray[] = {4, 2, 9, 24, 4, 8, 5, 24};
+
+    int min;
+    // Durchsuchen Sie das Array nach dem kleinsten
+    // Element ...
+
+    printf("Kleinstes Element: %d\n", min);
+}
+\end{minted}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+Kleinstes Element: 2
+\end{mybox}
+
+\item Verändern Sie Ihr Programm derart, dass es eine eigene Funktion
+\mintinline{c}{find_min()} gibt, die als Argumente ein Array aus Zahlen und die
+Größe des Arrays entgegennimmt, und den kleinsten Wert aus dem Array an den
+Aufrufer zurückliefert.
+\end{enumerate}
+
+
+
+
+\chapter{Zähle die Häufigkeiten eines Werts in einem Array}
+
+\TopicLevel{Arrays}{1}
+
+\begin{enumerate}
+  \item Erstellen Sie ein Programm, welches aus einem gegebenen Array aus
+  Ganzzahlen und einer vorgegebenen Zahl die Häufigkeit ausgibt, mit der diese
+  Zahl im Array vorkam.
+
+\Vorlage
+\begin{minted}{c}
+#include <stdio.h>
+
+int main(void) {
+    int myArray[] = {4, 2, 9, 24, 4, 8, 5, 24};
+    int to_find = 4;
+
+    int count;
+    // Zählen Sie, wie häufig die Zahl to_find
+    // im Array vorkommt ...
+
+    printf("Anzahl in Array: %d\n", count);
+}
+\end{minted}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+Anzahl in Array: 2
+\end{mybox}
+
+  \item Verändern Sie Ihr Programm derart, dass es eine eigene Funktion
+  \mintinline{c}{occurrences()} gibt, die diese Operation durchführt und die
+  Häufigkeit der gesuchten Zahl an den Aufrufer zurückliefert.
+
+  Überlegen Sie sich, welche Parameter eine solche Funktion benötigt.
+
+\end{enumerate}
+
+
+
+\chapter{Ein Array umkehren}
+
+\TopicLevel{Arrays}{1}
+
+\begin{enumerate}
+    \item Erstellen Sie ein Programm, welches die Reihenfolge eines gegebenen
+    Arrays aus Zahlen umkehrt.
+
+\Vorlage
+\begin{minted}{c}
+#include <stdio.h>
+
+int main(void) {
+    int myArray[] = {4, 2, 9, 24, 4, 8};
+
+    // Kehren Sie die Reihenfolge der Zahlen des
+    // Arrays um ...
+
+    printf("Umgekehrte Reihenfolge:\n");
+
+    // Geben Sie die umgekehrte Reihenfolge aus ...
+}
+\end{minted}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+    Umgekehrte Reihenfolge:
+    myArray[2] = 8
+    myArray[3] = 4
+    myArray[4] = 24
+    myArray[5] = 9
+    myArray[6] = 2
+    myArray[7] = 4
+\end{mybox}
+
+  \item Verändern Sie Ihr Programm derart, dass es eine eigene Funktion
+  \mintinline{c}{reverse()} gibt, die als Argumente ein Array aus Zahlen und die
+  Größe des Arrays entgegennimmt, und die Reihenfolge der Zahlen im übergebenen
+  Array umkehrt.
+
+\end{enumerate}
+
+
+
+\chapter{Überprüfen, ob ein String ein Palindrom ist}
+
+\TopicLevel{Strings}{2}\vspace{10pt}
+
+Ein Palindrom ist ein Wort, eine Phrase, eine Zahl oder eine andere Sequenz von
+Zeichen, die vorwärts und rückwärts gelesen identisch ist. Typische Beispiele
+für Palindrome sind Wörter wie "Anna" oder "Otto", bei denen die Buchstabenfolge
+von beiden Enden aus gleich bleibt.
+
+Erstellen Sie eine Funktion \mintinline{c}{isPalindrome()}, die überprüft, ob
+eine gegebene Zeichenkette (String) ein Palindrom ist. Die Funktion soll
+\mintinline{c}{true} zurückgeben, wenn der String ein Palindrom ist, und
+\mintinline{c}{false}, wenn er keines ist. Berücksichtigen Sie dabei, dass bei
+der Überprüfung Groß- und Kleinschreibung ignoriert werden sollte.
+
+\Vorlage
+\begin{minted}{c}
+#include <stdio.h>
+#include <stdbool.h>
+
+int main(void) {
+    char string1[] = "Kein Palindrom";
+    char string2[] = "Reliefpfeiler";   // ist ein Palindrom
+    char string3[] = "Rentner";         // ist ein Palindrom
+
+    // Die im Folgenden genutzte isPalindrome()-Funktion
+    // müssen Sie erstellen
+
+    if (isPalindrome(string1))
+        printf("\"%s\" ist ein Palindrom\n", string1);
+    else
+        printf("\"%s\" ist kein Palindrom\n", string1);
+
+    if (isPalindrome(string2))
+        printf("\"%s\" ist ein Palindrom\n", string2);
+    else
+        printf("\"%s\" ist kein Palindrom\n", string2);
+
+    if (isPalindrome(string3))
+        printf("\"%s\" ist ein Palindrom\n", string3);
+    else
+        printf("\"%s\" ist kein Palindrom\n", string3);
+}
+\end{minted}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+    "Kein Palindrom" ist kein Palindrom
+    "Reliefpfeiler" ist ein Palindrom
+    "Rentner" ist ein Palindrom
+\end{mybox}
+
+
+
+
+\chapter{Die Anzahl an Wörtern in einem String zählen}
+
+\TopicLevel{Strings}{3}\vspace{10pt}
+
+Erstellen Sie eine Funktion \mintinline{c}{countWords()}, die zählt, wie häufig
+ein Wort innerhalb einer Zeichenkette (String) vorkommt. Die Funktion soll das
+Wort und die Zeichenkette als Eingabeparameter entgegennehmen und die Anzahl an
+den Aufrufer zurückliefern. Berücksichtigen Sie dabei, dass bei der Überprüfung
+Groß- und Kleinschreibung ignoriert werden sollen.
+
+\Vorlage
+\begin{minted}{c}
+#include <stdio.h>
+
+int main(void) {
+    char string1[] = "Fischers Fritze fischt frische Fische, frische Fische fischt Fischers Fritze";
+    char word[] = "Fische";
+
+    // Die im Folgenden genutzte countWords()-Funktion
+    // müssen Sie erstellen
+    int count = countWords(string, word);
+
+    printf("Das Wort \"%s\" kam %d-mal im String vor", string, count);
+}
+\end{minted}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+    Das Wort "Fische" kam 2-mal im String vor
+\end{mybox}
+
+
+
+
+\chapter{Verkettung von Strings unter Verwendung dynamischer Speicherzuweisung}
+
+\TopicLevel{Strings, Dynamische Speicherverwaltung}{2}\vspace{10pt}
+
+Erstellen Sie eine Funktion \mintinline{c}{stringAppend()}, die zwei Strings als
+Eingabeparameter entgegennimmt und diese miteinander verkettet. Die Funktion
+soll für den neuen, verketteten String dynamisch Speicher auf dem Heap
+reservieren und einen Pointer auf diesen Speicher an den Aufrufer zurückliefern.
+
+\Vorlage
+\begin{minted}{c}
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int main(void) {
+    char first[] = "Übungsaufgaben Programmieren ";
+    char second[] = "in C";
+
+    char *newString = stringAppend(first, second);
+    printf("%s\n", newString);
+
+    free(newString);
+}
+\end{minted}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+    Übungsaufgaben Programmieren in C
+\end{mybox}
+
+
+
+
+
+\chapter{Finde das am häufigsten vorkommende Zeichen in einem String}
+
+\TopicLevel{Strings}{2}\vspace{10pt}
+
+Erstellen Sie eine Funktion \mintinline{c}{printMaxChars()}, die basierend auf
+einem an die Funktion übergebenen String das Zeichen ermittelt, das am
+häufigsten in diesem String vorkommt und sowohl das Zeichen als auch die Anzahl
+auf dem Bildschirm ausgibt.
+
+\Vorlage
+\begin{minted}{c}
+#include <stdio.h>
+#include <string.h>
+
+int main(void) {
+    char string[] = "Fischers Fritze fischt frische Fische, frische Fische fischt Fischers Fritze";
+
+    printMaxChars(string);
+}
+\end{minted}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+Zeichen i kommt 10 mal vor.
+\end{mybox}
+
+
+
+\chapter{Finde den Durchschnitt von Gruppen von Zahlen in einer Datei}
+
+\TopicLevel{Dateioperationen}{4}\vspace{10pt}
+
+Erstellen Sie ein Programm, das aus einer Textdatei eine Zeile einliest, in der
+Zahlen in spezieller Gruppierung vorliegen. Die Anzahl der Zahlen einer jeden
+Gruppe wird durch die erste Zahl der Gruppe angegeben.
+
+Bei einer Datei mit folgendem Inhalt:
+
+\begin{mybox}[Textdatei.txt]{file}
+    \textbf{5} 24 13 83 22 4 \textbf{3} 99 23 45 \textbf{4} 82 34 11 9 \textbf{6} 13 22 93 42 85 34
+\end{mybox}
+
+Gibt die erste Zahl \mintinline{text}{5} an, dass die nächsten fünf Zahlen zu
+einer Gruppe gehören. Die nach dieser Gruppe stehende Zahl \mintinline{text}{3}
+gibt dann an, dass die nächsten drei Zahlen zur nächsten Gruppe gehören, und so
+weiter.
+
+Das Programm soll nun für jede Gruppe alle zugehörigen Zahlen einlesen und den
+Durchschnitt der Zahlen ermitteln. Z.B. soll die Ausgabe für die obenstehenden
+Zahlen folgendes ergeben:
+
+\begin{mybox}[Bildschirmausgabe]{console}
+Gruppe mit 5 Elementen: 29.20
+Gruppe mit 3 Elementen: 55.67
+Gruppe mit 4 Elementen: 34.00
+Gruppe mit 6 Elementen: 48.17
+\end{mybox}

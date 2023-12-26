@@ -1,0 +1,657 @@
+\chapter{Finde die kleinste Zahl in einem Array}
+
+\begin{enumerate}
+  \item Zuerst initialisieren wir den Wert des gesuchten Minimums auf das erste
+  Element des Arrays. Im nächsten Schritt durchlaufen wir das Array Eintrag für
+  Eintrag in einer for-Schleife. Falls der Wert des aktuellen Eintrags kleiner
+  ist als das bisher gefundene Minimum, ersetzen wir den Wert des Minimums
+  durch den Wert des Eintrags.
+
+  \textit{Hinweis}: für die generische und damit automatische Ermittlung der
+  Größe des Arrays verwenden wir hier den Ausdruck:
+
+\noindent\mintinline{c}{int arraySize = sizeof(myArray) / sizeof(int);}
+
+\begin{minted}{c}
+#include <stdio.h>
+
+int main(void) {
+    int myArray[] = {4, 2, 9, 24, 4, 8, 5, 24};
+    int arraySize = sizeof(myArray) / sizeof(int);
+
+    int min;
+
+    min = myArray[0];
+    for (int i = 0; i < arraySize; i++) {
+        if (myArray[i] < min) {
+            min = myArray[i];
+        }
+    }
+
+    printf("Kleinstes Element: %d\n", min);
+}
+\end{minted}
+
+  \item In diesem Fall erstellen wir eine Funktion, die zwei Eingabeparameter
+  besitzt: ein int-Array und einmal die Größe des Arrays. Der Funktionssignatur
+  kann das Array in zwei gleichbedeutenden Formen entgegennehmen: entweder als
+  \mintinline{c}{int array[]} oder als \mintinline{c}{int *array}. Die Größe
+  des Arrays muss der Funktion übergeben werden, da sie diese ansonsten nicht
+  erkennen kann.
+
+\begin{minted}{c}
+#include <stdio.h>
+
+int find_min(int array[], int size) {
+    int min = array[0];
+    for (int i = 1; i < size; i++) {
+        if (array[i] < min) {
+            min = array[i];
+        }
+    }
+    return min;
+}
+
+int main(void) {
+    int myArray[] = {4, 2, 9, 24, 4, 8, 5, 24};
+    int arraySize = sizeof(myArray) / sizeof(int);
+
+    int min = find_min(myArray, arraySize);
+
+    printf("Kleinstes Element: %d\n", min);
+}
+\end{minted}
+
+\end{enumerate}
+
+
+
+\chapter{Zähle die Häufigkeiten eines Werts in einem Array}
+
+\begin{enumerate}
+\item Zuerst legen wir eine Variable \mintinline{c}{count} an, die wir mit dem
+Wert 0 initialisieren. Im nächsten Schritt durchlaufen wir das Array Eintrag
+für Eintrag in einer for-Schleife. Falls der Wert des aktuellen Eintrags dem
+gesuchten Wert entspricht, erhöhen wir den Zähler count um Eins.
+
+\textit{Hinweis}: für die generische und damit automatische Ermittlung der
+Größe des Arrays verwenden wir hier den Ausdruck:
+
+\noindent\mintinline{c}{int arraySize = sizeof(myArray) / sizeof(int);}
+
+\begin{minted}{c}
+#include <stdio.h>
+
+int main(void) {
+    int myArray[] = {4, 2, 9, 24, 4, 8, 5, 24};
+    int to_find = 4;
+    int arraySize = sizeof(myArray) / sizeof(int);
+
+    int count = 0;
+    for (int i = 0; i < arraySize; i++) {
+        if (myArray[i] == to_find)
+            count++;
+    }
+
+    printf("Anzahl in Array: %d\n", count);
+}
+\end{minted}
+
+\item In diesem Fall erstellen wir eine Funktion, die drei Eingabeparameter
+besitzt: ein int-Array, dann die Größe des Arrays und schließlich noch die
+Zahl, nach der gesucht werden soll.
+
+Auch hier ist es so, dass wir die Größe des Arrays an die Funktion übergeben
+müssen, da sie sonst innerhalb der Funktion nicht ermittelt werden kann.
+
+\begin{minted}{c}
+#include <stdio.h>
+
+int occurrences(int array[], int size, int to_find) {
+    int count = 0;
+
+    for (int i = 0; i < size; i++) {
+        if (array[i] == to_find)
+            count++;
+    }
+    return count;
+}
+
+int main(void) {
+    int myArray[] = {4, 2, 9, 24, 4, 8, 5, 24};
+    int to_find = 4;
+    int arraySize = sizeof(myArray) / sizeof(int);
+
+    int count = occurrences(myArray, arraySize, to_find);
+
+    printf("Anzahl in Array: %d\n", count);
+}
+\end{minted}
+
+\end{enumerate}
+
+
+
+\chapter{Ein Array umkehren}
+
+\begin{enumerate}
+    \item Um die Elemente eines Arrays umzukehren, müssen wir eine typische
+    \mintinline{c}{swap}-Operation realisieren. Dazu brauchen wir eine
+    temporäre Variable (\mintinline{c}{temp}), in der wir das auszutauschende
+    Element zwischenspeichern.
+
+    Beim Durchlaufen des Arrays vertauschen wir schrittweise die Elemente der
+    ersten Hälfte in aufsteigender Form mit den Elementen der zweiten Hälfte in
+    absteigender Form.
+
+    Beachten Sie hier den Ausdruck:
+
+    \noindent\mintinline{c}{myArray[arraySize - i - 1]}
+
+    Da Arrays vom Index 0 beginnend adressiert werden und nur bis zum Index
+    \textit{Größe minus 1}, müssen wir die Zahl 1 bei der Berechnung abziehen.
+
+    Beachten Sie, dass die Berechnung sowohl für eine gerade als auch eine
+    ungerade Anzahl an Elementen funktioniert. Das liegt an der Art und Weise,
+    wie in C eine Ganzzahl-Division durchgeführt wird, bei der das Ergebnis auf
+    die nächstkleinere Zahl gerundet wird (also nicht mathematisch gerundet).
+
+    \textit{Hinweis}: für die generische und damit automatische Ermittlung der
+    Größe des Arrays verwenden wir hier den Ausdruck:
+
+    \noindent\mintinline{c}{int arraySize = sizeof(myArray) / sizeof(int);}
+
+\begin{minted}{c}
+#include <stdio.h>
+
+int main(void) {
+    int myArray[] = {4, 2, 9, 24, 4, 8, 5, 24};
+    int arraySize = sizeof(myArray) / sizeof(int);
+    int temp = 0;
+
+    for (int i = 0; i < (arraySize / 2); i++) {
+        temp = myArray[i];
+        myArray[i] = myArray[arraySize - i - 1];
+        myArray[arraySize - i - 1] = temp;
+    }
+
+    printf("Umgekehrte Reihenfolge:\n");
+    for (int i = 0; i < arraySize; i++) {
+        printf("myArray[%d] = %d\n", i, myArray[i]);
+    }
+}
+\end{minted}
+
+\item Bei der Auslagerung der Berechnung in eine eigenständige Funktion müssen
+enstprechend das Array und die Größe an die Funktion übergeben werden. Der
+Rückgabewert ist \mintinline{c}{void}, da die Funktion die Elemente im Array
+direkt umkehrt und daher keinen Wert an den Aufrufer zurückliefern muss.
+
+\begin{minted}{c}
+#include <stdio.h>
+
+void reverse(int array[], int size) {
+    int temp = 0;
+
+    for (int i = 0; i < (size / 2); i++) {
+        temp = array[i];
+        array[i] = array[size - i - 1];
+        array[size - i - 1] = temp;
+    }
+}
+
+int main(void) {
+    int myArray[] = {4, 2, 9, 24, 4, 8, 5, 24};
+    int arraySize = sizeof(myArray) / sizeof(int);
+
+    reverse(myArray, arraySize);
+
+    printf("Umgekehrte Reihenfolge:\n");
+    for (int i = 0; i < arraySize; i++) {
+        printf("myArray[%d] = %d\n", i, myArray[i]);
+    }
+}
+\end{minted}
+
+\end{enumerate}
+
+
+
+
+\chapter{Überprüfen, ob ein String ein Palindrom ist}
+
+Die \mintinline{c}{isPalindrome()}-Funktion bekommt einen String übergeben und
+gibt einen Booleschen-Wert (\mintinline{c}{true} oder \mintinline{c}{false}) an
+den Aufrufer zurück. Dafür haben wir den Header \mintinline{c}{stdbool.h}
+eingebunden.
+
+Zuerst ermitteln wir die Länge und die Mitte des Strings mithilfe der
+\mintinline{c}{strlen()}-Funktion aus dem \mintinline{c}{string.h}-Header. Das
+Ergebnis ist der Index, der die Mitte des Strings markiert. Bei der Überprüfung
+auf ein Palindrom wird dieser Wert verwendet, um nur bis zur Mitte des Strings
+zu iterieren, da die zweite Hälfte des Strings spiegelbildlich zur ersten Hälfte
+sein sollte, wenn es sich um ein Palindrom handelt.
+
+In der Funktion wird eine for-Schleife verwendet, die bis zur Mitte des Strings
+läuft. Jedes Zeichen der ersten Stringhälfte wird mit dem korrespondierenden
+Zeichen von hinten verglichen. Da die Groß-/Kleinschreibung keine Rolle spielen
+soll, verwenden wir die \mintinline{c}{tolower()}-Funktion aus dem
+\mintinline{c}{ctype.h}-Header.
+
+Stimmen zwei miteinander verglichenen Zeichen nicht überein, wird die Funktion
+direkt beendet und der Wert \mintinline{c}{false} an den Aufrufer zurückgegeben.
+Falls bis zum Ende des Schleifendurchlaufs keine Unstimmigkeiten aufgetreten
+sind, gibt die Funktion \mintinline{c}{true} zurück.
+
+\begin{minted}{c}
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h> // für strlen()
+#include <ctype.h>  // für tolower()
+
+bool isPalindrome(char string[]) {
+    int len = (int)strlen(string);
+    int middle = len / 2;
+
+    for (int i = 0; i < middle; i++) {
+        if (tolower(string[i]) != tolower(string[len - i - 1]))
+            return false;
+    }
+    return true;
+}
+\end{minted}
+
+
+
+
+
+\chapter{Die Anzahl an Wörtern in einem String zählen}
+
+Bei dieser Aufgabenstellung spielen zwei Dinge eine wesentliche Rolle: es ist
+wichtig zu verstehen, woran wir erkennen, was ein Wort ausmacht; zum anderen
+müssen wir eine Strategie entwickeln, um durch den String zu laufen, um nach
+Wörtern zu suchen.
+
+Direkt vor einem eigenständigen Wort muss ein Leerraumzeichen stehen, denn wenn
+wir nach dem Wort "Mutter" suchen, soll "Tagesmutter" nicht mitgezählt werden.
+Die einzige Ausnahme dieser Regel wäre das allererste Zeichen im String.
+Außerdem darf das Zeichen hinter dem gesuchten Wort wiederum kein alphabetisches
+Zeichen sein, denn wenn wir nach dem Wort "Mutter" suchen, sollte "Muttertag"
+wiederum nicht mitgezählt werden.
+
+Bezüglich der Strategie müssen wir auf jeden Fall zeichenweise durch den
+gesamten String laufen. Das tun wir in Zeile 11 mittels der while-Schleife, die
+solange läuft, bis das nachfolgende Zeichen dem String-Endezeichen entspricht.
+Für den aktuell zu untersuchenden Index des Suchworts verwenden wir die Variable
+\mintinline{c}{i}, die entsprechend sukzessive erhöht werden muss.
+
+Jetzt wenden wir die Suchkriterien an: zuerst prüfen wir, ob das Zeichen am
+aktuell verwendeten Index überhaupt ein alphabetisches Zeichen ist. Falls nicht,
+können wir direkt den Index erhöhen und den nächsten Schleifendurchlauf starten
+(Zeilen 14-17).
+
+Hatten wir am aktuellen Index ein alphabetisches Zeichen, dann geht es darum, zu
+prüfen, ob das Zeichen davor ein Leerraumzeichen war (mit der Ausnahme des
+allerersten Zeichens im String) (Zeilen 19-22).
+
+War auch diese Prüfung erfolgreich stehen wir offensichtlich an einem Wortanfang
+und es geht darum die nächsten Zeichen des Strings mit denen unseres Suchworts
+zu vergleichen.
+
+Hierfür verwenden wir eine for-Schleife, die maximal so viele Durchläufe
+durchläuft, wie das Suchwort Zeichen enthält (\mintinline{c}{lenWord}). Wir
+vergleichen jetzt jedes Zeichen des Suchworts am Index \mintinline{c}{j} mit dem
+Zeichen des Strings am Index \mintinline{c}{i}. Da wir die Groß-/Kleinschreibung
+nicht berücksichtigen wollen, wenden wir auf beide Zeichen die
+\mintinline{c}{tolower()}-Funktion an.
+
+Falls die beiden Zeichen nicht übereinstimmen, entspricht das gerade untersuchte
+Wort im String nicht unserem Suchwort. Wir setzen daher unseren booleschen Wert
+\mintinline{c}{validWord} auf \mintinline{c}{false} und brechen aus der inneren
+Schleife aus.
+
+Andernfalls müssten alle Zeichen des untersuchten Worts dem unseres Suchtworts
+entsprochen haben. Dann geht es darum, zu prüfen, ob das untersuchte Wort auch
+abgeschlossen ist, wofür hinter dem untersuchten Wort ein Leerraumzeichen stehen
+müsste. Dafür prüfen wir in Zeile 22, ob an der nun folgenden Stelle ein
+alphabetisches Zeichen steht.
+
+Sollte dies zutreffen, so haben wir das Suchwort leider nicht gefunden und
+müssen einen Schritt weiter im Index und die Suche erneut mit einem neuen
+Schleifendurchlauf starten.
+
+Andernfalls haben wir das Suchwort tatsächlich gefunden und können jetzt den
+Zähler \mintinline{c}{count} um Eins erhöhen (Zeile 37-38).
+
+Abschließend müssen wir für die while-Schleife noch dafür sorgen, dass der Index
+für den nächsten Schleifendurchlauf um Eins erhöht wird.
+
+\begin{minted}[linenos]{c}
+#include <stdio.h>
+#include <string.h> // für strlen()
+#include <ctype.h>  // für tolower() und isalpha()
+#include <stdbool.h>
+
+int countWords(char string[], char word[]) {
+    int lenWord = (int)strlen(word);
+    int count = 0;
+    int i = 0;
+
+    while (string[i + 1] != '\0') {
+        bool validWord = true;
+
+        if (!isalpha(string[i])) {
+            i++;
+            continue;
+        }
+
+        if (i != 0 && string[i - 1] != ' ') {
+            i++;
+            continue;
+        }
+
+        for (int j = 0; j < lenWord; j++) {
+            if (tolower(string[i]) != tolower(word[j])) {
+                validWord = false;
+                break;
+            }
+            i++;
+        }
+
+        if (isalpha(string[i])) {
+            i++;
+            continue;
+        }
+
+        if (validWord)
+            count++;
+
+        i++;
+    }
+
+    return count;
+}
+\end{minted}
+
+
+
+\chapter{Verkettung von Strings unter Verwendung dynamischer Speicherzuweisung}
+
+Da die Funktion \mintinline{c}{stringAppend()} dynamisch Speicher auf dem Heap
+für den neuen String reservieren soll, müssen zunächst die Längen der beiden
+übergebenen Strings mithilfe der \mintinline{c}{strlen()}-Funktion ermittelt
+werden. Da \mintinline{c}{strlen()} das abschließende Nullendezeichen eines
+Strings nicht in seiner Längenberechnung berücksichtigt, wird in der Berechnung
+der Gesamtlänge ein zusätzliches Byte für dieses Endezeichen eingerechnet:
+
+\mintinline{c}{size_t lengthTotal = length1 + length2 + 1;}
+
+Als nächstes nutzen wir die \mintinline{c}{malloc()}-Funktion aus dem
+\mintinline{c}{stdlib.h}-Header, um den Speicher dynamisch auf dem Heap zu
+reservieren.
+
+Daraufhin kopieren wir zeichenweise die Zeichen aus den übergebenen Strings in
+den neu allokierten Speicherbereich; zuerst für den ersten String, dann für den
+zweiten. Beim zweiten Kopiervorgang müssen wir darauf achten, dass wir ab dem
+richtigen Index anfangen, die Zeichen zu kopieren.
+
+Abschließend dürfen wir nicht vergessen, dass Nullendezeichen an den neuen
+String anzuhängen, um den neuen String korrekt zu terminieren und den Pointer
+auf den Speicherbereich des neuen Strings an den Aufrufer zurückliefern.
+
+Bei einer Lösung wie dieser ist es wichtig, daran zu denken, dass der Speicher
+für diesen neuen String später mit \mintinline{c}{free()} freigegeben wird, um
+Speicherlecks zu vermeiden.
+
+\begin{minted}{c}
+char *stringAppend(char *firstString, char *secondString) {
+    size_t length1 = strlen(firstString);
+    size_t length2 = strlen(secondString);
+    size_t lengthTotal = length1 + length2 + 1;
+
+    char *concatenatedString = malloc(lengthTotal * sizeof(char));
+
+    for (size_t i = 0; i < length1; i++)
+        concatenatedString[i] = firstString[i];
+
+    for (size_t i = 0; i < length2; i++)
+        concatenatedString[length1 + i] = secondString[i];
+
+    concatenatedString[lengthTotal - 1] = '\0';
+
+    return concatenatedString;
+}
+\end{minted}
+
+
+
+
+
+\chapter{Finde das am häufigsten vorkommende Zeichen in einem String}
+
+Um das am häufigsten vorkommende Zeichen in einem String zu ermitteln, ist es
+notwendig, den String mehrfach zu durchlaufen. Dies erfordert zwei ineinander
+verschachtelte Schleifen: In der äußeren Schleife wird jeweils ein Zeichen aus
+dem String entnommen und in der Variablen \mintinline{c}{currentChar}
+gespeichert. Anschließend zählen wir in der inneren Schleife die Häufigkeit
+dieses Zeichens im gesamten String, wofür die Variable
+\mintinline{c}{currentOccurrence} verwendet wird. Hierfür reicht es, wenn die
+innere Schleife von der aktuellen Position der äußeren Schleife bis zum Ende des
+Strings läuft.
+
+Wichtig ist, dass wir bei jedem neuen Durchlauf der äußeren Schleife die
+Variablen \mintinline{c}{currentChar} und \mintinline{c}{currentOccurrence} neu
+initialisieren. Falls das aktuell betrachtete Zeichen
+(\mintinline{c}{currentChar}) identisch mit dem bis dahin am häufigsten
+gefundenen Zeichen (\mintinline{c}{maxChar}) ist, können wir dieses Zeichen
+überspringen und direkt zum nächsten fortschreiten, um redundante Zählungen zu
+vermeiden.
+
+In der inneren Schleife vergleichen wir jedes Zeichen des Strings mit
+\mintinline{c}{currentChar}. Stimmen sie überein, erhöhen wir
+\mintinline{c}{currentOccurrence}. Nach Abschluss der inneren Schleife prüfen
+wir, ob \mintinline{c}{currentOccurrence} größer als die bisherige maximale
+Häufigkeit (\mintinline{c}{maxOccurrence}) ist. Ist dies der Fall, aktualisieren
+wir die Variablen \mintinline{c}{maxChar} und \mintinline{c}{maxOccurrence}
+entsprechend.
+
+\begin{minted}{c}
+void printMaxChars(char *string) {
+    size_t length = strlen(string);
+    char maxChar = '\0';
+    char currentChar;
+    int maxOccurrence = 0;
+    int currentOccurrence = 0;
+
+    for (size_t i = 0; i < length; i++) {
+        currentChar = string[i];
+        currentOccurrence = 0;
+        if (currentChar == maxChar)
+            continue;
+        for (size_t j = i; j < length; j++) {
+            if (string[j] == currentChar)
+                currentOccurrence++;
+        }
+        if (currentOccurrence > maxOccurrence) {
+            maxOccurrence = currentOccurrence;
+            maxChar = currentChar;
+        }
+    }
+
+    printf("Zeichen %c kommt %d mal vor.\n", maxChar, maxOccurrence);
+}
+\end{minted}
+
+
+
+
+
+
+\chapter{Finde den Durchschnitt von Gruppen von Zahlen in einer Datei}
+
+Im Folgenden werden Ihnen zwei mögliche Lösungen vorgestellt. Eine, bei der wir
+die Zeile komplett in einen Puffer einlesen und dann mit der
+\mintinline{c}{strtok()}-Funktion in einzelne "\textit{Tokens}" zerlegen; und
+eine, bei der wir keinen separaten Puffer anlegen und direkt mit der
+\mintinline{c}{fscanf()}-Funktion Ganzzahlen aus der Datei einlesen.
+
+\section*{Variante mit \texttt{strtok}}
+
+Um die Gruppen an Zahlen aus der Datei auszulesen, müssen wir zuerst die Datei
+lesend mittels \mintinline{c}{fopen()} öffnen und prüfen, ob das Öffnen
+erfolgreich war. Darauffolgend können wir eine Zeile aus der Datei einlesen.
+Falls wir davon ausgehen, dass es nur eine Zeile ist und diese nicht länger als
+maximal 256 Zeichen ist, reicht ein einzelner Aufruf der
+\mintinline{c}{fgets()}-Funktion, um die Zeile in den temporären Puffer
+\mintinline{c}{buf} einzulesen.
+
+Jetzt können wir den Inhalt der Zeile interpretieren. Wenn wir wissen, dass die
+einzelnen Zahlen mittels Leerzeichen voneinander getrennt sind, können wir die
+\mintinline{c}{strtok()}-Funktion aus dem \mintinline{c}{string.h}-Header
+verwenden, um immer einzelne Tokens einzulesen.
+
+Der erste Aufruf von \mintinline{c}{strtok()} muss auf den Beginn der Zeile
+zeigen. Das Token (also hier die erste Zahl) kann dann durch den Pointer
+\mintinline{c}{p} ausgelesen und mittels der \mintinline{c}{atoi()}-Funktion in
+eine Ganzzahl umgewandelt werden. Folgende Aufrufe von \mintinline{c}{strtok()}
+müssen dann jedoch immer als erstes Argument \mintinline{c}{NULL} nutzen, um
+weiter im String voranzuschreiten.
+
+Wenn wir wissen, wie viele Zahlen eine Gruppe umfasst, können wir in einer
+darauffolgenden for-Schleife entsprechend viele Zahlen einlesen, aufsummieren
+und schließlich den Durchschnitt berechnen.
+
+Die größte Schwierigkeit könnte darin bestehen, dies kontinuierlich so lange für
+Gruppen von Zahlen durchzuführen, bis das Zeilenende erreicht ist. Wenn wir
+\mintinline{c}{strtok()} einsetzen, können wir uns zunutze machen, dass die
+Funktion am Zeilenende \mintinline{c}{NULL} zurückliefert und wir
+dementsprechend den Aufruf in einer \mintinline{c}{while}-Schleife anwenden
+können.
+
+\begin{minted}{c}
+#include <stdio.h>
+#include <string.h> // für strtok()
+#include <stdlib.h> // für atoi()
+
+int main(void) {
+    char *filename = "08_group_of_numbers.txt";
+    FILE *fp = fopen(filename, "r");
+    if (fp == NULL) {
+        printf("Fehler beim Öffnen der Datei\n");
+        return -1;
+    }
+
+    char buf[256];
+    if (fgets(buf, 255, fp) == NULL) {
+        printf("Fehler beim Einlesen der Zeile");
+        return -2;
+    }
+
+    int groupLength;
+    int groupSum;
+    double groupAverage;
+    char *p;
+    p = strtok(buf, " ");
+    while (p != NULL) {
+        groupLength = atoi(p);
+        groupSum = 0;
+        groupAverage = 0;
+        for (int i = 0; i < groupLength; i++) {
+            p = strtok(NULL, " ");
+            if (p == NULL) {
+                printf("Unerwartetes Ende der Zeile\n");
+                return -3;
+            }
+            groupSum += atoi(p);
+        }
+        groupAverage = (double)groupSum / groupLength;
+        printf("Gruppe mit %d Elementen: %.2lf\n", groupLength, groupAverage);
+
+        // Bereite die nächste Gruppe vor
+        p = strtok(NULL, " ");
+    }
+
+    fclose(fp);
+}
+\end{minted}
+
+Statt eine statische Puffergröße von 256 Zeichen festzulegen, könnten wir zuerst
+auslesen, wie lang die Zeile in der Datei ist und daraufhin entsprechend viel
+dynamischen Speicher allokieren:
+
+\begin{minted}{c}
+// Ermittle die Länge der Zeile
+fseek(fp, 0, SEEK_END);
+long length = ftell(fp);
+fseek(fp, 0, SEEK_SET);
+
+// Allokiere Speicher für die Zeile
+char *buf = (char *)malloc((unsigned long)length + 1);
+if (buf == NULL) {
+    printf("Speicherzuweisungsfehler\n");
+    fclose(fp);
+    return -1;
+}
+
+if (fgets(buf, (int)length + 1, fp) == NULL) {
+    printf("Fehler beim Einlesen der Zeile\n");
+    free(buf);
+    fclose(fp);
+    return -2;
+}
+
+// [...]
+
+free(buf);
+fclose(fp);
+\end{minted}
+
+\section*{Variante mit \texttt{fscanf}}
+
+Die alternative Lösung nutzt die \mintinline{c}{fscanf()}-Funktion, um die
+Zahlen direkt aus der Datei zu lesen. Zuerst wird \mintinline{c}{fscanf()} in
+einer while-Schleife verwendet, um die Länge jeder Gruppe einzulesen. Innerhalb
+dieser Schleife wird eine for-Schleife mit einer Anzahl von Durchläufen gleich
+der Gruppenlänge verwendet. In jedem Durchlauf dieser for-Schleife rufen wir
+\mintinline{c}{fscanf()} erneut auf, um den nächsten Ganzzahlwert aus der Datei
+einzulesen. Bei jedem Aufruf von \mintinline{c}{fscanf()} bewegt sich der
+interne "\textit{File Position Pointer}" weiter, sodass kontinuierlich durch die
+Datei gelesen wird. Dieser Ansatz eliminiert die Notwendigkeit, die gesamte
+Zeile zuerst in einen Puffer zu lesen und dann zu zerlegen
+
+\begin{minted}{c}
+#include <stdio.h>
+#include <stdlib.h> // für malloc und free
+
+int main(void) {
+    char *filename = "08_group_of_numbers.txt";
+    FILE *fp = fopen(filename, "r");
+    if (fp == NULL) {
+        printf("Fehler beim Öffnen der Datei\n");
+        return -1;
+    }
+
+    int groupLength;
+    int number;
+    int groupSum;
+    double groupAverage;
+
+    while (fscanf(fp, "%d", &groupLength) == 1) {
+        groupSum = 0;
+        groupAverage = 0.0;
+        for (int i = 0; i < groupLength; i++) {
+            if (fscanf(fp, "%d", &number) != 1) {
+                printf("Fehler beim Lesen der Zahlen\n");
+                fclose(fp);
+                return -2;
+            }
+            groupSum += number;
+        }
+        groupAverage = (double)groupSum / groupLength;
+        printf("Gruppe mit %d Elementen: %.2lf\n", groupLength, groupAverage);
+    }
+
+    fclose(fp);
+    return 0;
+}
+\end{minted}

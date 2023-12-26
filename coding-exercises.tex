@@ -1,0 +1,82 @@
+\documentclass{coding-exercises}
+
+\begin{document}
+
+% Titelseite
+\begin{titlepage}
+  \centering
+  \vspace*{\stretch{1}}
+
+  {\fontsize{40}{48}\bfseries\lato Übungsaufgaben\\Programmieren in C\par}
+
+  \vspace{\stretch{2}}
+  {\Large Autor: Martin Röhricht}
+
+  \vfill
+  Version: \today
+\end{titlepage}
+
+
+% Vorwort
+\frontmatter
+\chapter{Vorwort}
+
+In der Vorlesung "Informatik2" für die Studiengänge "Elektrotechnik" und
+"Fahrzeugsysteme" an der Hochschule Esslingen soll den Studenten das
+Programmieren in C beigebracht werden. Obwohl die Programmiersprache C eine
+vergleichsweise alte Programmiersprache ist, bietet sie den Vorteil, dass ihr
+Sprachumfang -- verglichen mit den meisten "modernen" Programmiersprachen --
+von überschaubarer Größe ist. Auf der anderen Seite muss sich ein Programmierer
+in C noch um einiges "von Hand" kümmern und kann vergleichsweise leicht Fehler
+machen, die ihm das Laufzeitsystem nicht verzeiht.
+
+Um unseren Studenten dabei zu helfen, sich auf die anstehende Klausur
+vorzubereiten, habe ich mich auf die Suche nach geeigneten Übungsaufgaben
+gemacht. Manche Aufgaben sind allseits bekannt, bei manchen habe ich mich
+inspierieren lassen\footnote{z.B. beim YouTube-Channel "Portfolio Courses"},
+manche habe ich mir selbst ausgedacht.
+
+Die folgenden Aufgaben sollen Ihnen die Möglichkeit geben, das Programmieren in
+C weiter zu üben. Sie finden im ersten Abschnitt dieses Dokuments die
+verschiedenen Übungen, zu denen Sie im besten Fall eine eigenständige Lösung
+entwickeln.
+
+Im zweiten Abschnitt des Dokuments finden Sie dann die jeweiligen
+Musterlösungen. Bedenken Sie dabei, dass es häufig sehr viele unterschiedliche
+Lösungen für dasselbe Problem geben kann.
+
+Bei den Lösungsvorschlägen habe ich darauf geachtet, dass auf der einen Seite
+möglichst wenig "Spezialfunktionen" aus der Standardbibliothek verwenden werden
+und auf der anderen Seite durchaus von den gängigsten Funktionen (bspw.
+\mintinline{c}{strlen())} Gebrauch gemacht wird. Grundsätzlich sollten auch
+keine anderen Bibliotheken außer der Standardbibliothek verwendet werden.
+
+Die Code-Beispiele wurden so erstellt, dass sie trotz zahlreicher
+Compiler-Warnstufen\footnote{\texttt{-Wall -Wextra -Wpedantic -Wshadow
+-Wformat=2 -Wcast-align -Wconversion -Wsign-conversion -Wnull-dereference} unter
+Clang und GCC} keine Warnungen ausgeben.
+
+%\vfill
+\raggedleft
+\noindent Stuttgart im Dezember 2023\par
+\noindent Martin Röhricht\par
+\texttt{<martin.roehricht@hs-esslingen.de>}
+
+\tableofcontents
+
+% Hauptteil
+\mainmatter
+\part{Aufgaben}
+
+\include{parts/exercises}
+
+\setcounter{chapter}{0} % Setzt die Kapitelnummerierung zurück
+\part{Lösungen}
+
+\include{parts/solutions}
+
+
+\backmatter
+% Anhang, Literaturverzeichnis etc.
+
+\end{document}
