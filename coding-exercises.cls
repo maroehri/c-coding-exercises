@@ -191,3 +191,6 @@
     \noindent\textbf{Vorlage:}
     %\vspace{-\baselineskip} % Entfernt den zusätzlichen Abstand zur minted-Umgebung
 }
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.multipart, positioning, arrows.meta}
