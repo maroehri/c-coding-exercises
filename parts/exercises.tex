@@ -380,3 +380,191 @@ Man kann sich die Struktur also wie folgt vorstellen:
         \node at (array\x.west) [left] {persons[\x]};
 \end{tikzpicture}
 \end{figure}
+
+
+
+
+\chapter{Erstelle eine verkettete Liste}
+
+\TopicLevel{Strukturen, Pointer}{5}\vspace{10pt}
+
+Erstellen Sie eine Datenstruktur in Form einer verketteten Liste, die es Ihnen
+erlaubt, dynamisch eine beliebige Anzahl an Elementen zu Ihrer Liste
+hinzuzufügen oder daraus zu entfernen.
+
+Eine verkettete Liste besteht aus einer Menge an Knoten, die jeweils Daten
+enthalten, sowie einen Pointer auf den nächsten Knoten in der Liste. Im letzten
+Knoten der Liste enthält der Pointer auf den nächsten Knoten den Wert
+\mintinline{c}{NULL}. Daran kann man erkennen, dass man am Ende der Liste
+angekommen ist.
+
+Die Knoten einer verketteten Liste können prinzipiell beliebige (aber
+gleichartige) Daten enthalten. In unserem Beispiel reicht es uns, wenn einfach
+ein Integer-Wert pro Knoten gespeichert wird.
+
+Eine Liste mit drei Knoten und den Daten \mintinline{c}{4}, \mintinline{c}{2}
+und \mintinline{c}{7} können Sie sich wie folgt vorstellen:
+
+\begin{figure}[htb!]
+    \begin{tikzpicture}[font=\ttfamily, node distance=1.2cm]
+        % Definiere Stil für die Struktur-Boxen
+        \tikzstyle{struct} = [
+            rectangle split,    % Rechteck, das in mehrere Teile unterteilt ist
+            rectangle split parts=2, % Rechteck besteht aus zwei Teilen
+            draw,               % Umriss des Knotens zeichnen
+            text centered,
+            minimum width=1.5cm,
+            anchor=base         % Positionierung relativ zu anderen Objekten auf die
+                                % Basislinie des Textes im Knoten
+        ]
+
+        % Definiere Stil für die Liste-Box
+        \tikzstyle{liststruct} = [
+            rectangle,
+            draw,
+            text centered,
+            minimum width=1.5cm
+        ]
+
+        % Definiere Stil für die Pointer
+        \tikzstyle{pointer} = [circle, fill, inner sep=2pt]
+
+        % Definiere Stil für die Pfeile
+        \tikzstyle{arrow} = [-{Latex[length=3mm, width=2mm]}]
+
+        % Listenstruktur
+        \node[liststruct] (list) {head};
+        \node[above=0 of list, font=\sffamily] {Liste};
+        \node[pointer] (pointerList) at ([xshift=-6pt]list.east) {}; % Pointer rechts neben "head"
+
+        % Erste Struktur
+        \node[struct] (struct0) [right=of list, base right=of list.base east] {4\nodepart{second}next};
+        \node[above=0 of struct0, font=\sffamily] {Node};
+        \node[pointer] (pointer0) at ([xshift=-6pt]struct0.two east) {}; % Pointer rechts neben "next"
+
+        % Zweite Struktur
+        \node[struct] (struct1) [right=of struct0] {2\nodepart{second}next};
+        \node[above=0 of struct1, font=\sffamily] {Node};
+        \node[pointer] (pointer1) at ([xshift=-6pt]struct1.two east) {}; % Pointer rechts neben "next"
+
+        % Dritte Struktur
+        \node[struct] (struct2) [right=of struct1] {7\nodepart{second}next};
+        \node[above=0 of struct2, font=\sffamily] {Node};
+        \node[pointer] (pointer2) at ([xshift=-6pt]struct2.two east) {}; % Pointer rechts neben "next"
+
+        % Zeichne Pfeile von Strukturen zu Strukturen
+        \draw[arrow] (pointerList) -- (struct0.text west);
+        \draw[arrow] (pointer0) -- (struct1.text west);
+        \draw[arrow] (pointer1) -- (struct2.text west);
+
+        % Zeichne Pfeil auf "NULL"
+        \node[align=center] (null) [right=of pointer2] {NULL};
+        \draw[arrow] (pointer2) -- (null);
+
+    \end{tikzpicture}
+\end{figure}
+
+Wir brauchen demnach eine Struktur für eine Liste, eine Struktur für einen
+Knoten und dann noch Funktionen zum
+\begin{itemize}
+    \item Initialisieren einer Liste
+    \item Hinzufügen von Knoten zu einer Liste
+    \item Entfernen von Knoten aus einer Liste
+    \item Löschen einer Liste mitsamt seiner Knoten
+    \item (Optional) der Bildschirmausgabe aller Knoten einer Liste
+\end{itemize}
+
+Auf Basis des folgenden Codes, sollte dann die dahinterstehende Ausgabe
+erfolgen:
+
+\begin{minted}{c}
+#include <stdio.h>
+#include <stdlib.h>
+
+// Strukturdefinition für einen Knoten `Node`
+// ...
+
+// Strukturdefinition für eine Liste `List`
+// ...
+
+// Funktion initList()
+// ...
+
+// Funktion addNode()
+// ...
+
+// Funktion removeNodesWithValue()
+// ...
+
+// Funktion printList()
+// ...
+
+// Funktion freeList()
+// ...
+
+int main(void) {
+    List myList;
+    initList(&myList);
+
+    addNode(&myList, 1);
+    addNode(&myList, 2);
+    addNode(&myList, 3);
+    addNode(&myList, 2);
+
+    printf("Original Liste:\n");
+    printList(&myList);
+
+    removeNodesWithValue(&myList, 2);
+    printf("Liste nach dem Entfernen aller 2er:\n");
+    printList(&myList);
+
+    freeList(&myList);
+}
+\end{minted}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+    Original Liste:
+    Element 1: data = 1
+    Element 2: data = 2
+    Element 3: data = 3
+    Element 4: data = 2
+    Liste nach dem Entfernen aller 2er:
+    Element 1: data = 1
+    Element 2: data = 3
+\end{mybox}
+
+
+\begin{enumerate}
+    \item Erstellen Sie eine Datenstruktur \mintinline{c}{Node}, die aus zwei
+    Elementen besteht: einmal einem Integer (\mintinline{c}{data}) und einmal
+    einem Pointer auf eine Struktur \mintinline{c}{Node}.
+    \item Erstellen Sie eine Datenstruktur \mintinline{c}{List}, die aus zwei
+    Elementen besteht: einmal einem Pointer auf eine Struktur
+    \mintinline{c}{Node} und einmal einem Integer \mintinline{c}{size}, in dem
+    die Größe der Liste verwaltet wird.
+    \item Erstellen Sie eine Funktion \mintinline{c}{initList()}, die einen
+    Pointer auf eine Liste übergeben bekommt und die Elemente dieser Liste mit
+    den Werten \mintinline{c}{NULL} bzw. \mintinline{c}{0} initialisiert.
+    \item Erstellen Sie eine Funktion \mintinline{c}{addNode()}, die einen
+    Pointer auf eine Liste und einen Integer übergeben bekommt. Die Funktion
+    soll dynamisch Speicherplatz für einen neuen Knoten auf dem Heap allokieren
+    und dann den an die Funktion übergebenen Integerwert dem neuen Knoten
+    hinzufügen.
+
+    Wichtig ist nun, dass Sie prüfen, ob die Liste leer ist oder nicht. Falls
+    die Liste nicht leer sein sollte, soll das neue Element an das Ende der
+    Liste gehängt werden.
+    \item Erstellen Sie eine Funktion \mintinline{c}{printList()}, die alle
+    Knoten der Liste inklusive ihrer \mintinline{c}{data}-Werte auf dem
+    Bildschirm ausgibt.
+    \item Erstellen Sie eine Funktion \mintinline{c}{freeList()}, die die Daten
+    aller Knoten in der Liste vom Heap freigibt und die Liste auf den
+    Ursprungszustand zurücksetzt.
+    \item Erstellen Sie eine Funktion \mintinline{c}{removeNodesWithValue()}, in
+    der nach allen Knoten in der Liste gesucht wird, die einen bestimmten Wert
+    enthalten. Dazu bekommt die Funktion einen Pointer auf eine Liste und einen
+    Integerwert übergeben.
+
+    Alle Knoten, deren \mintinline{c}{data}-Element den Wert enthalten, der an
+    die Funktion übergeben wurde, sollen aus der Liste entfernt werden.
+\end{enumerate}
