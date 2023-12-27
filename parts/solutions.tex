@@ -750,3 +750,197 @@ Person *findYoungestPerson(Person *persons[], int size) {
     return youngest;
 }
 \end{minted}
+
+
+
+
+
+\chapter{Erstelle eine verkettete Liste}
+
+\section*{Datenstruktur \texttt{Node}}
+
+Die Datenstruktur \mintinline{c}{Node} soll zwei Elemente enthalten: einmal
+einen Integer namens \mintinline{c}{data} und einmal einen Pointer auf einen
+anderen Knoten (vom Typ \mintinline{c}{Node}).
+
+Um diese Struktur als einen Typ festzulegen, verwenden wir
+\mintinline{c}{typedef}. Hier müssen wir lediglich darauf achten, dass der neue
+Typ noch nicht innerhalb der Deklaration verwendet werden kann, so dass das
+Schlüsselwort \mintinline{c}{struct} noch innerhalb der Deklaration vor
+\mintinline{c}{Node *next} aufgeführt werden muss.
+
+\begin{minted}{c}
+typedef struct Node {
+    int data;
+    struct Node *next;
+} Node;
+\end{minted}
+
+\section*{Datenstruktur \texttt{List}}
+
+Die Datenstruktur \mintinline{c}{List} soll nur ein Element enthalten, nämlich
+einen Pointer auf einen Knoten. Dieser Pointer ist sozusagen der
+\mintinline{c}{head}-Pointer, der immer auf den Anfang der Liste zeigt.
+
+\begin{minted}{c}
+typedef struct {
+    Node *head;
+    int size;
+} List;
+\end{minted}
+
+\section*{Funktion \texttt{initList()}}
+
+Die \mintinline{c}{initiList()}-Funktion bekommt einen Pointer auf eine Liste
+übergeben und initialisiert die Werte \mintinline{c}{head} und
+\mintinline{c}{size} entsprechend auf die Werte \mintinline{c}{NULL} und
+\mintinline{c}{0}.
+
+\begin{minted}{c}
+void initList(List *list) {
+    list->head = NULL;
+    list->size = 0;
+}
+\end{minted}
+
+\section*{Funktion \texttt{addNode()}}
+
+Die \mintinline{c}{addNode()}-Funktion allokiert zu Beginn dynamisch Speicher
+vom Heap für den neu einzufügenden Knoten. Über den von \mintinline{c}{malloc()}
+zurückgegebenen Pointer können die beiden Elemente dieses Knotens belegt werden.
+Das Element \mintinline{c}{newNode->data} erhält den Datumswert, der an die
+Funktion übergeben wurde; das Element \mintinline{c}{newNode->next} wird auf
+\mintinline{c}{NULL} gesetzt, da dieser neue Knoten ja ans Ende der Liste gelegt
+werden soll.
+
+Jetzt geht es darum, zu ermitteln, ob dies der erste Knoten in der Liste ist
+oder nicht. Falls es sich um den ersten Knoten handelt, können wir einfach den
+\mintinline{c}{head}-Pointer aus der Liste auf diesen neuen Knoten zeigen
+lassen.
+
+Andernfalls müssen wir bis ans Ende der Liste laufen und den
+\mintinline{c}{next}-Pointer des letzten Knotens auf den neuen Knoten
+\mintinline{c}{newNode} zeigen lassen. Schließlich noch den Zähler
+\mintinline{c}{size} der Liste um Eins erhöhen.
+
+\begin{minted}{c}
+void addNode(List *list, int data) {
+    Node *newNode = malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf("Fehler bei der Speicherallokation\n");
+        return;
+    }
+    newNode->data = data;
+    newNode->next = NULL;
+
+    if (list->head == NULL) {
+        list->head = newNode;
+    } else {
+        Node *current = list->head;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = newNode;
+    }
+
+    list->size++;
+}
+\end{minted}
+
+\section*{Funktion \texttt{printList()}}
+
+Die \mintinline{c}{printList()}-Funktion bekommt einen Pointer auf eine Liste
+übergeben und durchläuft alle Knoten der Liste bis zum Ende. Für jeden Knoten
+gibt sie entsprechend den Index und den Wert (\mintinline{c}{current->data}) auf
+dem Bildschirm aus.
+
+\begin{minted}{c}
+void printList(const List *list) {
+    Node *current = list->head;
+    int i = 1;
+    while (current != NULL) {
+        printf("Element %d: data = %d\n", i, current->data);
+        current = current->next;
+        i++;
+    }
+}
+\end{minted}
+
+\section*{Funktion \texttt{freeList()}}
+
+Die \mintinline{c}{freeList()}-Funktion bekommt einen Pointer auf eine Liste
+übergeben und durchläuft alle Knoten der Liste bis zum Ende. Für jeden Knoten
+sichert sie sich temporär den Zeiger auf diesen Knoten in einer temporären
+Variable, bevor sie den Pointer auf den nächsten Knoten ändert und den Speicher
+für den zu löschenden Knoten freigibt.
+
+Wenn dies für alle Knoten in der List durchgeführt wurde, kann die Liste wieder
+auf die Initialwerte zurückgesetzt werden.
+
+\begin{minted}{c}
+void freeList(List *list) {
+    Node *current = list->head;
+    while (current != NULL) {
+        Node *temp = current;
+        current = current->next;
+        free(temp);
+    }
+    list->head = NULL;
+    list->size = 0;
+}
+\end{minted}
+
+\section*{Funktion \texttt{removeNodesWithValue()}}
+
+Die \mintinline{c}{removeNodesWithValue()}-Funktion soll zwei Eingabeparameter
+besitzen: einmal einen Pointer auf die Liste, die verändert werden soll und
+einmal einen Integer, der angibt, welche Knoten mit dem entsprechenden Wert in
+ihrem \mintinline{c}{data}-Element gelöscht werden sollen.
+
+Wir durchlaufen die Liste wieder vom Anfang bis zum Ende mittels einer
+while-Schleife. Innerhalb der while-Schleife prüfen wir für jeden Knoten, ob
+dessen \mintinline{c}{data}-Element dem an die Funktion übergebenen Wert
+entspricht. Ist das der Fall müssen wir den Knoten aus der Liste löschen.
+
+Wir nutzen in dieser Lösung einen Hilfs-Pointer \mintinline{c}{prev}, der auf
+den Knoten vor \mintinline{c}{current} zeigen soll. Wenn \mintinline{c}{prev}
+\mintinline{c}{NULL} ist, bedeutet dies, dass der zu entfernende Knoten der Kopf
+der Liste ist. In diesem Fall wird der Kopf der Liste auf den nächsten Knoten
+nach \mintinline{c}{current} gesetzt. Wenn \mintinline{c}{prev} nicht
+\mintinline{c}{NULL} ist, wird der \mintinline{c}{next}-Pointer von
+\mintinline{c}{prev} auf den Knoten nach \mintinline{c}{current} gesetzt,
+wodurch \mintinline{c}{current} aus der Kette der Knoten entfernt wird.
+
+Anschließend wird der \mintinline{c}{temp} verwendet, um den Pointer auf den zu
+entfernenden Knoten zu speichern; \mintinline{c}{current} kann dann zum nächsten
+Knoten bewegt werden, wonach der Speicher des entfernten Knotens freigegeben
+werden kann. Anschließend wird der Zähler \mintinline{c}{size} entsprechend um
+Eins dekrementiert.
+
+Für den Fall, dass das \mintinline{c}{data}-Element nicht den gesuchten Wert
+hat, wird \mintinline{c}{prev} auf \mintinline{c}{current} gesetzt und
+\mintinline{c}{current} bewegt sich zum nächsten Knoten.
+
+\begin{minted}{c}
+void removeNodesWithValue(List *list, int value) {
+    Node *current = list->head;
+    Node *prev = NULL;
+
+    while (current != NULL) {
+        if (current->data == value) {
+            if (prev == NULL) {
+                list->head = current->next;
+            } else {
+                prev->next = current->next;
+            }
+            Node *temp = current;
+            current = current->next;
+            free(temp);
+            list->size--;
+        } else {
+            prev = current;
+            current = current->next;
+        }
+    }
+}
+\end{minted}
