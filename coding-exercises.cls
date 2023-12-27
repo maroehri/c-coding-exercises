@@ -157,7 +157,9 @@
     \sffamily%
     \textbf{Thema:} #1 \hfill \textbf{Schwierigkeitsgrad:}
     \foreach \n in {1,...,#2}{\Large\textbf{$\bullet$}}%
-    \foreach \n in {1,...,\numexpr5-#2}{\Large\textbf{$\circ$}}%
+    \ifnum#2<5
+        \foreach \n in {1,...,\numexpr5-#2\relax}{\Large\textbf{$\circ$}}%
+    \fi
     }%
 }
 
