@@ -568,3 +568,70 @@ int main(void) {
     Alle Knoten, deren \mintinline{c}{data}-Element den Wert enthalten, der an
     die Funktion übergeben wurde, sollen aus der Liste entfernt werden.
 \end{enumerate}
+
+
+
+
+
+
+\chapter{Duplikate aus einem Array entfernen}
+
+\TopicLevel{Pointer, Dynamische Speicherverwaltung}{4}\vspace{10pt}
+
+Erstellen Sie eine Funktion \mintinline{c}{removeDuplicates()}, die doppelte
+aufeinanderfolgende Elemente aus einem sortierten Array entfernt. Die Funktion
+soll dabei den Speicherbereich der Liste entsprechend anpassen.
+
+Beachten Sie hierbei folgendes: das Array wird in der
+\mintinline{c}{main()}-Funktion dynamisch auf dem Heap allokiert. Da der
+Speicherbereich durch die \mintinline{c}{removeDuplicates()}-Funktion
+möglicherweise angepasst werden muss, muss die Funktion einen \textit{Pointer
+auf das Array} sowie die Größe des Arrays als Argumente entgegennehmen.
+
+\Vorlage
+\begin{minted}{c}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void) {
+    int size = 10;
+    int *myArray = malloc((size_t)size * sizeof(int));
+
+    if (myArray == NULL) {
+        printf("Speicher konnte nicht reserviert werden.\n");
+        return 1;
+    }
+
+    // Hilfsarray, um myArray zu initialisieren
+    int initArray[] = {1, 2, 3, 3, 4, 5, 5, 5, 6, 7};
+    for (int i = 0; i < size; i++) {
+        myArray[i] = initArray[i];
+    }
+
+    // Ausgabe der Array-Elemente vor der Bearbeitung
+    printf("Array vor der Bearbeitung:\n");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", myArray[i]);
+    }
+    printf("\n");
+
+    removeDuplicates(&myArray, &size);
+
+    // Ausgabe der Array-Elemente nach der Bearbeitung
+    printf("Array nach der Bearbeitung:\n");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", myArray[i]);
+    }
+    printf("\n");
+
+    free(myArray);
+    return 0;
+}
+\end{minted}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+    Array vor der Bearbeitung:
+    1 2 3 3 4 5 5 5 6 7
+    Array nach der Bearbeitung:
+    1 2 3 4 5 6 7
+\end{mybox}

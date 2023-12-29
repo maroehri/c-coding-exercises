@@ -944,3 +944,94 @@ void removeNodesWithValue(List *list, int value) {
     }
 }
 \end{minted}
+
+
+
+
+
+\chapter{Duplikate aus einem Array entfernen}
+
+Grundsätzlich gibt es verschiedene Ansätze, um die Duplikate aus einem Array zu
+entfernen: wir könnten zuerst einen neuen Speicherbereich allokieren, in den wir
+die Unikate des ursprünglichen Arrays kopieren. Anschließend könnten wir den
+Speicher des neuen Arrays entsprechend der neuen Größe anpassen und den Speicher
+auf das alte Array freigeben.
+
+Oder wir könnten das ursprüngliche Array direkt im Speicher verändern und die
+Größe des Arrays entsprechend anpassen. Das wäre eine effizientere Lösung, die
+im Folgenden vorgestellt wird.
+
+Die Funktion \mintinline{c}{removeDuplicates()} akzeptiert zwei Parameter: einen
+\textit{Doppel-Pointer} auf ein Array (\mintinline{c}{int **array}) und einen
+Pointer auf die Größe dieses Arrays (\mintinline{c}{int *size}). Sie gibt keinen
+Wert zurück, da sie das Array direkt im Speicher modifiziert.
+
+Der Einsatz eines Doppel-Pointers ist hier entscheidend. Bei der Reduzierung der
+Größe des Arrays könnte die \mintinline{c}{realloc()}-Funktion eine neue
+Speicheradresse zuweisen. Mit einem einfachen Pointer (also nur
+\mintinline{c}{int *array}) könnten wir zwar die Elemente des Arrays
+manipulieren, jedoch wäre es uns nicht möglich, die Adresse des Zeigers selbst
+zu ändern, die außerhalb der Funktion \mintinline{c}{removeDuplicates()}
+definiert ist. Der Doppel-Pointer ermöglicht es uns, genau diese Adresse zu
+aktualisieren. So stellen wir sicher, dass nach einer erfolgreichen
+\mintinline{c}{realloc()}-Operation der in \mintinline{c}{main()} oder einer
+anderen aufrufenden Funktion verwendete Zeiger auf die korrekte, möglicherweise
+neue Speicheradresse des nun verkleinerten Arrays zeigt.
+
+Zuerst wird überprüft, ob die Größe des Arrays kleiner als 2 ist. Falls dies der
+Fall ist, können wir direkt aus der Funktion heraus springen, da es keine
+Duplikate geben kann.
+
+Die neue Größe des Arrays wird mittels \mintinline{c}{newSize = 1} mit Eins
+initialisiert, da das erste Element des (sortierten) Arrays immer das erste
+Element bleiben wird. Die for-Schleife durchläuft das Array beginnend vom
+zweiten Element (Index 1). Für jedes Element überprüft sie, ob es gleich dem
+vorherigen Element im "neuen" Array ist. Das vorherige Element im "neuen" Array
+bleibt dabei immer an der Position \mintinline{c}{newSize - 1}. Wenn ein Element
+nicht gleich seinem Vorgänger ist (d.h. kein Duplikat des vorherigen Elements),
+wird es in das Array an der aktuellen Position \mintinline{c}{newSize} kopiert
+und \mintinline{c}{newSize} wird inkrementiert.
+
+Nachdem die for-Schleife durchlaufen wurde, wird der Speicher des Arrays auf die
+neue Größe angepasst. Hierfür wird die \mintinline{c}{realloc()}-Funktion aus
+dem \mintinline{c}{stdlib.h}-Header verwendet. \mintinline{c}{realloc()} kann
+dabei entweder die gleiche Adresse zurückgeben oder eine neue. Wenn
+\mintinline{c}{realloc()} eine neue Adresse zurückgibt, repräsentiert diese den
+verkleinerten Speicherbereich und der ursprüngliche Speicher wird automatisch
+freigegeben.
+
+Falls \mintinline{c}{realloc()} fehlschlägt, wird der ursprüngliche
+Speicherbereich hinter \mintinline{c}{*array} nicht freigegeben. Stattdessen
+gibt die Funktion \mintinline{c}{NULL} zurück, um zu signalisieren, dass die
+Größenänderung nicht erfolgreich war.
+
+Falls \mintinline{c}{realloc()} erfolgreich ist und eine neue oder gleiche
+Adresse zurückgibt, aktualisieren wir den ursprünglichen Array-Zeiger
+(\mintinline{c}{*array}) auf diese (möglicherweise neue) Adresse. Dies ist
+wichtig, da sich die Adresse des Arrays geändert haben könnte. Nur im
+Erfolgsfall wird die Größe (\mintinline{c}{*size}) auf \mintinline{c}{newSize}
+aktualisiert, um die neue Anzahl der Elemente im Array widerzuspiegeln.
+
+\begin{minted}{c}
+void removeDuplicates(int **array, int *size) {
+    if (*size < 2) {
+        return;
+    }
+
+    int newSize = 1;
+    for (int i = 1; i < *size; i++) {
+        if ((*array)[i] != (*array)[newSize - 1]) {
+            (*array)[newSize] = (*array)[i];
+            newSize++;
+        }
+    }
+
+    int *tempArray = realloc(*array, (size_t)newSize * sizeof(int));
+    if (tempArray != NULL) {
+        // Zeiger und Größe nur aktualisieren,
+        // wenn realloc() erfolgreich war
+        *array = tempArray;
+        *size = newSize;
+    }
+}
+\end{minted}
