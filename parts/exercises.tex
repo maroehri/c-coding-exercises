@@ -169,39 +169,6 @@ int main(void) {
 
 
 
-\chapter{Die Anzahl an Wörtern in einem String zählen}
-
-\TopicLevel{Strings}{3}\vspace{10pt}
-
-Erstellen Sie eine Funktion \mintinline{c}{countWords()}, die zählt, wie häufig
-ein Wort innerhalb einer Zeichenkette (String) vorkommt. Die Funktion soll das
-Wort und die Zeichenkette als Eingabeparameter entgegennehmen und die Anzahl an
-den Aufrufer zurückliefern. Berücksichtigen Sie dabei, dass bei der Überprüfung
-Groß- und Kleinschreibung ignoriert werden sollen.
-
-\Vorlage
-\begin{minted}{c}
-#include <stdio.h>
-
-int main(void) {
-    char string[] = "Fischers Fritze fischt frische Fische, frische Fische fischt Fischers Fritze";
-    char word[] = "Fische";
-
-    // Die im Folgenden genutzte countWords()-Funktion
-    // müssen Sie erstellen
-    int count = countWords(string, word);
-
-    printf("Das Wort \"%s\" kam %d-mal im String vor", word, count);
-}
-\end{minted}
-
-\begin{mybox}[Bildschirmausgabe]{console}
-    Das Wort "Fische" kam 2-mal im String vor
-\end{mybox}
-
-
-
-
 \chapter{Verkettung von Strings unter Verwendung dynamischer Speicherzuweisung}
 
 \TopicLevel{Strings, Dynamische Speicherverwaltung}{2}\vspace{10pt}
@@ -259,6 +226,39 @@ int main(void) {
 
 \begin{mybox}[Bildschirmausgabe]{console}
 Zeichen i kommt 10 mal vor.
+\end{mybox}
+
+
+
+
+\chapter{Zähle die Anzahl an Wörtern in einem String}
+
+\TopicLevel{Strings}{3}\vspace{10pt}
+
+Erstellen Sie eine Funktion \mintinline{c}{countWords()}, die zählt, wie häufig
+ein Wort innerhalb einer Zeichenkette (String) vorkommt. Die Funktion soll das
+Wort und die Zeichenkette als Eingabeparameter entgegennehmen und die Anzahl an
+den Aufrufer zurückliefern. Berücksichtigen Sie dabei, dass bei der Überprüfung
+Groß- und Kleinschreibung ignoriert werden sollen.
+
+\Vorlage
+\begin{minted}{c}
+#include <stdio.h>
+
+int main(void) {
+    char string[] = "Fischers Fritze fischt frische Fische, frische Fische fischt Fischers Fritze";
+    char word[] = "Fische";
+
+    // Die im Folgenden genutzte countWords()-Funktion
+    // müssen Sie erstellen
+    int count = countWords(string, word);
+
+    printf("Das Wort \"%s\" kam %d-mal im String vor", word, count);
+}
+\end{minted}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+    Das Wort "Fische" kam 2-mal im String vor
 \end{mybox}
 
 

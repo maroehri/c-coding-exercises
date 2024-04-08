@@ -263,9 +263,118 @@ bool isPalindrome(char string[]) {
 
 
 
+\chapter{Verkettung von Strings unter Verwendung dynamischer Speicherzuweisung}
+
+Da die Funktion \mintinline{c}{stringAppend()} dynamisch Speicher auf dem Heap
+für den neuen String reservieren soll, müssen zunächst die Längen der beiden
+übergebenen Strings mithilfe der \mintinline{c}{strlen()}-Funktion ermittelt
+werden. Da \mintinline{c}{strlen()} das abschließende Nullendezeichen eines
+Strings nicht in seiner Längenberechnung berücksichtigt, wird in der Berechnung
+der Gesamtlänge ein zusätzliches Byte für dieses Endezeichen eingerechnet:
+
+\mintinline{c}{size_t lengthTotal = length1 + length2 + 1;}
+
+Als nächstes nutzen wir die \mintinline{c}{malloc()}-Funktion aus dem
+\mintinline{c}{stdlib.h}-Header, um den Speicher dynamisch auf dem Heap zu
+reservieren.
+
+Daraufhin kopieren wir zeichenweise die Zeichen aus den übergebenen Strings in
+den neu allokierten Speicherbereich; zuerst für den ersten String, dann für den
+zweiten. Beim zweiten Kopiervorgang müssen wir darauf achten, dass wir ab dem
+richtigen Index anfangen, die Zeichen zu kopieren.
+
+Abschließend dürfen wir nicht vergessen, dass Nullendezeichen an den neuen
+String anzuhängen, um den neuen String korrekt zu terminieren und den Pointer
+auf den Speicherbereich des neuen Strings an den Aufrufer zurückliefern.
+
+Bei einer Lösung wie dieser ist es wichtig, daran zu denken, dass der Speicher
+für diesen neuen String später mit \mintinline{c}{free()} freigegeben wird, um
+Speicherlecks zu vermeiden.
+
+\begin{minted}{c}
+char *stringAppend(char *firstString, char *secondString) {
+    size_t length1 = strlen(firstString);
+    size_t length2 = strlen(secondString);
+    size_t lengthTotal = length1 + length2 + 1;
+
+    char *concatenatedString = malloc(lengthTotal * sizeof(char));
+
+    for (size_t i = 0; i < length1; i++)
+        concatenatedString[i] = firstString[i];
+
+    for (size_t i = 0; i < length2; i++)
+        concatenatedString[length1 + i] = secondString[i];
+
+    concatenatedString[lengthTotal - 1] = '\0';
+
+    return concatenatedString;
+}
+\end{minted}
 
 
-\chapter{Die Anzahl an Wörtern in einem String zählen}
+
+
+
+\chapter{Finde das am häufigsten vorkommende Zeichen in einem String}
+
+Um das am häufigsten vorkommende Zeichen in einem String zu ermitteln, ist es
+notwendig, den String mehrfach zu durchlaufen. Dies erfordert zwei ineinander
+verschachtelte Schleifen: In der äußeren Schleife wird jeweils ein Zeichen aus
+dem String entnommen und in der Variablen \mintinline{c}{currentChar}
+gespeichert. Anschließend zählen wir in der inneren Schleife die Häufigkeit
+dieses Zeichens im gesamten String, wofür die Variable
+\mintinline{c}{currentOccurrence} verwendet wird. Hierfür reicht es, wenn die
+innere Schleife von der aktuellen Position der äußeren Schleife bis zum Ende des
+Strings läuft.
+
+Wichtig ist, dass wir bei jedem neuen Durchlauf der äußeren Schleife die
+Variablen \mintinline{c}{currentChar} und \mintinline{c}{currentOccurrence} neu
+initialisieren. Falls das aktuell betrachtete Zeichen
+(\mintinline{c}{currentChar}) identisch mit dem bis dahin am häufigsten
+gefundenen Zeichen (\mintinline{c}{maxChar}) ist, können wir dieses Zeichen
+überspringen und direkt zum nächsten fortschreiten, um redundante Zählungen zu
+vermeiden.
+
+In der inneren Schleife vergleichen wir jedes Zeichen des Strings mit
+\mintinline{c}{currentChar}. Stimmen sie überein, erhöhen wir
+\mintinline{c}{currentOccurrence}. Nach Abschluss der inneren Schleife prüfen
+wir, ob \mintinline{c}{currentOccurrence} größer als die bisherige maximale
+Häufigkeit (\mintinline{c}{maxOccurrence}) ist. Ist dies der Fall, aktualisieren
+wir die Variablen \mintinline{c}{maxChar} und \mintinline{c}{maxOccurrence}
+entsprechend.
+
+\begin{minted}{c}
+void printMaxChars(char *string) {
+    size_t length = strlen(string);
+    char maxChar = '\0';
+    char currentChar;
+    int maxOccurrence = 0;
+    int currentOccurrence = 0;
+
+    for (size_t i = 0; i < length; i++) {
+        currentChar = string[i];
+        currentOccurrence = 0;
+        if (currentChar == maxChar)
+            continue;
+        for (size_t j = i; j < length; j++) {
+            if (string[j] == currentChar)
+                currentOccurrence++;
+        }
+        if (currentOccurrence > maxOccurrence) {
+            maxOccurrence = currentOccurrence;
+            maxChar = currentChar;
+        }
+    }
+
+    printf("Zeichen %c kommt %d mal vor.\n", maxChar, maxOccurrence);
+}
+\end{minted}
+
+
+
+
+
+\chapter{Zähle die Anzahl an Wörtern in einem String}
 
 Bei dieser Aufgabenstellung spielen zwei Dinge eine wesentliche Rolle: es ist
 wichtig zu verstehen, woran wir erkennen, was ein Wort ausmacht; zum anderen
@@ -414,115 +523,6 @@ int countWords(char string[], char word[]) {
     }
 
     return count;
-}
-\end{minted}
-
-
-
-\chapter{Verkettung von Strings unter Verwendung dynamischer Speicherzuweisung}
-
-Da die Funktion \mintinline{c}{stringAppend()} dynamisch Speicher auf dem Heap
-für den neuen String reservieren soll, müssen zunächst die Längen der beiden
-übergebenen Strings mithilfe der \mintinline{c}{strlen()}-Funktion ermittelt
-werden. Da \mintinline{c}{strlen()} das abschließende Nullendezeichen eines
-Strings nicht in seiner Längenberechnung berücksichtigt, wird in der Berechnung
-der Gesamtlänge ein zusätzliches Byte für dieses Endezeichen eingerechnet:
-
-\mintinline{c}{size_t lengthTotal = length1 + length2 + 1;}
-
-Als nächstes nutzen wir die \mintinline{c}{malloc()}-Funktion aus dem
-\mintinline{c}{stdlib.h}-Header, um den Speicher dynamisch auf dem Heap zu
-reservieren.
-
-Daraufhin kopieren wir zeichenweise die Zeichen aus den übergebenen Strings in
-den neu allokierten Speicherbereich; zuerst für den ersten String, dann für den
-zweiten. Beim zweiten Kopiervorgang müssen wir darauf achten, dass wir ab dem
-richtigen Index anfangen, die Zeichen zu kopieren.
-
-Abschließend dürfen wir nicht vergessen, dass Nullendezeichen an den neuen
-String anzuhängen, um den neuen String korrekt zu terminieren und den Pointer
-auf den Speicherbereich des neuen Strings an den Aufrufer zurückliefern.
-
-Bei einer Lösung wie dieser ist es wichtig, daran zu denken, dass der Speicher
-für diesen neuen String später mit \mintinline{c}{free()} freigegeben wird, um
-Speicherlecks zu vermeiden.
-
-\begin{minted}{c}
-char *stringAppend(char *firstString, char *secondString) {
-    size_t length1 = strlen(firstString);
-    size_t length2 = strlen(secondString);
-    size_t lengthTotal = length1 + length2 + 1;
-
-    char *concatenatedString = malloc(lengthTotal * sizeof(char));
-
-    for (size_t i = 0; i < length1; i++)
-        concatenatedString[i] = firstString[i];
-
-    for (size_t i = 0; i < length2; i++)
-        concatenatedString[length1 + i] = secondString[i];
-
-    concatenatedString[lengthTotal - 1] = '\0';
-
-    return concatenatedString;
-}
-\end{minted}
-
-
-
-
-
-\chapter{Finde das am häufigsten vorkommende Zeichen in einem String}
-
-Um das am häufigsten vorkommende Zeichen in einem String zu ermitteln, ist es
-notwendig, den String mehrfach zu durchlaufen. Dies erfordert zwei ineinander
-verschachtelte Schleifen: In der äußeren Schleife wird jeweils ein Zeichen aus
-dem String entnommen und in der Variablen \mintinline{c}{currentChar}
-gespeichert. Anschließend zählen wir in der inneren Schleife die Häufigkeit
-dieses Zeichens im gesamten String, wofür die Variable
-\mintinline{c}{currentOccurrence} verwendet wird. Hierfür reicht es, wenn die
-innere Schleife von der aktuellen Position der äußeren Schleife bis zum Ende des
-Strings läuft.
-
-Wichtig ist, dass wir bei jedem neuen Durchlauf der äußeren Schleife die
-Variablen \mintinline{c}{currentChar} und \mintinline{c}{currentOccurrence} neu
-initialisieren. Falls das aktuell betrachtete Zeichen
-(\mintinline{c}{currentChar}) identisch mit dem bis dahin am häufigsten
-gefundenen Zeichen (\mintinline{c}{maxChar}) ist, können wir dieses Zeichen
-überspringen und direkt zum nächsten fortschreiten, um redundante Zählungen zu
-vermeiden.
-
-In der inneren Schleife vergleichen wir jedes Zeichen des Strings mit
-\mintinline{c}{currentChar}. Stimmen sie überein, erhöhen wir
-\mintinline{c}{currentOccurrence}. Nach Abschluss der inneren Schleife prüfen
-wir, ob \mintinline{c}{currentOccurrence} größer als die bisherige maximale
-Häufigkeit (\mintinline{c}{maxOccurrence}) ist. Ist dies der Fall, aktualisieren
-wir die Variablen \mintinline{c}{maxChar} und \mintinline{c}{maxOccurrence}
-entsprechend.
-
-\begin{minted}{c}
-void printMaxChars(char *string) {
-    size_t length = strlen(string);
-    char maxChar = '\0';
-    char currentChar;
-    int maxOccurrence = 0;
-    int currentOccurrence = 0;
-
-    for (size_t i = 0; i < length; i++) {
-        currentChar = string[i];
-        currentOccurrence = 0;
-        if (currentChar == maxChar)
-            continue;
-        for (size_t j = i; j < length; j++) {
-            if (string[j] == currentChar)
-                currentOccurrence++;
-        }
-        if (currentOccurrence > maxOccurrence) {
-            maxOccurrence = currentOccurrence;
-            maxChar = currentChar;
-        }
-    }
-
-    printf("Zeichen %c kommt %d mal vor.\n", maxChar, maxOccurrence);
 }
 \end{minted}
 
