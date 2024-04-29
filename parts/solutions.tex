@@ -391,8 +391,8 @@ wiederum nicht mitgezählt werden.
 Bezüglich der Strategie müssen wir auf jeden Fall zeichenweise durch den
 gesamten String laufen. Das tun wir in Zeile 11 mittels der while-Schleife, die
 solange läuft, bis das nachfolgende Zeichen dem String-Endezeichen entspricht.
-Für den aktuell zu untersuchenden Index des Suchworts verwenden wir die Variable
-\mintinline{c}{i}, die entsprechend sukzessive erhöht werden muss.
+Für den aktuell zu untersuchenden Index des Strings verwenden wir die Variable
+\mintinline{c}{stringPos}, die entsprechend sukzessive erhöht werden muss.
 
 Jetzt wenden wir die Suchkriterien an: zuerst prüfen wir, ob das Zeichen am
 aktuell verwendeten Index überhaupt ein alphabetisches Zeichen ist. Falls nicht,
@@ -403,16 +403,16 @@ Hatten wir am aktuellen Index ein alphabetisches Zeichen, dann geht es darum, zu
 prüfen, ob das Zeichen davor ein Leerraumzeichen war (mit der Ausnahme des
 allerersten Zeichens im String) (Zeilen 19-22).
 
-War auch diese Prüfung erfolgreich stehen wir offensichtlich an einem Wortanfang
+War auch diese Prüfung erfolgreich, stehen wir offensichtlich an einem Wortanfang
 und es geht darum die nächsten Zeichen des Strings mit denen unseres Suchworts
 zu vergleichen.
 
 Hierfür verwenden wir eine for-Schleife, die maximal so viele Durchläufe
 durchläuft, wie das Suchwort Zeichen enthält (\mintinline{c}{lenWord}). Wir
-vergleichen jetzt jedes Zeichen des Suchworts am Index \mintinline{c}{j} mit dem
-Zeichen des Strings am Index \mintinline{c}{i}. Da wir die Groß-/Kleinschreibung
-nicht berücksichtigen wollen, wenden wir auf beide Zeichen die
-\mintinline{c}{tolower()}-Funktion an.
+vergleichen jetzt jedes Zeichen des Suchworts am Index \mintinline{c}{wordPos}
+mit dem Zeichen des Strings am Index \mintinline{c}{stringPos}. Da wir die
+Groß-/Kleinschreibung nicht berücksichtigen wollen, wenden wir auf beide Zeichen
+die \mintinline{c}{tolower()}-Funktion an.
 
 \begin{figure}[htb!]
     \begin{tikzpicture}[font=\ttfamily, node distance=0mm, every node/.style={minimum size=1cm, align=center}]
@@ -435,7 +435,7 @@ nicht berücksichtigen wollen, wenden wir auf beide Zeichen die
         \draw[dashed] (s13.south west) -- (s13.south east);
 
         % Beschriftung für die erste Zeile
-        \node[above=0.3cm of s1, minimum size=0, draw=none] {i};
+        \node[above=0.3cm of s1, minimum size=0, draw=none] {stringPos};
         \draw[-{Latex[length=2mm,width=2mm]}] ([yshift=0.35cm]s1.north) -- (s1.north);
 
         % Beschriftung links von der ersten Zeile
@@ -450,7 +450,7 @@ nicht berücksichtigen wollen, wenden wir auf beide Zeichen die
         \node[draw, right=of w5] (w6) {e};
 
         % Beschriftung für die zweite Zeile
-        \node[above=0.3cm of w1, minimum size=0, draw=none] {j};
+        \node[above=0.3cm of w1, minimum size=0, draw=none] {wordPos};
         \draw[-{Latex[length=2mm,width=2mm]}] ([yshift=0.35cm]w1.north) -- (w1.north);
 
         % Beschriftung links von der zweiten Zeile
@@ -460,7 +460,7 @@ nicht berücksichtigen wollen, wenden wir auf beide Zeichen die
 
 Falls die beiden Zeichen nicht übereinstimmen, entspricht das gerade untersuchte
 Wort im String nicht unserem Suchwort. Wir setzen daher unseren booleschen Wert
-\mintinline{c}{validWord} auf \mintinline{c}{false} und brechen aus der inneren
+\mintinline{c}{wordFound} auf \mintinline{c}{false} und brechen aus der inneren
 Schleife aus.
 
 Andernfalls müssten alle Zeichen des untersuchten Worts dem unseres Suchtworts
@@ -474,7 +474,7 @@ müssen einen Schritt weiter im Index und die Suche erneut mit einem neuen
 Schleifendurchlauf starten.
 
 Andernfalls haben wir das Suchwort tatsächlich gefunden und können jetzt den
-Zähler \mintinline{c}{count} um Eins erhöhen (Zeile 37-38).
+Zähler \mintinline{c}{wordCount} um Eins erhöhen (Zeile 37-38).
 
 Abschließend müssen wir für die while-Schleife noch dafür sorgen, dass der Index
 für den nächsten Schleifendurchlauf um Eins erhöht wird.
@@ -487,42 +487,42 @@ für den nächsten Schleifendurchlauf um Eins erhöht wird.
 
 int countWords(char string[], char word[]) {
     int lenWord = (int)strlen(word);
-    int count = 0;
-    int i = 0;
+    int wordCount = 0;
+    int stringPos = 0;
 
-    while (string[i + 1] != '\0') {
+    while (string[stringPos + 1] != '\0') {
         bool validWord = true;
 
-        if (!isalpha(string[i])) {
-            i++;
+        if (!isalpha(string[stringPos])) {
+            stringPos++;
             continue;
         }
 
-        if (i != 0 && string[i - 1] != ' ') {
-            i++;
+        if (stringPos != 0 && string[stringPos - 1] != ' ') {
+            stringPos++;
             continue;
         }
 
-        for (int j = 0; j < lenWord; j++) {
-            if (tolower(string[i]) != tolower(word[j])) {
+        for (int wordPos = 0; wordPos < lenWord; wordPos++) {
+            if (tolower(string[stringPos]) != tolower(word[wordPos])) {
                 validWord = false;
                 break;
             }
-            i++;
+            stringPos++;
         }
 
-        if (isalpha(string[i])) {
-            i++;
+        if (isalpha(string[stringPos])) {
+            stringPos++;
             continue;
         }
 
         if (validWord)
-            count++;
+            wordCount++;
 
-        i++;
+        stringPos++;
     }
 
-    return count;
+    return wordCount;
 }
 \end{minted}
 
