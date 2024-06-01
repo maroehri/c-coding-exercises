@@ -1035,3 +1035,132 @@ void removeDuplicates(int **array, int *size) {
     }
 }
 \end{minted}
+
+
+
+
+
+
+
+\chapter{Datenstruktur sortieren}
+
+\section*{Funktion \texttt{createPlayer()}}
+
+Die Funktion \mintinline{c}{createPlayer()} soll dynamisch Speicher für einen
+Spieler allokieren. Dazu müssen wir mittels \mintinline{c}{malloc} entsprechend
+Speicher reservieren:
+
+\noindent\mintinline{c}{Player* player = malloc(sizeof(Player));}
+
+Sofern die Allokation erfolgreich war, können die Daten initialisiert werden.
+Die Initialisierung von Zeichenketten erfolgt wie gewohnt nicht einfach mittels
+des Zuweisungsoperators, sondern indem die Zeichen von einem Speicherbereich
+(Quelle) in einen anderen Speicherbereich (Ziel) kopiert werden.
+
+Dies kann beispielsweise mittels der \mintinline{c}{strncpy()}-Funktion
+erfolgen. Hierbei müsste man dann allerdings sicherstellen, dass der Puffer nach
+dem Kopieren der Zeichenkette manuell null-terminiert wird, falls die Quelle
+länger als der Zielpuffer ist. Beispielsweise wie folgt:
+
+\noindent\mintinline{c}{strncpy(player->firstName, firstName, NAMELENGTH - 1);}
+
+\noindent\mintinline{c}{player->firstName[NAMELENGTH - 1] = '\0';}
+
+Eine gute Alternative dazu ist die \mintinline{c}{snprintf()}-Funktion, die
+sicherstellt, dass die Zielzeichenkette immer null-terminiert ist, solange die
+Größe des Puffers größer als 0 ist.
+
+\begin{minted}{c}
+Player* createPlayer(const char firstName[], const char lastName[], int age) {
+    Player* player = malloc(sizeof(Player));
+    if (player == NULL) {
+        fprintf(stderr, "Fehler: Speicherallokation fehlgeschlagen\n");
+        return NULL;
+    }
+
+    snprintf(player->firstName, NAME_LENGTH, "%s", firstName);
+    snprintf(player->lastName, NAME_LENGTH, "%s", lastName);
+    player->age = age;
+
+    return player;
+}
+\end{minted}
+
+\section*{Funktion \texttt{printPlayer()}}
+
+Die Funktion \mintinline{c}{printPlayer()} empfängt einen Pointer auf ein
+\mintinline{c}{Player}-Objekt. Über diesen Pointer können wir auf die
+Strukturelemente zugreifen und die einzelnen Elemente in gewünschter Weise per
+\mintinline{c}{printf()} auf dem Bildschirm ausgeben.
+
+\begin{minted}{c}
+void printPlayer(Player *player) {
+    printf("%s %s, %d Jahre\n", player->firstName, player->lastName, player->age);
+}
+\end{minted}
+
+\section*{Funktion \texttt{comparePlayerByLastName()}}
+
+Die Funktion \mintinline{c}{comparePlayerByLastName()} ist so konzipiert, dass
+sie durch eine der Sortierfunktionen (bspw. \mintinline{c}{qsort}) zum Vergleich
+von zwei Elementen genutzt werden kann. Grundsätzlich ist es möglich, eine
+beliebige Vergleichsfunktion zu erstellen, die die Vornamen, Nachnamen oder das
+Alter aufsteigend oder absteigend miteinander vergleicht.
+
+Um einen Vergleich nach Nachnamen durchzuführen, müssen wir das entsprechende
+Strukturelement der beiden übergebenen Objekte A und B auswerten. Wie in der
+Aufgabenstellung beschrieben, handelt es sich bei den beiden Pointern
+\mintinline{c}{pa} und \mintinline{c}{pb} jeweils um einen Pointer auf ein
+Array-Element des \mintinline{c}{teams}-Arrays, also jeweils um einen Pointer
+auf einen Pointer auf ein \mintinline{c}{Player}-Objekt.
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[scale=0.7]{images/sortPlayersCompareExample.pdf}
+    \caption{Darstellung der beiden Pointer \mintinline{c}{pa} und
+    \mintinline{c}{pb} auf jeweils ein Array-Element des
+    \mintinline{c}{teams}-Array}
+    \label{fig:sortPlayerCompareExample}
+\end{figure}
+
+Aus diesem Grund müssen wir diese Pointer als \mintinline{c}{Player**}
+interpretieren, so dass wir durch eine Dereferenzierung einen Pointer auf ein
+\mintinline{c}{Player}-Objekt erhalten:
+
+\noindent\mintinline{c}{const Player *A = *(const Player**)pa;}
+
+Sobald wir Pointer auf die beiden zu vergleichenden
+\mintinline{c}{Player}-Objekte haben, können wir deren Nachnamen mittels der
+\mintinline{c}{strcmp()}-Funktion lexikografisch vergleichen.
+
+\begin{minted}{c}
+int comparePlayerByLastName(const void *pa, const void *pb) {
+    const Player *A = *(const Player**)pa;
+    const Player *B = *(const Player**)pb;
+
+    return strcmp(A->lastName, B->lastName);
+}
+\end{minted}
+
+\section*{Funktion \texttt{freeTeam()}}
+
+Die Funktion \mintinline{c}{freeTeam()} soll dazu dienen, den dynamisch
+allokierten Speicher in geordneter Weise für ein ganzes Team wieder freizugeben.
+Im Gegensatz zur Allokation des Speichers müssen wir jetzt in ungekehrter
+Reihenfolge vorgehen, d.\,h. zuerst müssen wir den Speicher jedes einzelnen
+\mintinline{c}{Player}-Objekts freigeben und im Anschluss den Speicher des
+Arrays, in dem die Pointer auf die \mintinline{c}{Player}-Objekte abgelegt
+wurden.
+
+\begin{minted}{c}
+void freeTeam(Player **team, int numPlayers) {
+    for (int i = 0; i < numPlayers; i++) {
+        free(team[i]);
+    }
+    free(team);
+}
+\end{minted}
+
+Diese Reihenfolge muss eingehalten werden, denn hätten wir zuerst den Speicher
+des Arrays freigegeben, hätten wir die Pointer auf die einzelnen
+\mintinline{c}{Player}-Objekte verloren.

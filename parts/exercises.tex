@@ -635,3 +635,130 @@ int main(void) {
     Array nach der Bearbeitung:
     1 2 3 4 5 6 7
 \end{mybox}
+
+
+
+
+
+
+
+\chapter{Datenstruktur sortieren}
+
+\TopicLevel{Pointer, Dyn. Speicherverwaltung, Sortieren}{3}\vspace{10pt}
+
+Erstellen Sie ein Programm, welches ein Team von Fußballspielern verwalten und
+sortieren kann. Ein Fußballspieler soll durch folgende Datenstruktur
+repräsentiert werden:
+
+\begin{minted}{c}
+#define NAME_LENGTH 64
+
+typedef struct {
+    char firstName[NAME_LENGTH];
+    char lastName[NAME_LENGTH];
+    int age;
+} Player;
+\end{minted}
+
+\begin{enumerate}
+  \item Erstellen Sie eine Funktion \mintinline{c}{createPlayer()}, die drei
+  Parameter entgegennimmt: den Vornamen, den Nachnamen und das Alter eines
+  Spielers. Die Funktion soll dynamisch Speicher für einen Spieler allokieren,
+  den Speicher gemäß den übergebenen Daten initialisieren und einen Pointer auf
+  den Speicher an den Aufrufer zurückliefern.
+  \item Erstellen Sie eine Funktion \mintinline{c}{printPlayer()}, die einen
+  Pointer auf einen Spieler entgegennimmt und daraufhin die Informationen eines
+  Spielers in formatierter Form auf dem Bildschirm ausgibt.
+  \item Erstellen Sie eine Vergleichsfunktion
+  \mintinline{c}{comparePlayerByLastName(const void *pa, const void *pb)}, die
+  zwei Spieler nach ihren Nachnamen lexikografisch vergleicht. Die beiden
+  Pointer \mintinline{c}{const void *pa} und \mintinline{c}{const void *pb}
+  sollen zwei Pointer auf die zu vergleichenden Array-Elemente darstellen,
+  d.\,h. in unserem Beispiel handelt es sich jeweils um \textit{einen Pointer
+  auf einen Pointer auf ein \mintinline{c}{Player}-Objekt}.
+
+  Damit der Vergleich funktioniert, soll die Funktion folgenden Rückgabewert an
+  den Aufrufer zurückliefern:
+  \begin{itemize}
+    \item Eine negative Zahl, wenn der Nachname von \mintinline{c}{pa}
+    lexikographisch \textit{vor} dem Nachnamen von \mintinline{c}{pb} kommt.
+    \item \mintinline{c}{0}, wenn die Nachnamen gleich sind.
+    \item Eine positive Zahl, wenn der Nachname von \mintinline{c}{pa}
+    lexikographisch \textit{nach} dem Nachnamen von \mintinline{c}{pb} kommt.
+  \end{itemize}
+  \item Eine Funktion \mintinline{c}{freeTeam()}, die den für das Team
+  allokierten Speicher wieder freigibt.
+\end{enumerate}
+
+\Vorlage
+\begin{minted}{c}
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(void) {
+    const int NUM_PLAYERS = 5;
+    Player **team = malloc(NUM_PLAYERS * sizeof(Player *));
+
+    team[0] = createPlayer("Thomas", "Müller", 34);
+    team[1] = createPlayer("Florian", "Wirtz", 21);
+    team[2] = createPlayer("İlkay", "Gündoğan", 33);
+    team[3] = createPlayer("Jamal", "Musiala", 21);
+    team[4] = createPlayer("Manuel", "Neuer", 38);
+
+    printf("Vor der Sortierung:\n");
+    for (int i = 0; i < NUM_PLAYERS; i++)
+        printPlayer(team[i]);
+
+    qsort(team, NUM_PLAYERS, sizeof(Player *), comparePlayerByLastName);
+
+    printf("\nNach der Sortierung:\n");
+    for (int i = 0; i < NUM_PLAYERS; i++)
+        printPlayer(team[i]);
+
+    freeTeam(team, NUM_PLAYERS);
+
+    return 0;
+}
+\end{minted}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+Vor der Sortierung:
+Thomas Müller, 34 Jahre
+Florian Wirtz, 21 Jahre
+İlkay Gündoğan, 33 Jahre
+Jamal Musiala, 21 Jahre
+Manuel Neuer, 38 Jahre
+
+Nach der Sortierung:
+İlkay Gündoğan, 33 Jahre
+Jamal Musiala, 21 Jahre
+Thomas Müller, 34 Jahre
+Manuel Neuer, 38 Jahre
+Florian Wirtz, 21 Jahre
+\end{mybox}
+
+Die Vorlage verwendet für ein Team aus Spielern ein dynamisch allokiertes Array
+aus Pointern auf \mintinline{c}{Player}-Objekte:
+
+\noindent\mintinline{c}{Player **team = malloc(NUM_PLAYERS * sizeof(Player *));}
+
+Sie können sich die Struktur wie folgt vorstellen:
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[scale=0.7]{images/sortPlayers.pdf}
+    \caption{Darstellung des Pointers auf ein Array von Pointern auf
+    \mintinline{c}{Player}-Objekte}
+    \label{fig:sortPlayer}
+\end{figure}
+
+Vergegenwertigen Sie sich an dieser Stelle auch den Inhalt der Pointer der
+Vergleichsfunktion:
+
+\noindent\mintinline{c}{comparePlayerByLastName(const void *pa, const void *pb)}
+
+Die beiden Pointer \mintinline{c}{pa} und \mintinline{c}{pb} zeigen beide
+jeweils auf ein Array-Element des Arrays \mintinline{c}{team} und enthalten
+dementsprechend selbst wieder einen Pointer auf ein
+\mintinline{c}{Player}-Objekt.
