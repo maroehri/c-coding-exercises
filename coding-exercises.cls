@@ -116,35 +116,46 @@
 \usepackage[german=guillemets]{csquotes}
 \MakeOuterQuote{"}
 
+\newcommand\highlight[1]{\textbf{#1}}
+
 \usepackage{fontawesome}
-\usepackage{etoolbox} % Für \ifstrequal
+\usepackage{etoolbox}  % Für \ifstrequal
 \usepackage{tcolorbox} % Für die Box-Umgebung
-\newtcolorbox{mybox}[2][]{
-  colback=hellgrau,
-  colframe=dunkelgrau,
-  fontupper=\ttfamily\obeylines,  % \obeylines berücksichtigt
-                                  % Zeilenumbrüche im Eingabetext
-  boxrule=0.9pt,  % Dicke des Rahmens der Box
-  boxsep=5pt,     % Abstand zwischen dem Inhalt der Box und ihrem Rahmen
-  arc=1pt,        % Radius der Ecken der Box
-  coltitle=weiss,
-  colbacktitle=dunkelgrau,
-  fonttitle=\sffamily,
-  toptitle=1mm,     % Abstand vom oberen Rand des Titelbereichs zur Titelzeile
-  bottomtitle=1mm,  % Abstand vom unteren Rand des Titelbereichs zur Titelzeile
-  % Wenn der zweite Parameter von mybox `file` ist, wird das Dateisymbol
-  % verwendet, wenn der zweite Parameter von mybox `console` ist, wird das
-  % Terminal-Symbol verwendet, und wenn es keines von beiden ist, wird kein
-  % Symbol eingefügt
-  title={%
-    \ifstrequal{#2}{file}{\faFileTextO\hspace{5mm}}{%
-      \ifstrequal{#2}{console}{\faTerminal\hspace{5mm}}{}%
-    }#1       % Der erste Parameter ist der Titel in der Titelzeile
-  },
-  left=3pt,   % Abstand des Inhalts der Box vom linken Innenrand der Box
-  right=3pt,  % Abstand des Inhalts der Box vom rechten Innenrand der Box
-  before upper={\DisableQuotes}, % Deaktiviert Guillemets in der Box
-  after upper={\EnableQuotes}    % Stellt Guillemets nach der Box wieder her
+\tcbuselibrary{breakable}
+
+\usepackage{fancyvrb} % Verbatim-Umgebung
+
+% Anpassung der mybox-Umgebung
+\newenvironment{mybox}[2][]{
+  \VerbatimEnvironment
+  \begin{tcolorbox}[
+    breakable,          % Seitenumbrüche erlauben
+    colback=hellgrau,
+    coltitle=weiss,
+    colbacktitle=dunkelgrau,
+    colframe=dunkelgrau,
+    boxrule=0.9pt,      % Dicke des Rahmens der Box
+    boxsep=5pt,         % Abstand zwischen dem Inhalt der Box und ihrem Rahmen
+    arc=1pt,            % Radius der Ecken der Box
+    fonttitle=\sffamily,
+    toptitle=1mm,       % Abstand vom oberen Rand des Titelbereichs zur Titelzeile
+    bottomtitle=1mm,    % Abstand vom unteren Rand des Titelbereichs zur Titelzeile
+    left=3pt,           % Abstand des Inhalts der Box vom linken Innenrand der Box
+    right=3pt,          % Abstand des Inhalts der Box vom rechten Innenrand der Box
+    before upper={\begin{BVerbatim}}, % Fügt BVerbatim am Anfang ein
+    after upper={\end{BVerbatim}},    % Fügt BVerbatim am Ende ein
+    before upper={\DisableQuotes},    % Deaktiviert Guillemets in der Box und berücksichtigt Zeilenumbrüche
+    after upper={\EnableQuotes},      % Stellt Guillemets nach der Box wieder her
+    title={%
+      \ifstrequal{#2}{file}{\faFileTextO\hspace{5mm}}{%
+        \ifstrequal{#2}{console}{\faTerminal\hspace{5mm}}{}%
+      }#1
+    },
+  ]
+  \begin{Verbatim}[commandchars=\\\{\}]%
+    }{
+  \end{Verbatim}
+  \end{tcolorbox}
 }
 
 
