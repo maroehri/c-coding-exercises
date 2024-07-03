@@ -2,12 +2,31 @@
 
 \begin{document}
 
+%%% Schriftgröße SuperHuge definieren
+%%% Die erste Zahl (36) ist die Schriftgröße in Punkten,
+%%% die zweite Zahl (40) ist der Zeilenabstand.
+\newcommand{\SuperHuge}{\fontsize{36}{40}\selectfont}
+
 % Titelseite
 \begin{titlepage}
+    \begin{tikzpicture}[remember picture, overlay]
+        \node[anchor=north west, yshift=-2cm, inner sep=0pt, outer sep=0pt] at (current page.north west) {
+            \includegraphics[width=\paperwidth]{images/background-13}
+        };
+    \end{tikzpicture}
+
+
+    %%% Logo oben rechts
+    \begin{tikzpicture}[remember picture, overlay]
+        \node[anchor=north east, xshift=-12mm, yshift=-6mm] at (current page.north east) {
+            \includegraphics[width=2cm]{images/C-logo}
+        };
+    \end{tikzpicture}
   \centering
+  \vspace*{5cm}
   \vspace*{\stretch{1}}
 
-  {\fontsize{40}{48}\bfseries\sffamily Übungsaufgaben\\Programmieren in C\par}
+  {\SuperHuge\bfseries\sffamily Übungsaufgaben\\Programmieren in C\par}
 
   \vspace{\stretch{2}}
   {\Large Autor: Martin Röhricht}
