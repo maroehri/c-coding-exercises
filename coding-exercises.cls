@@ -13,15 +13,63 @@
 
 \usepackage[ngerman]{babel}
 
-%%% Schrift auswählen
-\usepackage{XCharter}
-\usepackage{FiraSans}
+%%% Ermöglicht erweiterte Kontrolle und Anpassung von Titel und Titelseite
+\usepackage{titling}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Ermöglicht die Verwendung von OpenType-Schriften
 \usepackage{fontspec}
-\setmonofont{DejaVu Sans Mono}[Scale=0.9]
-%\setmonofont{inconsolata}
-%\setmonofont{JetBrains Mono}
-\setmainfont{XCharter}
-\newfontfamily{\lato}{Lato}
+
+%%% Schriftarten auswählen und konfigurieren
+% Hauptschriftart mit Fallback-Optionen
+\IfFontExistsTF{XCharter}{
+  \setmainfont{XCharter}                    % part of TEX Live
+}{
+  \IfFontExistsTF{Droid Serif}{
+    \setmainfont{Droid Serif}               % part of TEX Live
+  }{
+    \IfFontExistsTF{EB Garamond}{
+      \setmainfont{EB Garamond}             % part of TEX Live
+    }{
+      \IfFontExistsTF{QTPalatine}{
+        \setmainfont{QTPalatine}            % part of TEX Live
+      }{
+        \setmainfont{Noto Serif}            % part of TEX Live
+      }
+    }
+  }
+}
+
+% Serifenlose Schrift mit Fallback-Optionen
+\IfFontExistsTF{Fira Sans}{
+  \setsansfont{Fira Sans}                   % Not part of TEX Live
+}{
+  \IfFontExistsTF{Droid Sans}{
+    \setsansfont{Droid Sans}                % part of TEX Live
+  }{
+    \IfFontExistsTF{Lato}{
+      \setsansfont{Lato}                    % Not part of TEX Live
+    }{
+      \setsansfont{Noto Sans}[Scale=0.9]    % part of TEX Live
+    }
+  }
+}
+
+% Monospace-Schrift mit Fallback-Optionen
+\IfFontExistsTF{DejaVu Sans Mono}{
+  \setmonofont{DejaVu Sans Mono}[Scale=0.9]     % Not part of TEX Live
+}{
+  \IfFontExistsTF{JetBrains Mono}{
+    \setmonofont{JetBrains Mono}[Scale=0.9]     % Not part of TEX Live
+  }{
+    \IfFontExistsTF{Inconsolata}{
+      \setmonofont{Inconsolata}                 % Not part of TEX Live
+    }{
+      \setmonofont{AnonymousPro}                % part of TEX Live
+    }
+  }
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
@@ -49,24 +97,22 @@
 %%% Statt der standardmäßigen Umschaltung bei KOMAscript auf serifenlose
 %%% Schrift bei Kapitel-, Sectionüberschriften, etc. lieber Standardschrift
 %%% verwenden
-\setkomafont{disposition}{\lato}
-\setkomafont{pageheadfoot}{\lato}
-\setkomafont{pagenumber}{\lato}
+\setkomafont{disposition}{\sffamily}
+\setkomafont{pageheadfoot}{\sffamily}
+\setkomafont{pagenumber}{\sffamily}
 %\setkomafont{disposition}{\normalfont}
 %\setkomafont{pageheadfoot}{\normalfont}
 %\setkomafont{pagenumber}{\normalfont}
 
-\usepackage{%
-  ellipsis,	% Korrigiert den Weißraum um Auslassungspunkte
-  ragged2e,	% Ermöglicht Flattersatz mit Silbentrennung
-  marginnote	% Für bessere Randnotizen mit \marginnote statt
-		% \marginline
-}
+\usepackage{ellipsis}
 
-%%% Umbrüche verbessern
-\usepackage[%
-  expansion=true,
-  protrusion=true
+%%% Umbrüche und Mikrotypografie verbessern
+\usepackage[
+  expansion=true,        % Zeichenweitenanpassung für besseren Blocksatz
+  protrusion=true,       % Randausgleich für bessere optische Randausrichtung
+  activate={true,nocompatibility}, % Aktiviert Mikrotypografie-Funktionen
+  final,                 % Wendet Mikrotypografie-Einstellungen an
+  tracking=true          % Aktiviert Buchstabenabstand-Anpassung
 ]{microtype}
 
 %%% Zeilenabstand leicht erhöhen
@@ -82,18 +128,42 @@
 \widowpenalty=10000
 \displaywidowpenalty=10000
 
-\usepackage{amssymb} % Für Symbole wie \bullet und \circ
-\usepackage[all, error]{onlyamsmath}
+\raggedbottom               % Erlaubt variable Seitenlängen
+\emergencystretch=1em       % Erlaubt etwas mehr Streckung zur Vermeidung von Überfüllungen
+\tolerance=1000             % Erhöht die Toleranz für "schlechte" Zeilenumbrüche
+\hbadness=10000             % Unterdrückt Warnungen für "underfull" Boxen
 
-%%% Unterschriften für Tabellen und Abbildungen: Typ ("Figure 3.4:" oder
-%%% "Table 1.2:") fettschreiben, dahinter kursiv
-\usepackage[bf]{caption}
-\renewcommand{\captionfont}{\itshape}
+\usepackage{amssymb}  % Für zusätzliche mathematische Symbole wie \bullet und \circ
+\usepackage[all, error]{onlyamsmath}  % Erzwingt die Verwendung von amsmath für
+                                      % mathematische Umgebungen und zeigt Fehler
+                                      % für andere
 
+%%% Beschriftungen für Tabellen und Abbildungen: Typ fett, dahinter kursiv
+\usepackage{caption}
+\captionsetup{
+    labelfont=bf,        % Label (z.B., "Abbildung 3.4:") fett
+    textfont=it,         % Text der Beschriftung kursiv
+    %font=small           % Größe der Beschriftung
+}
+
+%%% Paket für Unterabbildungen und Untertabellen
+\usepackage{subcaption}
+
+%%% Für erweiterte Farbfunktionen
 \usepackage{xcolor}
-\definecolor{hellgrau}{HTML}{F2F2F2}    % hellgrau
-\definecolor{dunkelgrau}{HTML}{707070}  % dunkelgrau
-\definecolor{weiss}{HTML}{FFFFFF}       % weiß
+\definecolor{hse-dunkelblau}{cmyk}{1,.7,.08,.54}  % HS Esslingen Dunkelblau (100 / 70 / 8 / 54)
+\definecolor{hse-rot}{cmyk}{.1,1,.7,0}            % HS Esslingen Rot (10 / 100 / 70 / 0)
+\definecolor{hse-hellblau}{cmyk}{.75,.1,.06,0}    % HS Esslingen Hellblau (75 / 10 / 6 / 0)
+\definecolor{hse-blau75}{HTML}{8abde2}            % HS Esslingen Blau 75%
+\definecolor{hse-blau50}{HTML}{b4d3ed}            % HS Esslingen Blau 50%
+\definecolor{hse-blau25}{HTML}{dbe9f7}            % HS Esslingen Blau 25%
+\definecolor{hse-blau15}{HTML}{eaf2fa}            % HS Esslingen Blau 15%
+\definecolor{hse-hellgrau}{cmyk}{0,0,0,.08}       % HS Esslingen Hellgrau (0 /0 /0 /8)
+\definecolor{dunkelgrau}{gray}{0.7}               % Dunkelgrau mit einem Grauwert von 70%
+\definecolor{mittelgrau}{gray}{0.9}               % Mittelgrau mit einem Grauwert von 90%
+\definecolor{hellgrau}{cmyk}{0,0,0,.08}           % Hellgrau (gleiche Werte wie hse-hellgrau)
+\definecolor{dunkelblau}{cmyk}{1,.7,.08,.54}      % Dunkelblau (gleiche Werte wie hse-dunkelblau)
+\definecolor{weiss}{cmyk}{0,0,0,0}                % Weiß
 
 \usepackage[setspace=false]{scrhack} % für minted-Paket benötigt
 \usepackage{minted}
@@ -116,16 +186,34 @@
 \usepackage[german=guillemets]{csquotes}
 \MakeOuterQuote{"}
 
+%%% URL-Umbrüche anpassen
+\usepackage{url}
+\def\UrlBreaks{\do\/\do-}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Hier wird eine eigene "mybox"-Umgebung definiert
+%%% Das optionale (erste) Argument kann für einen Titel der Box genutzt werden
+%%% Das zweite Argument gibt den Typ an, um ein passendes Symbol zu zeichnen
+%%% file: zeichnet ein Dateisystem
+%%% console: zeichnet ein Konsolensymbol
+% \begin{mybox}[Bildschirmausgabe]{console}
+% Kleinstes Element: 2
+% \end{mybox}
+
+\usepackage{fontawesome}  % Für die Verwendung von Symbolen
+\usepackage{etoolbox}     % Für erweiterte Makroprogrammierung, z.B. \ifstrequal
+\usepackage{fancyvrb}     % Für erweiterte Verbatim-Umgebung
+\usepackage{tcolorbox}    % Für die Erstellung farbiger Boxen
+\tcbuselibrary{breakable} % Ermöglicht Fortsetzen von Inhalten in tcolorbox-Umgebungen über Seitenumbrüche hinweg
+
+%%% Ermöglicht Verwendung bedingter Anweisungen in LaTeX
+\usepackage{ifthen}
+
+
+%%% Das Kommando \highlight{} kann innerhalb einer mybox verwendet werden,
+%%% um einzelne Teile in Fettschrift zu drucken
 \newcommand\highlight[1]{\textbf{#1}}
 
-\usepackage{fontawesome}
-\usepackage{etoolbox}  % Für \ifstrequal
-\usepackage{tcolorbox} % Für die Box-Umgebung
-\tcbuselibrary{breakable}
-
-\usepackage{fancyvrb} % Verbatim-Umgebung
-
-% Anpassung der mybox-Umgebung
 \newenvironment{mybox}[2][]{
   \VerbatimEnvironment
   \begin{tcolorbox}[
@@ -157,6 +245,7 @@
   \end{Verbatim}
   \end{tcolorbox}
 }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%% Nummerierung (a), (b), etc. verwenden
@@ -198,6 +287,8 @@
   pdfborder={0 0 0}       % Setzt die Rahmenbreite der Links auf 0,
                           % entfernt also Rahmen um die Links
 ]{hyperref}
+
+%%% Erstellt Vorschaubilder für PDF-Seiten (Thumbnails)
 \usepackage[pdftex]{thumbpdf}
 
 \newcommand{\Vorlage}{
@@ -208,3 +299,5 @@
 
 \usepackage{tikz}
 \usetikzlibrary{shapes.multipart, positioning, arrows.meta}
+\usetikzlibrary{calc}
+\usetikzlibrary{backgrounds}  % Wird bei Titelseite ggf. gebraucht
