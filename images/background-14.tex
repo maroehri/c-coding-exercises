@@ -1,0 +1,28 @@
+\documentclass[tikz]{standalone}
+
+\usepackage{xcolor}
+\definecolor{hse-dunkelblau}{cmyk}{1,.7,.08,.54}  % HS Esslingen Dunkelblau (100 / 70 / 8 / 54)
+\definecolor{hse-rot}{cmyk}{.1,1,.7,0}            % HS Esslingen Rot (10 / 100 / 70 / 0)
+\definecolor{hse-hellblau}{cmyk}{.75,.1,.06,0}    % HS Esslingen Hellblau (75 / 10 / 6 / 0)
+\definecolor{hse-blau75}{HTML}{8abde2}            % HS Esslingen Blau 75%
+\definecolor{hse-blau50}{HTML}{b4d3ed}            % HS Esslingen Blau 50%
+\definecolor{hse-blau25}{HTML}{dbe9f7}            % HS Esslingen Blau 25%
+\definecolor{hse-blau15}{HTML}{eaf2fa}            % HS Esslingen Blau 15%
+\definecolor{hse-hellgrau}{cmyk}{0,0,0,.08}       % HS Esslingen Hellgrau (0 /0 /0 /8)
+\definecolor{dunkelgrau}{gray}{0.7}               % Dunkelgrau mit einem Grauwert von 70%
+\definecolor{mittelgrau}{gray}{0.9}               % Mittelgrau mit einem Grauwert von 90%
+\definecolor{hellgrau}{cmyk}{0,0,0,.08}           % Hellgrau (gleiche Werte wie hse-hellgrau)
+\definecolor{dunkelblau}{cmyk}{1,.7,.08,.54}      % Dunkelblau (gleiche Werte wie hse-dunkelblau)
+\definecolor{weiss}{cmyk}{0,0,0,0}                % Weiß
+
+\begin{document}
+\begin{tikzpicture}[opacity=.35]
+    \clip (1.5,-4) rectangle (10,0.5);
+    \foreach \x in {0,0.06,...,1.6}{
+      \draw[color=hse-blau25] (0,\x-0.8) .. controls (4-1.2*\x,\x-1.6) and (11-2.2*\x,-2.8-1.9*\x) .. (12,-2.3+1.8*\x);
+      \draw[color=hse-hellblau] (0,\x-2.1) .. controls (5-1.3*\x,\x-1.4) and (10-2.8*\x,-1.2-2.8*\x) .. (12,-3.3+2.3*\x);
+      \draw[color=hse-blau75] (0,\x-1.6) .. controls (3-0.9*\x,\x-2.2) and (9-1.6*\x,-2.2-2.2*\x) .. (12,-2.8+2*\x);
+      \draw[color=hse-blau50] (0,\x-1.3) .. controls (4-1.1*\x,\x-1.8) and (10-2*\x,-1.8-2*\x) .. (12,-3.1+2.1*\x);
+    }
+  \end{tikzpicture}
+\end{document}
