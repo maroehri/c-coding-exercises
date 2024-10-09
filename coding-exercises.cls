@@ -11,10 +11,17 @@
   a4paper,
 ]{scrbook}
 
+%%% Unterstützung für deutsche Sprache und Lokalisierung
 \usepackage[ngerman]{babel}
 
 %%% Ermöglicht erweiterte Kontrolle und Anpassung von Titel und Titelseite
 \usepackage{titling}
+
+%%% Sollte vor den Schriften geladen werden
+\usepackage{amssymb}  % Für zusätzliche mathematische Symbole wie \bullet und \circ
+\usepackage[all, error]{onlyamsmath}  % Erzwingt die Verwendung von amsmath für
+                                      % mathematische Umgebungen und zeigt Fehler
+                                      % für andere
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Ermöglicht die Verwendung von OpenType-Schriften
@@ -73,6 +80,19 @@
 
 
 
+%%% Statt der standardmäßigen Umschaltung bei KOMAscript auf serifenlose
+%%% Schrift bei Kapitel-, Sectionüberschriften, etc. lieber Standardschrift
+%%% verwenden
+%%% disposition:  Überschriften von Kapiteln, Abschnitten, Unterabschnitten
+%%% pageheadfoot: Seitenkopf und -fuß
+\setkomafont{disposition}{\normalfont}
+\setkomafont{pageheadfoot}{\normalfont}
+\setkomafont{pagenumber}{\normalfont}
+%%% Falls Umschaltung auf serifenlose Schrift gewünscht wäre:
+% \setkomafont{disposition}{\sffamily}
+% \setkomafont{pageheadfoot}{\sffamily}
+% \setkomafont{pagenumber}{\sffamily}
+
 \usepackage[%
   headsepline=0.5pt:0pt,  % Aktiviert eine Linie unter der Kopfzeile
                           % Breite 0.5pt, Abstand zwischen der Kopfzeile und der
@@ -82,6 +102,7 @@
   markcase=ignoreuppercase  % Text in Kopf- und Fußzeilen wird nicht in
                             % Großbuchstaben umgewandelt
 ]{scrlayer-scrpage}
+
 \pagestyle{scrheadings}    % Kopf- und Fußzeilen
 \clearpairofpagestyles     % Löscht die aktuellen Einstellungen für Kopf- und Fußzeilen
 \ohead{\pagemark}          % Äußerer Kopf: Seitenzahl
@@ -93,17 +114,7 @@
 \setcounter{secnumdepth}{4}% Gliederungsebenen
 \setcounter{tocdepth}{4}   % Gliederungsebenen im Inhaltsverzeichnis
 
-
-%%% Statt der standardmäßigen Umschaltung bei KOMAscript auf serifenlose
-%%% Schrift bei Kapitel-, Sectionüberschriften, etc. lieber Standardschrift
-%%% verwenden
-\setkomafont{disposition}{\sffamily}
-\setkomafont{pageheadfoot}{\sffamily}
-\setkomafont{pagenumber}{\sffamily}
-%\setkomafont{disposition}{\normalfont}
-%\setkomafont{pageheadfoot}{\normalfont}
-%\setkomafont{pagenumber}{\normalfont}
-
+%%% Korrigiert den Weißraum um Auslassungspunkte (...)
 \usepackage{ellipsis}
 
 %%% Umbrüche und Mikrotypografie verbessern
@@ -115,16 +126,18 @@
   tracking=true          % Aktiviert Buchstabenabstand-Anpassung
 ]{microtype}
 
-%%% Zeilenabstand leicht erhöhen
+%%% Zeilenabstand leicht erhöhen für bessere Lesbarkeit
 \usepackage{setspace}
-  \setstretch{1.07}
-  \recalctypearea
+  \setstretch{1.07}   % Zeilenabstand auf 1,07 erhöhen
+  \recalctypearea     % Seitengestaltung nach Änderung des Zeilenabstands neu
+                      % berechnen
 
-%%% Schusterjungen vermeiden (Seitenumbruch direkt nach erster Zeile eines
-%%% neuen Absatzes)
+%%% Schusterjungen vermeiden
+%%% (Seitenumbruch direkt nach der ersten Zeile eines neuen Absatzes)
 \clubpenalty=10000
 
-%%% Hurenkinder vermeiden (Letzte Zeile eines Absatzes landet auf neuer Seite)
+%%% Hurenkinder vermeiden
+%%% (Letzte Zeile eines Absatzes landet auf neuer Seite)
 \widowpenalty=10000
 \displaywidowpenalty=10000
 
@@ -132,11 +145,6 @@
 \emergencystretch=1em       % Erlaubt etwas mehr Streckung zur Vermeidung von Überfüllungen
 \tolerance=1000             % Erhöht die Toleranz für "schlechte" Zeilenumbrüche
 \hbadness=10000             % Unterdrückt Warnungen für "underfull" Boxen
-
-\usepackage{amssymb}  % Für zusätzliche mathematische Symbole wie \bullet und \circ
-\usepackage[all, error]{onlyamsmath}  % Erzwingt die Verwendung von amsmath für
-                                      % mathematische Umgebungen und zeigt Fehler
-                                      % für andere
 
 %%% Beschriftungen für Tabellen und Abbildungen: Typ fett, dahinter kursiv
 \usepackage{caption}
@@ -162,29 +170,26 @@
 \definecolor{dunkelgrau}{gray}{0.7}               % Dunkelgrau mit einem Grauwert von 70%
 \definecolor{mittelgrau}{gray}{0.9}               % Mittelgrau mit einem Grauwert von 90%
 \definecolor{hellgrau}{cmyk}{0,0,0,.08}           % Hellgrau (gleiche Werte wie hse-hellgrau)
+\definecolor{codebg}{cmyk}{0,0,0,.04}             % Ganz leichtes Hellgrau für Code-Hintergrund
 \definecolor{dunkelblau}{cmyk}{1,.7,.08,.54}      % Dunkelblau (gleiche Werte wie hse-dunkelblau)
 \definecolor{weiss}{cmyk}{0,0,0,0}                % Weiß
 
-\usepackage[setspace=false]{scrhack} % für minted-Paket benötigt
-\usepackage{minted}
+% Definition von Farben für das Hinterlegen
+\definecolor{hellrot}{HTML}{ffc7ce}
+\definecolor{hellgruen}{HTML}{c6efce}
 
-\setminted[c]{
-    bgcolor=hellgrau,
-    %fontsize=\small,
-    breaklines,
-    %linenos,
-    style=friendly
-}
-\setmintedinline{
-    bgcolor={},
-    %fontsize=\small,
-    breaklines,
-    style=friendly
-}
+%%% Ändert die Nummerierung der Aufzählungselemente im ersten Level
+%%% von nummerischen (1, 2, 3, ...) zu alphabetischen (a, b, c, ...)
+%\renewcommand{\labelenumi}{(\alph{enumi})}
 
+%%% Aufzählung bei enumerate (1) statt 1.
+\def\labelenumi{(\theenumi)}     \def\theenumi{\arabic{enumi}}
 
-\usepackage[german=guillemets]{csquotes}
-\MakeOuterQuote{"}
+%%% TikZ-Paket für fortgeschrittene Zeichenfunktionen und präzise Positionierung
+\usepackage{tikz}
+\usetikzlibrary{shapes.multipart, positioning, arrows.meta}
+\usetikzlibrary{calc}
+\usetikzlibrary{backgrounds}  % Wird bei Titelseite ggf. gebraucht
 
 %%% URL-Umbrüche anpassen
 \usepackage{url}
@@ -192,30 +197,40 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Hier wird eine eigene "mybox"-Umgebung definiert
-%%% Das optionale (erste) Argument kann für einen Titel der Box genutzt werden
-%%% Das zweite Argument gibt den Typ an, um ein passendes Symbol zu zeichnen
-%%% file: zeichnet ein Dateisystem
-%%% console: zeichnet ein Konsolensymbol
-% \begin{mybox}[Bildschirmausgabe]{console}
+%%% Optionale Argument:
+%%%   title=<Beliebiger Titel>
+%%%   font=<Beliebige Schriftformatierungen>
+%%% Ein verpflichtendes Argument gibt den Typ an, um ein passendes Symbol zu
+%%% zeichnen:
+%%%   file: zeichnet ein Dateisystem
+%%%   console: zeichnet ein Konsolensymbol
+% \begin{mybox}[title=Bildschirmausgabe, font=\small]{console}
 % Kleinstes Element: 2
 % \end{mybox}
 
-\usepackage{fontawesome}  % Für die Verwendung von Symbolen
-\usepackage{etoolbox}     % Für erweiterte Makroprogrammierung, z.B. \ifstrequal
+\usepackage{fontawesome5} % Für die Verwendung von Symbolen
 \usepackage{fancyvrb}     % Für erweiterte Verbatim-Umgebung
 \usepackage{tcolorbox}    % Für die Erstellung farbiger Boxen
-\tcbuselibrary{breakable} % Ermöglicht Fortsetzen von Inhalten in tcolorbox-Umgebungen über Seitenumbrüche hinweg
-
-%%% Ermöglicht Verwendung bedingter Anweisungen in LaTeX
-\usepackage{ifthen}
-
+\tcbuselibrary{breakable} % Seitenumbrüche in tcolorbox-Umgebungen
 
 %%% Das Kommando \highlight{} kann innerhalb einer mybox verwendet werden,
 %%% um einzelne Teile in Fettschrift zu drucken
 \newcommand\highlight[1]{\textbf{#1}}
 
-\newenvironment{mybox}[2][]{
+% Neue Befehle für farbig hinterlegten Text
+\newcommand{\highlightred}[1]{\colorbox{hellrot}{#1}}
+\newcommand{\highlightgreen}[1]{\colorbox{hellgruen}{#1}}
+
+\usepackage{expkv-def}
+\ekvdefinekeys{mybox}
+{
+   store title = \myboxTitle
+  ,store font = \myboxFont
+}
+
+\NewDocumentEnvironment{mybox}{={title}O{} m}{
   \VerbatimEnvironment
+  \ekvset{mybox}{#1}%
   \begin{tcolorbox}[
     breakable,          % Seitenumbrüche erlauben
     colback=hellgrau,
@@ -226,8 +241,8 @@
     boxsep=5pt,         % Abstand zwischen dem Inhalt der Box und ihrem Rahmen
     arc=1pt,            % Radius der Ecken der Box
     fonttitle=\sffamily,
-    toptitle=1mm,       % Abstand vom oberen Rand des Titelbereichs zur Titelzeile
-    bottomtitle=1mm,    % Abstand vom unteren Rand des Titelbereichs zur Titelzeile
+    toptitle=0mm,       % Abstand vom oberen Rand des Titelbereichs zur Titelzeile
+    bottomtitle=0mm,    % Abstand vom unteren Rand des Titelbereichs zur Titelzeile
     left=3pt,           % Abstand des Inhalts der Box vom linken Innenrand der Box
     right=3pt,          % Abstand des Inhalts der Box vom rechten Innenrand der Box
     before upper={\begin{BVerbatim}}, % Fügt BVerbatim am Anfang ein
@@ -235,13 +250,14 @@
     before upper={\DisableQuotes},    % Deaktiviert Guillemets in der Box und berücksichtigt Zeilenumbrüche
     after upper={\EnableQuotes},      % Stellt Guillemets nach der Box wieder her
     title={%
-      \ifstrequal{#2}{file}{\faFileTextO\hspace{5mm}}{%
+      \ifstrequal{#2}{file}{\faFile*[regular]\hspace{5mm}}{%
         \ifstrequal{#2}{console}{\faTerminal\hspace{5mm}}{}%
-      }#1
+      }\myboxTitle
     },
-  ]
+  ]%
+  \myboxFont
   \begin{Verbatim}[commandchars=\\\{\}]%
-    }{
+    }{%
   \end{Verbatim}
   \end{tcolorbox}
 }
@@ -297,7 +313,30 @@
     %\vspace{-\baselineskip} % Entfernt den zusätzlichen Abstand zur minted-Umgebung
 }
 
-\usepackage{tikz}
-\usetikzlibrary{shapes.multipart, positioning, arrows.meta}
-\usetikzlibrary{calc}
-\usetikzlibrary{backgrounds}  % Wird bei Titelseite ggf. gebraucht
+
+%%% Falls für Code Syntax-Highlighting verwendet werden soll
+%%% empfehle ich die Verwendung des minted-Pakets
+%%% Dafür ist dann aber auch eine Python-Installation notwendig
+\usepackage[setspace=false]{scrhack} % für minted-Paket benötigt
+\usepackage{minted}
+
+\setlength{\fboxsep}{0pt}
+
+\setminted[c]{
+    bgcolor=codebg,
+    %fontsize=\small,
+    breaklines,
+    %linenos,
+    style=friendly
+}
+\setmintedinline{
+    bgcolor={},
+    %fontsize=\small,
+    breaklines,
+    style=friendly
+}
+
+%%% Paket für einheitliche Zitatstile,
+%%% Nutzung von Guillemets (« ») als deutsche Anführungszeichen
+\usepackage[german=guillemets]{csquotes}
+\MakeOuterQuote{"}  % Aktiviert " als Anführungszeichen für äußere Zitate
