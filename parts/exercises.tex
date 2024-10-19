@@ -1,4 +1,4 @@
-\chapter{Finde die kleinste Zahl in einem Array}
+\chapter{Kleinste Zahl in einem Array finden}
 
 \TopicLevel{Arrays}{1}
 
@@ -34,7 +34,7 @@ Aufrufer zurückliefert.
 
 
 
-\chapter{Zähle die Häufigkeiten eines Werts in einem Array}
+\chapter{Häufigkeiten eines Werts in einem Array zählen}
 
 \TopicLevel{Arrays}{1}
 
@@ -73,7 +73,7 @@ Anzahl in Array: 2
 
 
 
-\chapter{Ein Array umkehren}
+\chapter{Reihenfolge eines Arrays umkehren}
 
 \TopicLevel{Arrays}{1}
 
@@ -113,6 +113,64 @@ myArray[7] = 4
   \mintinline{c}{reverse()} gibt, die als Argumente ein Array aus Zahlen und die
   Größe des Arrays entgegennimmt, und die Reihenfolge der Zahlen im übergebenen
   Array umkehrt.
+\end{enumerate}
+
+
+
+\chapter{Text in Leetspeak umwandeln}
+
+\TopicLevel{Strings}{1}\vspace{10pt}
+
+Im sog. \textit{Leetspeak} werden bestimmte Buchstaben durch ähnlich aussehende
+Zeichen oder Ziffern ersetzt. Beispielsweise würde "\textsf{1337 5P34K}" dem
+Wort "\textsf{Leet Speak}" entsprechen.
+
+\begin{enumerate}
+\item Erstellen Sie eine Funktion \texttt{getLeetChar}, die ein Zeichen als
+Argument erhält, dieses nach den Leetspeak-Regeln ersetzt (falls zutreffend) und
+das konvertierte oder unveränderte Zeichen zurückgibt. Die Ersetzung erfolgt
+sowohl für Groß- als auch für Kleinbuchstaben nach folgendem Schema:
+
+\texttt{A} $\rightarrow$ \texttt{4} \tab \texttt{B} $\rightarrow$ \texttt{8} \tab \texttt{E} $\rightarrow$ \texttt{3} \tab \texttt{G} $\rightarrow$ \texttt{6}
+
+\texttt{H} $\rightarrow$ \texttt{\#} \tab \texttt{I} $\rightarrow$ \texttt{1} \tab \texttt{O} $\rightarrow$ \texttt{0} \tab \texttt{S} $\rightarrow$ \texttt{\$}
+
+\texttt{T} $\rightarrow$ \texttt{7} \tab \texttt{Z} $\rightarrow$ \texttt{2}
+
+\item Erstellen Sie anschließend eine Funktion \texttt{leetspeak}, die einen
+String als Argument entgegennimmt und mithilfe der Funktion \texttt{getLeetChar}
+jedes Zeichen des übergebenen Strings prüft und ggf. verändert. Der gesamte
+String soll schließlich von der Funktion in Leetspeak umgewandelt werden.
+
+\Vorlage
+\begin{minted}{c}
+#include <stdio.h>
+
+int main(void) {
+    char input[100];
+
+    printf("Satz eingeben: ");
+    fgets(input, sizeof(input), stdin);
+
+    // Folgende Funktion sollen Sie erstellen:
+    leetspeak(input);
+
+    printf("Leetspeak: %s", input);
+
+    return 0;
+}
+\end{minted}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+Satz eingeben: \highlight{Das ist ein Test}
+Leetspeak: D4$ 1$7 31n 73$7
+
+Satz eingeben: \highlight{Hallo Welt}
+Leetspeak: #4ll0 W3l7
+
+Satz eingeben: \highlight{C-Programmierung macht Spaß}
+Leetspeak: C-Pr06r4mm13run6 m4c#7 $p4ß
+\end{mybox}
 \end{enumerate}
 
 
@@ -171,14 +229,14 @@ int main(void) {
 
 
 
-\chapter{Verkettung von Strings unter Verwendung dynamischer Speicherzuweisung}
+\chapter{Strings unter Verwendung dynamischer Speicherzuweisung verbinden}
 
 \TopicLevel{Strings, Dynamische Speicherverwaltung}{2}\vspace{10pt}
 
 Erstellen Sie eine Funktion \mintinline{c}{stringAppend()}, die zwei Strings als
-Eingabeparameter entgegennimmt und diese miteinander verkettet. Die Funktion
-soll für den neuen, verketteten String dynamisch Speicher auf dem Heap
-reservieren und einen Pointer auf diesen Speicher an den Aufrufer zurückliefern.
+Eingabeparameter entgegennimmt und diese miteinander verbindet. Die Funktion
+soll für den neuen, verbundenen String dynamisch Speicher auf dem Heap
+reservieren und einen Pointer auf diesen Speicher an den Aufrufer zurückgeben.
 
 \Vorlage
 \begin{minted}{c}
@@ -205,7 +263,7 @@ int main(void) {
 
 
 
-\chapter{Finde das am häufigsten vorkommende Zeichen in einem String}
+\chapter{Häufigste vorkommende Zeichen in einem String finden}
 
 \TopicLevel{Strings}{2}\vspace{10pt}
 
@@ -233,7 +291,7 @@ Zeichen i kommt 10 mal vor.
 
 
 
-\chapter{Zähle die Anzahl an Wörtern in einem String}
+\chapter{Anzahl Wörter in einem String zählen}
 
 \TopicLevel{Strings}{3}\vspace{10pt}
 
@@ -265,7 +323,7 @@ Das Wort "Fische" kam 2-mal im String vor
 
 
 
-\chapter{Finde den Durchschnitt von Gruppen von Zahlen in einer Datei}
+\chapter{Durchschnitt von Gruppen von Zahlen in einer Datei finden}
 
 \TopicLevel{Dateioperationen}{3}\vspace{10pt}
 
@@ -298,7 +356,7 @@ Gruppe mit 6 Elementen: 48.17
 
 
 
-\chapter{Finde die jüngste Person}
+\chapter{Jüngste Person in einer Datenstruktur finden}
 
 \TopicLevel{Strukturen, Pointer}{3}\vspace{10pt}
 
@@ -386,7 +444,7 @@ Man kann sich die Struktur also wie folgt vorstellen:
 
 
 
-\chapter{Erstelle eine verkettete Liste}
+\chapter{Verkettete Liste erstellen}
 
 \TopicLevel{Strukturen, Pointer}{5}\vspace{10pt}
 

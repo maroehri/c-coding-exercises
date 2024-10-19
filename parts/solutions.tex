@@ -1,4 +1,4 @@
-\chapter{Finde die kleinste Zahl in einem Array}
+\chapter{Kleinste Zahl in einem Array finden}
 
 \begin{enumerate}
   \item Zuerst initialisieren wir den Wert des gesuchten Minimums auf das erste
@@ -66,7 +66,7 @@ int main(void) {
 
 
 
-\chapter{Zähle die Häufigkeiten eines Werts in einem Array}
+\chapter{Häufigkeiten eines Werts in einem Array zählen}
 
 \begin{enumerate}
 \item Zuerst legen wir eine Variable \mintinline{c}{count} an, die wir mit dem
@@ -132,7 +132,7 @@ int main(void) {
 
 
 
-\chapter{Ein Array umkehren}
+\chapter{Reihenfolge eines Arrays umkehren}
 
 \begin{enumerate}
     \item Um die Elemente eines Arrays umzukehren, müssen wir eine typische
@@ -218,6 +218,103 @@ int main(void) {
 
 
 
+\chapter{Text in Leetspeak umwandeln}
+
+Die Funktion \mintinline{c}{getLeetChar()} soll ein einzelnes Zeichen als
+Argument erhalten und ein einzelnes Zeichen an den Aufrufer zurückgeben. Die
+entsprechende Funktionssignatur lautet entsprechend:
+
+\mintinline{c}{char getLeetChar(char c)}
+
+Bei der Konvertierung muss überprüft werden, ob für das übergebene Zeichen ein
+alternatives "Leetspeak"-Zeichen existiert. Falls dies der Fall ist, wird das
+Zeichen durch das entsprechende Leetspeak-Zeichen ersetzt. Hierfür bietet sich
+eine \mintinline{c}{switch-case}-Anweisung an.
+
+Es ist dabei wichtig zu beachten, dass sowohl Groß- als auch Kleinschreibung
+berücksichtigt werden müssen und die \mintinline{c}{break}-Anweisungen nicht
+vergessen werden dürfen.
+
+\begin{minted}{c}
+char getLeetChar(char c) {
+    switch (c) {
+    case 'A':
+    case 'a':
+        c = '4';
+        break;
+    case 'B':
+    case 'b':
+        c = '8';
+        break;
+    case 'E':
+    case 'e':
+        c = '3';
+        break;
+    case 'G':
+    case 'g':
+        c = '6';
+        break;
+    case 'H':
+    case 'h':
+        c = '#';
+        break;
+    case 'I':
+    case 'i':
+        c = '1';
+        break;
+    case 'O':
+    case 'o':
+        c = '0';
+        break;
+    case 'S':
+    case 's':
+        c = '$';
+        break;
+    case 'T':
+    case 't':
+        c = '7';
+        break;
+    case 'Z':
+    case 'z':
+        c = '2';
+        break;
+    default:
+        break;
+    }
+
+    return c;
+}
+\end{minted}
+
+Die Funktion \mintinline{c}{leetspeak()} nimmt einen String als Argument und
+wandelt ihn mithilfe der Funktion \mintinline{c}{getLeetChar()} in Leetspeak um.
+Dabei wird jedes Zeichen des Strings einzeln durchlaufen und durch
+\mintinline{c}{getLeetChar()} überprüft, ob eine Ersetzung erforderlich ist.
+
+Die Funktionsweise basiert auf einer Schleife, die den String Zeichen für
+Zeichen verarbeitet, bis das Nullterminierungszeichen \mintinline{c}{'\0'}
+erreicht wird. Jedes Zeichen wird an die \mintinline{c}{getLeetChar()}-Funktion
+übergeben, und der Rückgabewert dieser Funktion ersetzt das jeweilige Zeichen im
+Original-String. Auf diese Weise wird der gesamte String in Leetspeak
+konvertiert.
+
+\begin{minted}{c}
+void leetspeak(char *str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        str[i] = getLeetChar(str[i]);
+    }
+}
+\end{minted}
+
+
+
+
+
+
+
+
+
+
 \chapter{Überprüfen, ob ein String ein Palindrom ist}
 
 Die \mintinline{c}{isPalindrome()}-Funktion bekommt einen String übergeben und
@@ -263,7 +360,7 @@ bool isPalindrome(char string[]) {
 
 
 
-\chapter{Verkettung von Strings unter Verwendung dynamischer Speicherzuweisung}
+\chapter{Strings unter Verwendung dynamischer Speicherzuweisung verbinden}
 
 Da die Funktion \mintinline{c}{stringAppend()} dynamisch Speicher auf dem Heap
 für den neuen String reservieren soll, müssen zunächst die Längen der beiden
@@ -315,7 +412,7 @@ char *stringAppend(char *firstString, char *secondString) {
 
 
 
-\chapter{Finde das am häufigsten vorkommende Zeichen in einem String}
+\chapter{Häufigste vorkommende Zeichen in einem String finden}
 
 Um das am häufigsten vorkommende Zeichen in einem String zu ermitteln, ist es
 notwendig, den String mehrfach zu durchlaufen. Dies erfordert zwei ineinander
@@ -374,7 +471,7 @@ void printMaxChars(char *string) {
 
 
 
-\chapter{Zähle die Anzahl an Wörtern in einem String}
+\chapter{Anzahl Wörter in einem String zählen}
 
 Bei dieser Aufgabenstellung spielen zwei Dinge eine wesentliche Rolle: es ist
 wichtig zu verstehen, woran wir erkennen, was ein Wort ausmacht; zum anderen
@@ -531,7 +628,7 @@ int countWords(char string[], char word[]) {
 
 
 
-\chapter{Finde den Durchschnitt von Gruppen von Zahlen in einer Datei}
+\chapter{Durchschnitt von Gruppen von Zahlen in einer Datei finden}
 
 Im Folgenden werden Ihnen zwei mögliche Lösungen vorgestellt. Eine, bei der wir
 die Zeile komplett in einen Puffer einlesen und dann mit der
@@ -704,7 +801,7 @@ int main(void) {
 
 
 
-\chapter{Finde die jüngste Person}
+\chapter{Jüngste Person in einer Datenstruktur finden}
 
 Die Funktion \mintinline{c}{findYoungestPerson()} nimmt zwei Parameter entgegen:
 einmal einen Pointer auf ein Array von Personen und einmal einen Integer, der
@@ -755,7 +852,7 @@ Person *findYoungestPerson(Person *persons[], int size) {
 
 
 
-\chapter{Erstelle eine verkettete Liste}
+\chapter{Verkettete Liste erstellen}
 
 \section*{Datenstruktur \texttt{Node}}
 
