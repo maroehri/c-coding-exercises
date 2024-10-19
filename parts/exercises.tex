@@ -117,6 +117,162 @@ myArray[7] = 4
 
 
 
+\chapter{Barcode-Prüfziffer berechnen}
+
+\TopicLevel{Arrays und Strings}{2}\vspace{10pt}
+
+In der folgenden Aufgabe geht es darum, die Prüfziffer eines EAN-Barcodes zu
+berechnen. Ein EAN-Barcode besteht aus insgesamt 13 Ziffern, wovon die letzte
+Ziffer die Prüfziffer ist.
+
+\begin{figure}[htb!]
+\centering
+\includegraphics[width=.6\textwidth]{barcode}
+\end{figure}
+
+\begin{enumerate}
+
+\item Erstellen Sie eine Funktion \mintinline{c}{convertStringToArray()}, die
+aus einem String ein Array aus Ganzzahlen erzeugt. Die Funktion bekommt sowohl
+den String als auch das Array als Funktionsargumente übergeben.
+
+Führen Sie in der Funktion Überprüfungen durch, ob die Länge des Strings die
+Größe \mintinline{c}{BARCODE_LENGTH} nicht überschreitet und ob es sich bei
+jedem Zeichen um eine Zahl handelt (verwenden Sie hierfür die
+\mintinline{c}{isdigit()}-Funktion der Standardbibliothek). Schlägt eine der
+beiden Überprüfungen fehl, so soll die Funktion
+\mintinline{c}{convertStringToArray} eine Fehlermeldung aus- und einen Wert
+ungleich 0 zurückgeben. Andernfalls gibt sie den Wert 0 zurück.
+
+\textit{Hinweis:} Zeichen werden in C durch \textit{ASCII-Werte} dargestellt.
+Der ASCII-Wert des Zeichens \texttt{'0'} ist beispielsweise 48. Um eine
+Zeichenziffer (z.\,B. \texttt{'5'}) in ihre entsprechende numerische Ziffer
+(z.\,B. 5) zu konvertieren, müssen Sie den ASCII-Wert des Zeichens \texttt{'0'}
+von dem aktuellen Zeichen subtrahieren.
+
+\pagebreak
+
+\Vorlage
+\begin{minted}[fontsize=\small]{c}
+#include <stdio.h>
+#include <string.h> // für strlen() und strcspn()
+#include <ctype.h>  // für isdigit()
+
+#define BARCODE_LENGTH 12
+
+int main(void) {
+    // Eingabe String: Platz für 12 Ziffern + Nullterminator
+    char inputString[BARCODE_LENGTH + 1];
+    int barcode[BARCODE_LENGTH];
+
+    printf("Ersten 12 Ziffern des EAN-13 Barcodes eingeben:\n");
+    fgets(inputString, sizeof(inputString), stdin);
+
+    // Entfernt das Newline-Zeichen, falls vorhanden,
+    // und ersetzt es durch das Nullterminierungszeichen
+    inputString[strcspn(inputString, "\n")] = 0;
+
+
+    // (a) Die Funktion convertStringToArray müssen Sie
+    //     implementieren
+    int convertResult = convertStringToArray(inputString, barcode);
+
+    if (convertResult != 0)
+        return 1; // String konnte nicht konvertiert werden
+
+    // Testen der Funktion
+    for (int i = 0; i < BARCODE_LENGTH; i++)
+        printf("%d ", barcode[i]);
+    printf("\n");
+
+    return 0;
+}
+\end{minted}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+Ersten 12 Ziffern des EAN-13 Barcodes eingeben:
+\highlight{459876342178}
+4 5 9 8 7 6 3 4 2 1 7 8
+\end{mybox}
+
+
+
+\pagebreak
+
+\item Erstellen Sie eine Funktion \mintinline{c}{barcodeCheckDigit()}, die die
+Prüfziffer eines EAN-13 Barcodes berechnet. Die Funktion bekommt die Ziffern in
+Form eines Integer-Arrays, sowie die Länge des Arrays als Funktionsargumente
+übergeben und berechnet die Prüfziffer nach dem folgenden Algorithmus:
+
+\begin{enumerate}[1.]
+    \item Addieren Sie die Ziffern an den ungeraden Positionen (Ziffern 1, 3, 5,
+    etc.)
+    \item Addieren Sie die Ziffern an den geraden Positionen (Ziffern 2, 4, 6,
+    etc.) und multiplizieren Sie das Ergebnis anschließend mit 3
+    \item Addieren Sie die beiden Ergebnisse zusammen
+    \item Berechnen Sie den Wert der Gesamtsumme modulo 10 (also den Rest bei
+    der Division durch 10)
+    \item Subtrahieren Sie das Ergebnis von 10, um die Prüfziffer zu ermitteln
+    (falls das Ergebnis 10 ist, setzen Sie die Prüfziffer auf 0)
+\end{enumerate}
+
+\Vorlage
+\begin{minted}[fontsize=\small]{c}
+#include <stdio.h>
+#include <string.h> // für strlen() und strcspn()
+#include <ctype.h>  // für isdigit()
+
+#define BARCODE_LENGTH 12
+
+int main(void) {
+    // Eingabe String: Platz für 12 Ziffern + Nullterminator
+    char inputString[BARCODE_LENGTH + 1];
+    int barcode[BARCODE_LENGTH];
+
+    printf("Ersten 12 Ziffern des EAN-13 Barcodes eingeben:\n");
+    fgets(inputString, sizeof(inputString), stdin);
+
+    // Entfernt das Newline-Zeichen, falls vorhanden,
+    // und ersetzt es durch das Nullterminierungszeichen
+    inputString[strcspn(inputString, "\n")] = 0;
+
+
+    // (a) String in Integer-Array umwandeln
+    int convertResult = convertStringToArray(inputString, barcode);
+
+    if (convertResult != 0)
+        return 1; // String konnte nicht konvertiert werden
+
+    // (b) Die Funktion barcodeCheckDigit müssen Sie
+    //     implementieren
+    int checkDigit = barcodeCheckDigit(barcode, BARCODE_LENGTH);
+
+    // Ausgabe der Prüfziffer
+    printf("Die Prüfziffer lautet: %d\n", checkDigit);
+
+    return 0;
+}
+\end{minted}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+Ersten 12 Ziffern des EAN-13 Barcodes eingeben:
+\highlight{459876342178}
+Die Prüfziffer lautet: 2
+
+Ersten 12 Ziffern des EAN-13 Barcodes eingeben:
+\highlight{0799439112766}
+Die Prüfziffer lautet: 6
+
+Ersten 12 Ziffern des EAN-13 Barcodes eingeben:
+\highlight{460566400005}
+Die Prüfziffer lautet: 0
+\end{mybox}
+
+\end{enumerate}
+
+
+
+
 \chapter{Text in Leetspeak umwandeln}
 
 \TopicLevel{Strings}{1}\vspace{10pt}
@@ -126,9 +282,9 @@ Zeichen oder Ziffern ersetzt. Beispielsweise würde "\textsf{1337 5P34K}" dem
 Wort "\textsf{Leet Speak}" entsprechen.
 
 \begin{enumerate}
-\item Erstellen Sie eine Funktion \texttt{getLeetChar}, die ein Zeichen als
-Argument erhält, dieses nach den Leetspeak-Regeln ersetzt (falls zutreffend) und
-das konvertierte oder unveränderte Zeichen zurückgibt. Die Ersetzung erfolgt
+\item Erstellen Sie eine Funktion \mintinline{c}{getLeetChar()}, die ein Zeichen
+als Argument erhält, dieses nach den Leetspeak-Regeln ersetzt (falls zutreffend)
+und das konvertierte oder unveränderte Zeichen zurückgibt. Die Ersetzung erfolgt
 sowohl für Groß- als auch für Kleinbuchstaben nach folgendem Schema:
 
 \texttt{A} $\rightarrow$ \texttt{4} \tab \texttt{B} $\rightarrow$ \texttt{8} \tab \texttt{E} $\rightarrow$ \texttt{3} \tab \texttt{G} $\rightarrow$ \texttt{6}
@@ -137,13 +293,14 @@ sowohl für Groß- als auch für Kleinbuchstaben nach folgendem Schema:
 
 \texttt{T} $\rightarrow$ \texttt{7} \tab \texttt{Z} $\rightarrow$ \texttt{2}
 
-\item Erstellen Sie anschließend eine Funktion \texttt{leetspeak}, die einen
-String als Argument entgegennimmt und mithilfe der Funktion \texttt{getLeetChar}
-jedes Zeichen des übergebenen Strings prüft und ggf. verändert. Der gesamte
-String soll schließlich von der Funktion in Leetspeak umgewandelt werden.
+\item Erstellen Sie anschließend eine Funktion \mintinline{c}{leetspeak()}, die
+einen String als Argument entgegennimmt und mithilfe der Funktion
+\mintinline{c}{getLeetChar()} jedes Zeichen des übergebenen Strings prüft und
+ggf. verändert. Der gesamte String soll schließlich von der Funktion in
+Leetspeak umgewandelt werden.
 
 \Vorlage
-\begin{minted}{c}
+\begin{minted}[fontsize=\small]{c}
 #include <stdio.h>
 
 int main(void) {

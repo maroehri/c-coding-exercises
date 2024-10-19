@@ -1,0 +1,61 @@
+\documentclass[pstricks,border=12pt]{standalone}
+\usepackage{pst-barcode}
+\usepackage{fontspec}
+\setsansfont{Fira Sans}
+
+%%% Für erweiterte Farbfunktionen
+\usepackage{xcolor}
+\definecolor{hse-dunkelblau}{cmyk}{1,.7,.08,.54}  % HS Esslingen Dunkelblau (100 / 70 / 8 / 54)
+\definecolor{hse-rot}{cmyk}{.1,1,.7,0}            % HS Esslingen Rot (10 / 100 / 70 / 0)
+\definecolor{hse-hellblau}{cmyk}{.75,.1,.06,0}    % HS Esslingen Hellblau (75 / 10 / 6 / 0)
+\definecolor{hse-blau75}{HTML}{8abde2}            % HS Esslingen Blau 75%
+\definecolor{hse-blau50}{HTML}{b4d3ed}            % HS Esslingen Blau 50%
+\definecolor{hse-blau25}{HTML}{dbe9f7}            % HS Esslingen Blau 25%
+\definecolor{hse-blau15}{HTML}{eaf2fa}            % HS Esslingen Blau 15%
+\definecolor{hse-hellgrau}{cmyk}{0,0,0,.08}       % HS Esslingen Hellgrau (0 /0 /0 /8)
+\definecolor{dunkelgrau}{gray}{0.7}               % Dunkelgrau mit einem Grauwert von 70%
+\definecolor{mittelgrau}{gray}{0.9}               % Mittelgrau mit einem Grauwert von 90%
+\definecolor{hellgrau}{cmyk}{0,0,0,.08}           % Hellgrau (gleiche Werte wie hse-hellgrau)
+\definecolor{codebg}{cmyk}{0,0,0,.04}             % Ganz leichtes Hellgrau für Code-Hintergrund
+\definecolor{dunkelblau}{cmyk}{1,.7,.08,.54}      % Dunkelblau (gleiche Werte wie hse-dunkelblau)
+\definecolor{weiss}{cmyk}{0,0,0,0}                % Weiß
+
+% Definition von Farben für das Hinterlegen
+\definecolor{hellrot}{HTML}{ffc7ce}
+\definecolor{hellgruen}{HTML}{c6efce}
+
+\begin{document}
+
+\begin{pspicture}(5.1cm,2.7cm)
+    \rput[lb](0,1.8){  % Verschiebung um 1.8 cm nach oben
+
+        \psbarcode{221156456668}{textsize=8 includetext height=0.49 width=1.3}{ean13}
+
+        % Füge farbige Rechtecke um die Bereiche hinzu
+        % Länderkennung
+        \psframe[linewidth=0.02, linecolor=hse-dunkelblau](-0.4, -0.25)(0.55, 0.15)
+
+        % Betriebsnummer
+        \psframe[linewidth=0.02, linecolor=hse-hellblau](0.6, -0.25)(1.57, 0.15)
+
+        % Artikelnummer
+        \psframe[linewidth=0.02, linecolor=dunkelgrau](1.71, -0.25)(2.89, 0.15)
+
+        % Prüfziffer
+        \psframe[linewidth=0.02, linecolor=hse-rot](2.91, -0.25)(3.15, 0.15)
+    }
+
+    \rput[lt](3.5,1.2){\scriptsize\sffamily\textcolor{hse-rot}{Prüfziffer}}
+    \rput[lt](3.5,0.8){\scriptsize\sffamily\textcolor{dunkelgrau}{Artikelnummer}}
+    \rput[lt](3.5,0.4){\scriptsize\sffamily\textcolor{hse-hellblau}{Betriebsnummer}}
+    \rput[lt](3.5,0){\scriptsize\sffamily\textcolor{hse-dunkelblau}{Länderkennung}}
+
+    \psline[linewidth=0.02,        linecolor=hse-rot]{-}(3.4,  1.1)(3.05,  1.1)(3.05, 1.5)
+    \psline[linewidth=0.02,     linecolor=dunkelgrau]{-}(3.4,  0.7)(2.35,  0.7)(2.35, 1.5)
+    \psline[linewidth=0.02,   linecolor=hse-hellblau]{-}(3.4,  0.3)(1.10,  0.3)(1.10, 1.5)
+    \psline[linewidth=0.02, linecolor=hse-dunkelblau]{-}(3.4, -0.1)(0.10, -0.1)(0.10, 1.5)
+
+
+\end{pspicture}
+
+\end{document}

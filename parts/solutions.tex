@@ -217,6 +217,87 @@ int main(void) {
 
 
 
+\chapter{Barcode-Prüfziffer berechnen}
+
+Die Funktion \mintinline{c}{convertStringToArray()} nimmt einen String und ein
+Array als Argumente und konvertiert den String in ein Integer-Array. Zunächst
+wird überprüft, ob der String genau 12 Zeichen lang ist. Falls nicht, gibt die
+Funktion eine Fehlermeldung aus und kehrt mit einem Fehlercode (1) zurück.
+
+Anschließend wird geprüft, ob jedes Zeichen im String eine Ziffer ist, indem die
+Funktion \mintinline{c}{isdigit()} verwendet wird. Wenn eine Nicht-Ziffer
+gefunden wird, gibt die Funktion erneut eine Fehlermeldung aus und kehrt mit
+einem Fehlercode (2) zurück.
+
+Sind alle Zeichen Ziffern, konvertiert die Funktion jedes Zeichen in seine
+entsprechende Zahl, indem sie den ASCII-Wert von \mintinline{c}{'0'} vom Zeichen
+subtrahiert, und speichert die Ziffern im Array. Abschließend wird der Erfolg
+durch Rückgabe von 0 signalisiert.
+
+\begin{minted}{c}
+int convertStringToArray(const char *str, int barcode[]) {
+    // Überprüfen, ob der String genau 12 Ziffern enthält
+    if (strlen(str) != BARCODE_LENGTH) {
+        printf("Fehler: String muss 12 Zeichen lang sein.\n");
+        return 1;  // Fehlercode zurückgeben
+    }
+
+    // Überprüfen, ob der String nur Ziffern enthält
+    for (int i = 0; i < 12; i++) {
+        if (!isdigit(str[i])) {
+            printf("Fehler: String darf nur Ziffern enthalten.\n");
+            return 2;  // Fehlercode zurückgeben
+        }
+    }
+
+    // Konvertieren der Zeichen in Integer
+    for (int i = 0; i < 12; i++) {
+        // ASCII-Wert von '0' subtrahieren,
+        // um die Ziffer zu erhalten
+        barcode[i] = str[i] - '0';
+    }
+
+    return 0;  // Erfolgscode zurückgeben
+}
+\end{minted}
+
+Die Funktion \mintinline{c}{barcodeCheckDigit()} berechnet die Prüfziffer eines
+EAN-Barcodes basierend auf einem gegebenen Integer-Array und dessen Länge.
+Hierzu wird der Algorithmus aus der Aufgabenstellung entsprechend angewendet.
+Die Funktion gibt schließlich die berechnete Prüfziffer zurück.
+
+\begin{minted}{c}
+int barcodeCheckDigit(int barcode[], int barcodeLength) {
+    int oddSum = 0, evenSum = 0, totalSum = 0;
+    int checkDigit = 0;
+
+    // Berechne die Summe der ungeraden und geraden Ziffern
+    for (int i = 0; i < barcodeLength; i++) {
+        if (i % 2 == 0) {
+            // Ungerade Positionen (Index 0, 2, 4,...)
+            oddSum += barcode[i];
+        } else {
+            // Gerade Positionen (Index 1, 3, 5,...)
+            evenSum += barcode[i];
+        }
+    }
+
+    // Multipliziere die Summe der geraden Positionen mit 3
+    // und addiere diese Summe mit der Summe der ungeraden Zahlen
+    totalSum = oddSum + (evenSum * 3);
+
+    // Berechne die Prüfziffer
+    checkDigit = 10 - (totalSum % 10);
+    if (checkDigit == 10) {
+        checkDigit = 0;
+    }
+
+    return checkDigit;
+}
+\end{minted}
+
+
+
 
 \chapter{Text in Leetspeak umwandeln}
 

@@ -79,6 +79,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+%%% Einbinden von Grafiken
+\usepackage{graphicx}
+  % Pfade angeben, an denen sich die Abbildungen finden lassen
+  \graphicspath{{images/}}
+  \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+
 
 %%% Statt der standardmäßigen Umschaltung bei KOMAscript auf serifenlose
 %%% Schrift bei Kapitel-, Sectionüberschriften, etc. lieber Standardschrift
@@ -177,6 +183,8 @@
 % Definition von Farben für das Hinterlegen
 \definecolor{hellrot}{HTML}{ffc7ce}
 \definecolor{hellgruen}{HTML}{c6efce}
+
+\usepackage{enumerate}
 
 %%% Ändert die Nummerierung der Aufzählungselemente im ersten Level
 %%% von nummerischen (1, 2, 3, ...) zu alphabetischen (a, b, c, ...)
