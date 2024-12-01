@@ -27,6 +27,10 @@
 %%% Ermöglicht die Verwendung von OpenType-Schriften
 \usepackage{fontspec}
 
+%%% Eigenes smallish-Kommando für eine Schrifgröße zwischen small und footnotesize
+%%% Annahme: die Dokumentenklasse wurde mit 12pt geladen
+\newcommand{\smallish}{\fontsize{10.5pt}{12pt}\selectfont}
+
 %%% Schriftarten auswählen und konfigurieren
 % Hauptschriftart mit Fallback-Optionen
 \IfFontExistsTF{XCharter}{

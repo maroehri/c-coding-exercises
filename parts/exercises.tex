@@ -448,6 +448,45 @@ Zeichen i kommt 10 mal vor.
 
 
 
+
+\chapter{Quadratzahlen der Ziffern einer Zahl zusammensetzen}
+
+\TopicLevel{Strings}{2}\vspace{10pt}
+
+Erstellen Sie eine Funktion \mintinline{c}{digitsToSquares()}, die für jede
+Ziffer einer gegebenen Zahl \mintinline{c}{number} das Quadrat der Ziffer
+berechnet und die Quadrate in der ursprünglichen Reihenfolge der Ziffern
+zusammensetzt. Die Funktion soll eine Zahl zurückgeben, die die berechneten
+Quadrate aller Ziffern von \mintinline{c}{number} enthält.
+
+\Vorlage
+\begin{minted}{c}
+#include <stdio.h>
+
+int main(void) {
+    unsigned int inputNumber1 = 123;
+    unsigned long long outputNumber1 = digitsToSquares(inputNumber1);
+    printf("%u --> %lld\n", inputNumber1, outputNumber1);
+
+    unsigned int inputNumber2 = 9119;
+    unsigned long long outputNumber2 = digitsToSquares(inputNumber2);
+    printf("%u --> %lld\n", inputNumber2, outputNumber2);
+
+    unsigned int inputNumber3 = 3210987654;
+    unsigned long long outputNumber3 = digitsToSquares(inputNumber3);
+    printf("%u --> %lld\n", inputNumber3, outputNumber3);
+}
+\end{minted}
+
+\begin{mybox}[title=Bildschirmausgabe]{console}
+123 --> 149
+9119 --> 811181
+3210987654 --> 9410816449362516
+\end{mybox}
+
+
+
+
 \chapter{Anzahl Wörter in einem String zählen}
 
 \TopicLevel{Strings}{3}\vspace{10pt}

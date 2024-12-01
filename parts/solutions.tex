@@ -552,6 +552,50 @@ void printMaxChars(char *string) {
 
 
 
+\chapter{Quadratzahlen der Ziffern einer Zahl zusammensetzen}
+
+Um die Ziffern einer Zahl einzeln zu quadrieren, wird die Eingabezahl
+ziffernweise von rechts nach links verarbeitet. Dazu wird die letzte Ziffer mit
+der Modulo-Operation (\mintinline{c}{% 10}) extrahiert und die Zahl durch
+Ganzzahldivision (\mintinline{c}{/ 10}) verkleinert. Dieser Prozess wird so
+lange wiederholt, bis alle Ziffern verarbeitet sind.
+
+Die extrahierte Ziffer wird quadriert, und das Quadrat an der passenden
+Dezimalstelle der Zielzahl eingefügt. Dafür wird das Quadrat mit dem aktuellen
+Stellenwert (\mintinline{c}{placeValue}) multipliziert und zur Zielzahl addiert.
+Anschließend wird der Stellenwert für die nächste Ziffer entsprechend angepasst,
+abhängig davon, ob das Quadrat ein- oder zweistellig ist.
+
+\begin{minted}[fontsize=\smallish]{c}
+unsigned long long digitsToSquares(unsigned number) {
+    unsigned long long transformedNumber = 0;
+    unsigned int currentDigit = 0;
+    unsigned long long digitSquare = 0;
+    unsigned long long placeValue = 1;
+
+    do {
+        currentDigit = number % 10; // Get the last digit
+        number /= 10;               // Remove the last digit
+
+        digitSquare = currentDigit * currentDigit;
+
+        // Determine if the square requires one or two digits
+        unsigned long long digitShiftMultiplier = 1;
+        if (digitSquare > 9)
+            digitShiftMultiplier = 10;
+
+        transformedNumber += digitSquare * placeValue;
+        // Adjust the place value for the next digit
+        placeValue *= digitShiftMultiplier * 10;
+    } while (number != 0);
+
+    return transformedNumber;
+}
+\end{minted}
+
+
+
+
 \chapter{Anzahl Wörter in einem String zählen}
 
 Bei dieser Aufgabenstellung spielen zwei Dinge eine wesentliche Rolle: es ist
