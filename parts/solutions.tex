@@ -710,6 +710,104 @@ unsigned long long digitsToSquares(unsigned number) {
 
 
 
+
+\chapter{Höchsten und niedrigsten Wert in einem String finden}
+
+\section*{Lösungsansatz mit \texttt{strtol()}}
+
+Die erste Lösung verwendet die Funktion \mintinline{c}{strtol()}, um die Zahlen
+aus der Eingabezeichenkette direkt zu parsen. Dabei wird der Eingabestring von
+links nach rechts durchlaufen, und jedes erkannte Zahlentoken wird in eine
+Ganzzahl umgewandelt. Die Funktion \mintinline{c}{strtol()} verarbeitet zunächst
+führende Leerzeichen, überspringt diese automatisch und beginnt dann mit dem
+Parsen der nächsten Zahl. Nach der Umwandlung wird der Zeiger, der im zweiten
+Argument (\mintinline{c}{&parsePtr}) übergeben wird, auf das nächste
+nicht-parsbare Zeichen gesetzt. Auf diese Weise kann der String schrittweise
+verarbeitet werden, ohne ihn zu verändern.
+
+Das Ergebnis wird am Ende mithilfe der Funktion \mintinline{c}{sprintf()} in
+das Format \mintinline{c}{"max min"} gebracht und in den Ergebnisstring
+geschrieben.
+
+\begin{minted}[fontsize=\smallish]{c}
+void findHighAndLow(const char *inputString, char *output) {
+    long currentValue;
+    char *parsePtr = (char *)inputString;
+
+    // Parse the first number
+    currentValue = strtol(parsePtr, &parsePtr, 10);
+    long max = currentValue;
+    long min = currentValue;
+
+    // Parse the remaining numbers
+    while (*parsePtr) {
+        currentValue = strtol(parsePtr, &parsePtr, 10);
+        if (currentValue > max) {
+            max = currentValue;
+        }
+        if (currentValue < min) {
+            min = currentValue;
+        }
+    }
+
+    sprintf(output, "%ld %ld", max, min);
+}
+\end{minted}
+
+\section*{Lösungsansatz mit \texttt{strtok()}}
+
+Die zweite Lösung nutzt \mintinline{c}{strtok()}, um die Eingabezeichenkette in
+Tokens zu zerlegen, die durch Leerzeichen getrennt sind. Da
+\mintinline{c}{strtok()} den ursprünglichen String modifiziert, wird zuerst eine
+Kopie des Eingabestrings erstellt, um die Originaldaten nicht zu verändern.
+Anschließend wird jedes Token mithilfe von \mintinline{c}{strtol()} in eine
+Ganzzahl umgewandelt, wobei der erste Wert als Initialisierung für das Minimum
+und Maximum dient. In einer Schleife werden alle weiteren Tokens verarbeitet, um
+das Minimum und Maximum zu bestimmen. Das Ergebnis wird schließlich mithilfe der
+Funktion \mintinline{c}{sprintf()} in das Format \mintinline{c}{"max min"}
+gebracht und in den Ergebnisstring geschrieben.
+
+\begin{minted}[fontsize=\smallish]{c}
+void findHighAndLow(const char *inputString, char *output) {
+    // Create a copy of the input string for use with strtok
+    size_t stringLength = strlen(inputString);
+    char workingCopy[stringLength + 1];
+    strncpy(workingCopy, inputString, stringLength);
+    workingCopy[stringLength] = '\0'; // Ensure null termination
+
+    char delimiter[] = " ";
+    char *token = strtok(workingCopy, delimiter);
+
+    if (token == NULL) {
+        // Handle empty or invalid input
+        strcpy(output, "No valid numbers");
+        return;
+    }
+
+    long currentValue = strtol(token, NULL, 10);
+    long max = currentValue;
+    long min = currentValue;
+
+    while (token != NULL) {
+        currentValue = strtol(token, NULL, 10);
+        if (currentValue > max) {
+            max = currentValue;
+        }
+        if (currentValue < min) {
+            min = currentValue;
+        }
+        token = strtok(NULL, delimiter);
+    }
+
+    sprintf(output, "%ld %ld", max, min);
+}
+\end{minted}
+
+
+
+
+
+
 \chapter{Anzahl Wörter in einem String zählen}
 
 Bei dieser Aufgabenstellung spielen zwei Dinge eine wesentliche Rolle: es ist

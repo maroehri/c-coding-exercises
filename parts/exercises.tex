@@ -558,6 +558,50 @@ int main(void) {
 
 
 
+
+\chapter{Höchsten und niedrigsten Wert in einem String finden}
+
+\TopicLevel{Strings}{2}\vspace{10pt}
+
+Erstellen Sie eine Funktion \mintinline{c}{findHighAndLow()}, die die höchsten
+und niedrigsten Werte aus einer Zeichenkette ("Eingabestring") extrahiert,
+welche durch Leerzeichen getrennte Ganzzahlen enthält. Die Funktion soll die
+ermittelten Werte in einem bereitgestellten Ergebnisstring im Format
+\texttt{<max> <min>} schreiben.
+
+\textit{Hinweis:} Sie können die Funktion \mintinline{c}{sprintf()} verwenden,
+um die ermittelten höchsten und niedrigsten Werte im gewünschten Format in den
+Ergebnisstring zu schreiben.
+
+\Vorlage
+\begin{minted}{c}
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void findHighAndLow(const char *inputString, char *output) {
+
+// your solution here ...
+
+}
+
+int main(void) {
+    char output[32];
+    char testString[] = "15 -3 22 0 -45 67 89 -12 34 23 -56 78";
+    printf("Eingabestring:  %s\n", testString);
+    findHighAndLow(testString, output);
+    printf("Ergebnisstring: %s\n", output);
+}
+\end{minted}
+
+\begin{mybox}[title=Bildschirmausgabe]{console}
+Eingabestring:  15 -3 22 0 -45 67 89 -12 34 23 -56 78
+Ergebnisstring: 89 -56
+\end{mybox}
+
+
+
+
 \chapter{Anzahl Wörter in einem String zählen}
 
 \TopicLevel{Strings}{3}\vspace{10pt}
