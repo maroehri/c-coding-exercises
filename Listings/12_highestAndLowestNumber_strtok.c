@@ -3,9 +3,17 @@
 #include <string.h>
 
 void findHighAndLow(const char *inputString, char *output) {
+    if (inputString == NULL || output == NULL) {
+        return;
+    }
+
     // Create a copy of the input string for use with strtok
     size_t stringLength = strlen(inputString);
-    char workingCopy[stringLength + 1];
+    char *workingCopy = malloc(stringLength + 1);
+    if (workingCopy == NULL) {
+        strcpy(output, "Memory allocation failed");
+        return;
+    }
     strncpy(workingCopy, inputString, stringLength);
     workingCopy[stringLength] = '\0'; // Ensure null termination
 
@@ -15,6 +23,7 @@ void findHighAndLow(const char *inputString, char *output) {
     if (token == NULL) {
         // Handle empty or invalid input
         strcpy(output, "No valid numbers");
+        free(workingCopy);
         return;
     }
 
@@ -35,6 +44,7 @@ void findHighAndLow(const char *inputString, char *output) {
 
     // Format the result
     sprintf(output, "%ld %ld", max, min);
+    free(workingCopy);
 }
 
 int main(void) {

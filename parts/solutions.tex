@@ -757,21 +757,34 @@ void findHighAndLow(const char *inputString, char *output) {
 \section*{Lösungsansatz mit \texttt{strtok()}}
 
 Die zweite Lösung nutzt \mintinline{c}{strtok()}, um die Eingabezeichenkette in
-Tokens zu zerlegen, die durch Leerzeichen getrennt sind. Da
-\mintinline{c}{strtok()} den ursprünglichen String modifiziert, wird zuerst eine
-Kopie des Eingabestrings erstellt, um die Originaldaten nicht zu verändern.
-Anschließend wird jedes Token mithilfe von \mintinline{c}{strtol()} in eine
-Ganzzahl umgewandelt, wobei der erste Wert als Initialisierung für das Minimum
-und Maximum dient. In einer Schleife werden alle weiteren Tokens verarbeitet, um
-das Minimum und Maximum zu bestimmen. Das Ergebnis wird schließlich mithilfe der
-Funktion \mintinline{c}{sprintf()} in das Format \mintinline{c}{"max min"}
-gebracht und in den Ergebnisstring geschrieben.
+Tokens zu zerlegen, die durch Leerzeichen getrennt sind. Da die verwendete
+Funktion \mintinline{c}{strtok()} den zu verarbeitenden String modifiziert, wird
+zunächst eine Kopie des Eingabestrings im Heap-Speicher angelegt. Nach
+erfolgreicher Speicherallokation wird die Zeichenkette mithilfe von
+\mintinline{c}{strtok()} in einzelne, durch Leerzeichen getrennte Tokens
+zerlegt.
+
+Das erste Token wird mit \mintinline{c}{strtol()} in eine Ganzzahl umgewandelt
+und dient als Initialisierung für das Minimum und Maximum. In einer Schleife
+werden dann alle weiteren Tokens verarbeitet und die Werte für Minimum und
+Maximum entsprechend aktualisiert. Nach Abschluss der Verarbeitung wird der
+allozierte Speicher wieder freigegeben und das Ergebnis mithilfe von
+\mintinline{c}{sprintf()} im Format \mintinline{c}{"max min"} in den
+Ergebnisstring geschrieben.
 
 \begin{minted}[fontsize=\smallish]{c}
 void findHighAndLow(const char *inputString, char *output) {
+    if (inputString == NULL || output == NULL) {
+        return;
+    }
+
     // Create a copy of the input string for use with strtok
     size_t stringLength = strlen(inputString);
-    char workingCopy[stringLength + 1];
+    char *workingCopy = malloc(stringLength + 1);
+    if (workingCopy == NULL) {
+        strcpy(output, "Memory allocation failed");
+        return;
+    }
     strncpy(workingCopy, inputString, stringLength);
     workingCopy[stringLength] = '\0'; // Ensure null termination
 
@@ -781,6 +794,7 @@ void findHighAndLow(const char *inputString, char *output) {
     if (token == NULL) {
         // Handle empty or invalid input
         strcpy(output, "No valid numbers");
+        free(workingCopy);
         return;
     }
 
@@ -799,7 +813,9 @@ void findHighAndLow(const char *inputString, char *output) {
         token = strtok(NULL, delimiter);
     }
 
+    // Format the result
     sprintf(output, "%ld %ld", max, min);
+    free(workingCopy);
 }
 \end{minted}
 
@@ -1131,6 +1147,81 @@ int main(void) {
 
     fclose(fp);
     return 0;
+}
+\end{minted}
+
+
+
+\chapter{Überprüfen, ob eine Zeichenkette eine gültige IPv4-Adresse ist}
+
+Die Funktion \mintinline{c}{isValidIpv4()} prüft, ob ein gegebener String eine
+gültige IPv4-Adresse darstellt. Eine IPv4-Adresse besteht aus vier Dezimalzahlen
+(Oktetten) im Bereich von 0 bis 255, die durch Punkte getrennt sind. Bei
+mehrstelligen Zahlen sind führende Nullen nicht erlaubt, mit der einzigen
+Ausnahme der einzelnen Ziffer "0".
+
+Da die zur Zerlegung verwendete Funktion \mintinline{c}{strtok()} den
+Eingabestring modifiziert, wird zunächst eine Arbeitskopie erstellt. Diese wird
+dann an den Punkten in einzelne Oktette zerlegt, die jeweils einer dreistufigen
+Validierung unterzogen werden: Zunächst wird mit \mintinline{c}{isdigit()}
+sichergestellt, dass das Oktett ausschließlich aus Ziffern besteht. Anschließend
+wird bei mehrstelligen Oktetten geprüft, ob keine führenden Nullen vorhanden
+sind. Schließlich wird das Oktett mit \mintinline{c}{strtol()} in eine Zahl
+umgewandelt und kontrolliert, ob diese im gültigen Wertebereich von 0 bis 255
+liegt.
+
+Während der Verarbeitung wird gezählt, wie viele gültige Oktette gefunden
+wurden. Die Funktion gibt \mintinline{c}{false} zurück, wenn die Eingabe leer
+oder \mintinline{c}{NULL} ist, ein Oktett ungültige Zeichen oder unerlaubte
+führende Nullen enthält, ein Zahlenwert außerhalb des gültigen Bereichs liegt
+oder nicht genau vier Oktette vorhanden sind. Nur wenn alle diese Kriterien
+erfüllt sind und keine weiteren Zeichen nach dem letzten Oktett folgen, wird
+\mintinline{c}{true} zurückgegeben.
+
+\begin{minted}{c}
+bool isValidIpv4(const char *ipAddress) {
+    if (ipAddress == NULL || *ipAddress == '\0') {
+        return false;
+    }
+
+    // Create a copy of the input string for use with strtok
+    size_t stringLength = strlen(ipAddress);
+    char *workingCopy = malloc(stringLength + 1);
+    strncpy(workingCopy, ipAddress, stringLength);
+    workingCopy[stringLength] = '\0'; // Ensure null termination
+
+    int octetCount = 0;
+    char *currentOctet = strtok(workingCopy, ".");
+
+    while (currentOctet != NULL && octetCount < 4) {
+        // Check if octet contains only digits
+        for (char *digit = currentOctet; *digit != '\0'; digit++) {
+            if (!isdigit(*digit)) {
+                free(workingCopy);
+                return false;
+            }
+        }
+
+        // Check if octet with more than one digit
+        // contains no leading zero
+        if (strlen(currentOctet) > 1 && currentOctet[0] == '0') {
+            free(workingCopy);
+            return false;
+        }
+
+        // Convert octet into decimal number and check range
+        long octetValue = strtol(currentOctet, NULL, 10);
+        if (octetValue < 0 || octetValue > 255) {
+            free(workingCopy);
+            return false;
+        }
+
+        octetCount++;
+        currentOctet = strtok(NULL, ".");
+    }
+
+    free(workingCopy);
+    return octetCount == 4 && currentOctet == NULL;
 }
 \end{minted}
 

@@ -666,6 +666,60 @@ Gruppe mit 6 Elementen: 48.17
 
 
 
+\chapter{Überprüfen, ob eine Zeichenkette eine gültige IPv4-Adresse ist}
+
+\TopicLevel{Strings}{3}\vspace{10pt}
+
+Erstellen Sie eine Funktion \mintinline{c}{isValidIpv4()}, die überprüft, ob ein
+gegebener String eine gültige IPv4-Adresse darstellt. Eine IPv4-Adresse besteht
+aus vier Dezimalzahlen (sogenannten "Oktetten"), die durch Punkte getrennt sind.
+Jedes Oktett muss im Bereich von 0 bis 255 liegen und darf keine führenden
+Nullen enthalten (außer das Oktett ist die Zahl 0). Die Funktion soll
+\mintinline{c}{true} zurückgeben, wenn die Eingabe eine gültige IPv4-Adresse
+ist, und andernfalls \mintinline{c}{false}.
+
+\Vorlage
+\begin{minted}{c}
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <ctype.h> // isdigit()
+
+bool isValidIpv4(const char *ipAddress) {
+
+// your solution here ...
+
+}
+
+int main(void) {
+    const char address1[] = "10.0.0.1";
+
+    // These ones should not be valid:
+    const char address2[] = "";
+    const char address3[] = "abc.def.ghi.jkl";
+    const char address4[] = "12.34.56 .1";
+    const char address5[] = "123.045.067.089";
+
+    printf("%-15s: %s\n", address1, isValidIpv4(address1) ? "valid" : "invalid");
+    printf("%-15s: %s\n", address2, isValidIpv4(address2) ? "valid" : "invalid");
+    printf("%-15s: %s\n", address3, isValidIpv4(address3) ? "valid" : "invalid");
+    printf("%-15s: %s\n", address4, isValidIpv4(address4) ? "valid" : "invalid");
+    printf("%-15s: %s\n", address5, isValidIpv4(address5) ? "valid" : "invalid");
+}
+
+\end{minted}
+
+\begin{mybox}[title=Bildschirmausgabe]{console}
+10.0.0.1       : valid
+               : invalid
+abc.def.ghi.jkl: invalid
+12.34.56 .1    : invalid
+123.045.067.089: invalid
+\end{mybox}
+
+
+
 
 \chapter{Jüngste Person in einer Datenstruktur finden}
 
