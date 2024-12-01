@@ -117,6 +117,99 @@ myArray[7] = 4
 
 
 
+\chapter{Länge des kürzesten Wortes in einem Satz bestimmen}
+
+\TopicLevel{Arrays und Strings}{1}\vspace{10pt}
+
+Erstellen Sie eine Funktion \mintinline{c}{shortestWordLength()}, die die Länge
+des kürzesten Wortes in einem gegebenen Satz ermittelt. Der Funktion wird eine
+Zeichenkette übergeben, die aus Wörtern besteht, die durch Leerzeichen getrennt
+sind. Die Funktion soll die Länge des kürzesten Wortes berechnen und diesen Wert
+an den Aufrufer zurückgeben.
+
+\Vorlage
+\begin{minted}{c}
+int main(void) {
+    char string1[] = "Ein Tag am Meer";
+    printf("\"%s\"\n", string1);
+    printf("Kürzestes Wort hat %d Zeichen\n", shortestWordLength(string1));
+
+    char string2[] = "Fischers Fritze fischt frische Fische";
+    printf("\"%s\"\n", string2);
+    printf("Kürzestes Wort hat %d Zeichen\n\n", shortestWordLength(string2));
+}
+\end{minted}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+"Ein Tag am Meer"
+Kürzestes Wort hat 2 Zeichen
+
+"Fischers Fritze fischt frische Fische"
+Kürzestes Wort hat 6 Zeichen
+\end{mybox}
+
+
+
+
+\chapter{Text in Leetspeak umwandeln}
+
+\TopicLevel{Strings}{1}\vspace{10pt}
+
+Im sog. \textit{Leetspeak} werden bestimmte Buchstaben durch ähnlich aussehende
+Zeichen oder Ziffern ersetzt. Beispielsweise würde "\textsf{1337 5P34K}" dem
+Wort "\textsf{Leet Speak}" entsprechen.
+
+\begin{enumerate}
+\item Erstellen Sie eine Funktion \mintinline{c}{getLeetChar()}, die ein Zeichen
+als Argument erhält, dieses nach den Leetspeak-Regeln ersetzt (falls zutreffend)
+und das konvertierte oder unveränderte Zeichen zurückgibt. Die Ersetzung erfolgt
+sowohl für Groß- als auch für Kleinbuchstaben nach folgendem Schema:
+
+\texttt{A} $\rightarrow$ \texttt{4} \tab \texttt{B} $\rightarrow$ \texttt{8} \tab \texttt{E} $\rightarrow$ \texttt{3} \tab \texttt{G} $\rightarrow$ \texttt{6}
+
+\texttt{H} $\rightarrow$ \texttt{\#} \tab \texttt{I} $\rightarrow$ \texttt{1} \tab \texttt{O} $\rightarrow$ \texttt{0} \tab \texttt{S} $\rightarrow$ \texttt{\$}
+
+\texttt{T} $\rightarrow$ \texttt{7} \tab \texttt{Z} $\rightarrow$ \texttt{2}
+
+\item Erstellen Sie anschließend eine Funktion \mintinline{c}{leetspeak()}, die
+einen String als Argument entgegennimmt und mithilfe der Funktion
+\mintinline{c}{getLeetChar()} jedes Zeichen des übergebenen Strings prüft und
+ggf. verändert. Der gesamte String soll schließlich von der Funktion in
+Leetspeak umgewandelt werden.
+
+\Vorlage
+\begin{minted}[fontsize=\small]{c}
+#include <stdio.h>
+
+int main(void) {
+    char input[100];
+
+    printf("Satz eingeben: ");
+    fgets(input, sizeof(input), stdin);
+
+    // Folgende Funktion sollen Sie erstellen:
+    leetspeak(input);
+
+    printf("Leetspeak: %s", input);
+
+    return 0;
+}
+\end{minted}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+Satz eingeben: \highlight{Das ist ein Test}
+Leetspeak: D4$ 1$7 31n 73$7
+
+Satz eingeben: \highlight{Hallo Welt}
+Leetspeak: #4ll0 W3l7
+
+Satz eingeben: \highlight{C-Programmierung macht Spaß}
+Leetspeak: C-Pr06r4mm13run6 m4c#7 $p4ß
+\end{mybox}
+\end{enumerate}
+
+
+
 \chapter{Barcode-Prüfziffer berechnen}
 
 \TopicLevel{Arrays und Strings}{2}\vspace{10pt}
@@ -272,66 +365,6 @@ Die Prüfziffer lautet: 0
 
 
 
-
-\chapter{Text in Leetspeak umwandeln}
-
-\TopicLevel{Strings}{1}\vspace{10pt}
-
-Im sog. \textit{Leetspeak} werden bestimmte Buchstaben durch ähnlich aussehende
-Zeichen oder Ziffern ersetzt. Beispielsweise würde "\textsf{1337 5P34K}" dem
-Wort "\textsf{Leet Speak}" entsprechen.
-
-\begin{enumerate}
-\item Erstellen Sie eine Funktion \mintinline{c}{getLeetChar()}, die ein Zeichen
-als Argument erhält, dieses nach den Leetspeak-Regeln ersetzt (falls zutreffend)
-und das konvertierte oder unveränderte Zeichen zurückgibt. Die Ersetzung erfolgt
-sowohl für Groß- als auch für Kleinbuchstaben nach folgendem Schema:
-
-\texttt{A} $\rightarrow$ \texttt{4} \tab \texttt{B} $\rightarrow$ \texttt{8} \tab \texttt{E} $\rightarrow$ \texttt{3} \tab \texttt{G} $\rightarrow$ \texttt{6}
-
-\texttt{H} $\rightarrow$ \texttt{\#} \tab \texttt{I} $\rightarrow$ \texttt{1} \tab \texttt{O} $\rightarrow$ \texttt{0} \tab \texttt{S} $\rightarrow$ \texttt{\$}
-
-\texttt{T} $\rightarrow$ \texttt{7} \tab \texttt{Z} $\rightarrow$ \texttt{2}
-
-\item Erstellen Sie anschließend eine Funktion \mintinline{c}{leetspeak()}, die
-einen String als Argument entgegennimmt und mithilfe der Funktion
-\mintinline{c}{getLeetChar()} jedes Zeichen des übergebenen Strings prüft und
-ggf. verändert. Der gesamte String soll schließlich von der Funktion in
-Leetspeak umgewandelt werden.
-
-\Vorlage
-\begin{minted}[fontsize=\small]{c}
-#include <stdio.h>
-
-int main(void) {
-    char input[100];
-
-    printf("Satz eingeben: ");
-    fgets(input, sizeof(input), stdin);
-
-    // Folgende Funktion sollen Sie erstellen:
-    leetspeak(input);
-
-    printf("Leetspeak: %s", input);
-
-    return 0;
-}
-\end{minted}
-
-\begin{mybox}[Bildschirmausgabe]{console}
-Satz eingeben: \highlight{Das ist ein Test}
-Leetspeak: D4$ 1$7 31n 73$7
-
-Satz eingeben: \highlight{Hallo Welt}
-Leetspeak: #4ll0 W3l7
-
-Satz eingeben: \highlight{C-Programmierung macht Spaß}
-Leetspeak: C-Pr06r4mm13run6 m4c#7 $p4ß
-\end{mybox}
-\end{enumerate}
-
-
-
 \chapter{Überprüfen, ob ein String ein Palindrom ist}
 
 \TopicLevel{Strings}{2}\vspace{10pt}
@@ -451,7 +484,7 @@ Zeichen i kommt 10 mal vor.
 
 \chapter{Quadratzahlen der Ziffern einer Zahl zusammensetzen}
 
-\TopicLevel{Strings}{2}\vspace{10pt}
+\TopicLevel{Zahlen}{2}\vspace{10pt}
 
 Erstellen Sie eine Funktion \mintinline{c}{digitsToSquares()}, die für jede
 Ziffer einer gegebenen Zahl \mintinline{c}{number} das Quadrat der Ziffer
