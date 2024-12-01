@@ -453,6 +453,44 @@ int main(void) {
 
 
 
+\chapter{Vokale aus einem String entfernen}
+
+\TopicLevel{Strings, Dynamische Speicherverwaltung}{2}\vspace{10pt}
+
+Schreiben Sie eine Funktion \mintinline{c}{createVowelFreeString()}, die alle
+Vokale (a, e, i, o, u -- sowohl in Groß- als auch Kleinschreibung) aus einem
+gegebenen String entfernt und einen neuen String erstellt. Der neue String soll
+\textit{dynamisch Speicher} in der minimal nötigen Größe für den vokalfreien
+String allokieren und als Rückgabewert einen Zeiger auf diesen Speicher liefern.
+Der Aufrufer ist für das Freigeben des Speichers verantwortlich.
+
+\Vorlage
+\begin{minted}{c}
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+
+int main(void) {
+    char string1[] = "Ein kluger Kopf durchdenkt jedes Problem";
+    printf("Original:    \"%s\"\n", string1);
+
+    char *vowelFreeString = createVowelFreeString(string1);
+    printf("Ohne Vokale: \"%s\"\n", vowelFreeString);
+
+    free(vowelFreeString);
+}
+\end{minted}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+Original:    "Ein kluger Kopf durchdenkt jedes Problem"
+Ohne Vokale: "n klgr Kpf drchdnkt jds Prblm"
+\end{mybox}
+
+
+
+
+
 \chapter{Häufigste vorkommende Zeichen in einem String finden}
 
 \TopicLevel{Strings}{2}\vspace{10pt}

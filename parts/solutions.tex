@@ -530,6 +530,83 @@ char *stringAppend(char *firstString, char *secondString) {
 
 
 
+\chapter{Vokale aus einem String entfernen}
+
+Die Funktion \mintinline{c}{createVowelFreeString()} entfernt alle Vokale
+(sowohl Groß- als auch Kleinschreibung) aus einem gegebenen String und erstellt
+dafür einen neuen dynamisch allokierten String. Zunächst wird die Anzahl der
+Vokale im Eingabestring gezählt, um die exakte Länge des neuen Strings zu
+berechnen. Danach wird der Speicher für den neuen String inklusive des
+Nullterminators allokiert. Eine Fehlerprüfung stellt sicher, dass die
+Speicherallokation erfolgreich war.
+
+In der zweiten Schleife werden die Zeichen des Eingabestrings durchlaufen, und
+alle Nicht-Vokale werden in den neuen String kopiert. Vokale werden dabei
+übersprungen. Nach Abschluss des Kopiervorgangs wird der neue String mit einem
+Nullterminator abgeschlossen und zurückgegeben. Der Aufrufer der Funktion ist
+für das Freigeben des dynamisch allokierten Speichers verantwortlich.
+
+\begin{minted}{c}
+bool isVowel(char c) {
+    switch (c) {
+    case 'a': case 'A':
+    case 'e': case 'E':
+    case 'i': case 'I':
+    case 'o': case 'O':
+    case 'u': case 'U':
+        return true;
+    default:
+        return false;
+    }
+}
+
+char *createVowelFreeString(const char *str) {
+    size_t length = strlen(str);
+
+    // Zählen der Vokale im Eingabestring
+    size_t numberOfVowels = 0;
+    for (size_t i = 0; i < length; i++) {
+        if (isVowel(str[i])) {
+            numberOfVowels++;
+        }
+    }
+
+    // Berechnen der Länge des neuen Strings (ohne Vokale)
+    size_t newStringLength = length - numberOfVowels;
+
+    // Speicherplatz für den neuen String allokieren
+    // (inklusive Nullterminator)
+    char *newString = malloc(newStringLength + 1);
+
+    if (newString == NULL) {
+        fprintf(stderr, "Speicher konnte nicht allokiert werden\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Vokale aus dem Eingabestring herausfiltern
+    // und den neuen String füllen
+    size_t index = 0;
+    for (size_t i = 0; i < length; i++) {
+        if (isVowel(str[i])) {
+            continue; // Überspringe Vokale
+        }
+        newString[index++] = str[i];
+    }
+
+    // Nullterminator hinzufügen, um den neuen String
+    // korrekt abzuschließen
+    newString[newStringLength] = '\0';
+
+    return newString;
+}
+\end{minted}
+
+
+
+
+
+
+
 \chapter{Häufigste vorkommende Zeichen in einem String finden}
 
 Um das am häufigsten vorkommende Zeichen in einem String zu ermitteln, ist es
