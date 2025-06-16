@@ -698,14 +698,20 @@ int main(void) {
     // These ones should not be valid:
     const char address2[] = "";
     const char address3[] = "abc.def.ghi.jkl";
-    const char address4[] = "12.34.56 .1";
-    const char address5[] = "123.045.067.089";
+    const char address4[] = "12.34.56 .1";      // Leerzeichen
+    const char address5[] = "123.045.067.089";  // führende Nullen
+    const char address6[] = "123.45.67";        // zu kurz
+    const char address7[] = "123.45.67.8.9";    // zu lang
+    const char address8[] = "300.0.0.1";        // Oktekt-Wert nur bis 255 erlaubt
 
     printf("%-15s: %s\n", address1, isValidIpv4(address1) ? "valid" : "invalid");
     printf("%-15s: %s\n", address2, isValidIpv4(address2) ? "valid" : "invalid");
     printf("%-15s: %s\n", address3, isValidIpv4(address3) ? "valid" : "invalid");
     printf("%-15s: %s\n", address4, isValidIpv4(address4) ? "valid" : "invalid");
     printf("%-15s: %s\n", address5, isValidIpv4(address5) ? "valid" : "invalid");
+    printf("%-15s: %s\n", address6, isValidIpv4(address6) ? "valid" : "invalid");
+    printf("%-15s: %s\n", address7, isValidIpv4(address7) ? "valid" : "invalid");
+    printf("%-15s: %s\n", address8, isValidIpv4(address8) ? "valid" : "invalid");
 }
 
 \end{minted}
@@ -716,6 +722,9 @@ int main(void) {
 abc.def.ghi.jkl: invalid
 12.34.56 .1    : invalid
 123.045.067.089: invalid
+123.45.67      : invalid
+123.45.67.8.9  : invalid
+300.0.0.1      : invalid
 \end{mybox}
 
 
