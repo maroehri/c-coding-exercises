@@ -82,6 +82,12 @@
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Tabellen
+\RequirePackage{tabularray}
+\UseTblrLibrary{booktabs}
+\setlength{\aboverulesep}{0pt}
+\setlength{\belowrulesep}{0pt}
+
 
 %%% Einbinden von Grafiken
 \usepackage{graphicx}
@@ -273,6 +279,39 @@
   \begin{Verbatim}[commandchars=\\\{\}]%
     }{%
   \end{Verbatim}
+  \end{tcolorbox}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% myboxtext: Wie mybox, aber ohne Verbatim
+
+\NewDocumentEnvironment{myboxtext}{={title,font}O{} m}{
+  \ekvset{mybox}{#1}%
+  \begin{tcolorbox}[
+    breakable,
+    colback=hellgrau,
+    coltitle=weiss,
+    colbacktitle=dunkelgrau,
+    colframe=dunkelgrau,
+    boxrule=0.9pt,
+    boxsep=5pt,
+    arc=2pt,
+    fonttitle=\sffamily,
+    toptitle=0mm,
+    bottomtitle=0mm,
+    left=3pt,
+    right=3pt,
+    title={%
+      \ifstrequal{#2}{file}{\faFile*[regular]\hspace{5mm}}{%
+        \ifstrequal{#2}{console}{\faTerminal\hspace{5mm}}{%
+          \ifstrequal{#2}{example}{\faLightbulb[regular]\hspace{5mm}}{}%
+        }%
+      }\myboxTitle
+    },
+  ]%
+  \myboxFont
+}{%
   \end{tcolorbox}
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
