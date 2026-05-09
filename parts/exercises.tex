@@ -1,3 +1,7 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Schwierigkeit 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \chapter{Kleinste Zahl in einem Array finden}
 
 \TopicLevel{Arrays}{1}
@@ -26,7 +30,7 @@ Kleinstes Element: 2
 \end{mybox}
 
 \item Verändern Sie Ihr Programm derart, dass es eine eigene Funktion
-\mintinline{c}{find_min()} gibt, die als Argumente ein Array aus Zahlen und die
+\mintinline{c}{findMin()} gibt, die als Argumente ein Array aus Zahlen und die
 Größe des Arrays entgegennimmt, und den kleinsten Wert aus dem Array an den
 Aufrufer zurückliefert.
 \end{enumerate}
@@ -117,39 +121,6 @@ myArray[7] = 4
 
 
 
-\chapter{Länge des kürzesten Wortes in einem Satz bestimmen}
-
-\TopicLevel{Arrays und Strings}{1}\vspace{10pt}
-
-Erstellen Sie eine Funktion \mintinline{c}{shortestWordLength()}, die die Länge
-des kürzesten Wortes in einem gegebenen Satz ermittelt. Der Funktion wird eine
-Zeichenkette übergeben, die aus Wörtern besteht, die durch Leerzeichen getrennt
-sind. Die Funktion soll die Länge des kürzesten Wortes berechnen und diesen Wert
-an den Aufrufer zurückgeben.
-
-\Vorlage
-\begin{codebox}[lang=c, fontsize=\small]
-int main(void) {
-    char string1[] = "Ein Tag am Meer";
-    printf("\"%s\"\n", string1);
-    printf("Kürzestes Wort hat %d Zeichen\n", shortestWordLength(string1));
-
-    char string2[] = "Fischers Fritze fischt frische Fische";
-    printf("\"%s\"\n", string2);
-    printf("Kürzestes Wort hat %d Zeichen\n\n", shortestWordLength(string2));
-}
-\end{codebox}
-
-\begin{mybox}[Bildschirmausgabe]{console}
-"Ein Tag am Meer"
-Kürzestes Wort hat 2 Zeichen
-
-"Fischers Fritze fischt frische Fische"
-Kürzestes Wort hat 6 Zeichen
-\end{mybox}
-
-
-
 
 \chapter{Text in Leetspeak umwandeln}
 
@@ -207,6 +178,312 @@ Satz eingeben: \highlight{C-Programmierung macht Spaß}
 Leetspeak: C-Pr06r4mm13run6 m4c#7 $p4ß
 \end{mybox}
 \end{enumerate}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Schwierigkeit 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Länge des kürzesten Wortes in einem Satz bestimmen}
+
+\TopicLevel{Arrays und Strings}{2}\vspace{10pt}
+
+Erstellen Sie eine Funktion \mintinline{c}{shortestWordLength()}, die die Länge
+des kürzesten Wortes in einem gegebenen Satz ermittelt. Der Funktion wird eine
+Zeichenkette übergeben, die aus Wörtern besteht, die durch Leerzeichen getrennt
+sind. Die Funktion soll die Länge des kürzesten Wortes berechnen und diesen Wert
+an den Aufrufer zurückgeben.
+
+\Vorlage
+\begin{codebox}[lang=c, fontsize=\small]
+int main(void) {
+    char string1[] = "Ein Tag am Meer";
+    printf("\"%s\"\n", string1);
+    printf("Kürzestes Wort hat %d Zeichen\n", shortestWordLength(string1));
+
+    char string2[] = "Fischers Fritze fischt frische Fische";
+    printf("\"%s\"\n", string2);
+    printf("Kürzestes Wort hat %d Zeichen\n\n", shortestWordLength(string2));
+}
+\end{codebox}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+"Ein Tag am Meer"
+Kürzestes Wort hat 2 Zeichen
+
+"Fischers Fritze fischt frische Fische"
+Kürzestes Wort hat 6 Zeichen
+\end{mybox}
+
+
+
+
+\chapter{Häufigkeiten der Werte 0--9 zählen und als Histogramm ausgeben}
+
+\TopicLevel{Arrays}{2}\vspace{10pt}
+
+\begin{enumerate}
+
+\item Gegeben ist ein \mintinline{c}{int}-Array mit beliebigen Ganzzahlwerten.
+
+Schreiben Sie eine Funktion \mintinline{c}{countNumbers()}, die ermittelt, wie
+oft jeder der Werte 0 bis 9 in diesem Array vorkommt. Das Ergebnis soll in einem
+separaten Array der Länge 10 gespeichert werden.
+
+Parameter:
+\begin{itemize}
+    \item \mintinline{c}{data} -- Eingabe-Array mit Ganzzahlwerten
+    \item \mintinline{c}{size} -- Anzahl der Elemente in \mintinline{c}{data}
+    \item \mintinline{c}{count} -- Ausgabe-Array der Länge 10, in das die
+    Häufigkeiten geschrieben werden sollen
+\end{itemize}
+
+\begin{myboxtext}[title=Beispiel]{example}
+Für das Array
+\texttt{[10, \highlight{2}, \highlight{2}, 22, \highlight{3}, \highlight{2}, -3, \highlight{6}, \highlight{3}, 17]}
+
+soll das Ergebnis ein Array mit folgendem Inhalt sein:
+
+\texttt{[0, 0, 3, 2, 0, 0, 1, 0, 0, 0]}
+\end{myboxtext}
+
+\item Schreiben Sie eine Funktion \mintinline{c}{printHistogram()}, die das
+Häufigkeits-Array als horizontales Balkendiagramm auf der Konsole ausgibt. Jeder
+Balken besteht aus *-Zeichen. Werte mit Häufigkeit 0 werden mit einer leeren
+Zeile dargestellt.
+
+\begin{myboxtext}[title=Beispiel]{example}
+Für das Ergebnis \texttt{[0, 0, 3, 2, 0, 0, 1, 0, 0, 0]}:
+\begin{Verbatim}[commandchars=\\\{\}]
+0:
+1:
+2: ***
+3: **
+4:
+5:
+6: *
+7:
+8:
+9:
+\end{Verbatim}
+\end{myboxtext}
+
+\end{enumerate}
+
+\Vorlage
+\begin{codebox}[lang=c, fontsize=\small]
+#include <stdio.h>
+
+int main(void) {
+    int data[] = {10, 2, 2, 22, 3, 2, -3, 6, 3, 17};
+    int size = sizeof(data) / sizeof(data[0]);
+    int count[10];
+
+    countNumbers(data, size, count);
+    printHistogram(count);
+}
+\end{codebox}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+0:
+1:
+2: ***
+3: **
+4:
+5:
+6: *
+7:
+8:
+9:
+\end{mybox}
+
+
+
+
+\chapter{Lauflängenkodierung eines Strings}
+
+\TopicLevel{Strings}{2}\vspace{10pt}
+
+Gegeben ist ein String, der nur aus Kleinbuchstaben (\texttt{a}-\texttt{z})
+besteht. Schreiben Sie eine Funktion \mintinline{c}{compress()}, die einen
+String mit einer einfachen Lauflängenkodierung kodiert. Dabei wird jede Folge
+gleicher aufeinanderfolgender Zeichen durch das Zeichen selbst und die Anzahl
+seines Auftretens ersetzt.
+
+Parameter:
+\begin{itemize}
+    \item \mintinline{c}{input} -- Eingabe-String (nur Kleinbuchstaben)
+    \item \mintinline{c}{output} -- Ausgabe-String, in den das kodierte
+    Ergebnis geschrieben wird (ausreichend groß)
+\end{itemize}
+
+Auch einzeln vorkommende Zeichen erhalten eine Zahl (z.\,B.
+"\texttt{c}" → "\texttt{c1}"). Sie können davon ausgehen, dass kein Zeichen mehr
+als 9-mal hintereinander vorkommt.
+
+\textit{Hinweis:} Die Anzahl muss als Zeichen in den Ausgabe-String geschrieben
+werden. Die Zahl \texttt{3} wird z.\,B. durch den Ausdruck \texttt{'0' + 3} zum
+Zeichen \texttt{'3'}.
+
+\begin{myboxtext}[title=Beispiel]{example}
+\begin{tblr}{
+    colspec = {Q[c,m,2cm] X[c,m] X[c,m] X[c,m]},
+    row{1}={font=\bfseries\sffamily},
+    row{even}={bg=mittelgrau},
+}
+\toprule
+Eingabe             & Ausgabe           \\ \midrule
+"\texttt{aaabbc}"   & "\texttt{a3b2c1}" \\
+"\texttt{aaa}"      & "\texttt{a3}"     \\
+"\texttt{abc}"      & "\texttt{a1b1c1}" \\
+"\texttt{}"         & "\texttt{}"       \\
+\bottomrule
+\end{tblr}
+\end{myboxtext}
+
+\Vorlage
+\begin{codebox}[lang=c, fontsize=\small]
+#include <stdio.h>
+
+int main(void) {
+    char input[] = "aaabbc";
+    char output[100];
+
+    compress(input, output);
+    printf("Eingabe: \"%s\"\n", input);
+    printf("Ausgabe: \"%s\"\n", output);
+}
+\end{codebox}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+Eingabe: "aaabbc"
+Ausgabe: "a3b2c1"
+\end{mybox}
+
+
+
+
+\chapter{Quadratzahlen der Ziffern einer Zahl zusammensetzen}
+
+\TopicLevel{Zahlen}{2}\vspace{10pt}
+
+Erstellen Sie eine Funktion \mintinline{c}{digitsToSquares()}, die für jede
+Ziffer einer gegebenen Zahl \mintinline{c}{number} das Quadrat der Ziffer
+berechnet und die Quadrate in der ursprünglichen Reihenfolge der Ziffern
+zusammensetzt. Die Funktion soll eine Zahl zurückgeben, die die berechneten
+Quadrate aller Ziffern von \mintinline{c}{number} enthält.
+
+\Vorlage
+\begin{codebox}[lang=c, fontsize=\small]
+#include <stdio.h>
+
+int main(void) {
+    unsigned int inputNumber1 = 123;
+    unsigned long long outputNumber1 = digitsToSquares(inputNumber1);
+    printf("%u --> %lld\n", inputNumber1, outputNumber1);
+
+    unsigned int inputNumber2 = 9119;
+    unsigned long long outputNumber2 = digitsToSquares(inputNumber2);
+    printf("%u --> %lld\n", inputNumber2, outputNumber2);
+
+    unsigned int inputNumber3 = 3210987654;
+    unsigned long long outputNumber3 = digitsToSquares(inputNumber3);
+    printf("%u --> %lld\n", inputNumber3, outputNumber3);
+}
+\end{codebox}
+
+\begin{mybox}[title=Bildschirmausgabe]{console}
+123 --> 149
+9119 --> 811181
+3210987654 --> 9410816449362516
+\end{mybox}
+
+
+
+
+\chapter{Häufigste vorkommende Zeichen in einem String finden}
+\TopicLevel{Strings}{2}\vspace{10pt}
+
+Erstellen Sie eine Funktion \mintinline{c}{findMaxChar()}, die basierend auf
+einem an die Funktion übergebenen String das Zeichen ermittelt, das am
+häufigsten in diesem String vorkommt. Die Funktion soll das gefundene Zeichen
+zurückgeben und die zugehörige Anzahl über einen Pointer-Parameter an den
+Aufrufer übergeben.
+
+\Vorlage
+\begin{codebox}[lang=c, fontsize=\small]
+#include <stdio.h>
+#include <string.h>
+
+int main(void) {
+    char string[] = "Fischers Fritze fischt frische Fische, "
+                    "frische Fische fischt Fischers Fritze";
+
+    int occurrence;
+    char maxChar = findMaxChar(string, &occurrence);
+    printf("Zeichen %c kommt %d mal vor.\n", maxChar, occurrence);
+}
+\end{codebox}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+Zeichen i kommt 10 mal vor.
+\end{mybox}
+
+
+
+
+\chapter{Überprüfen, ob ein String ein Palindrom ist}
+
+\TopicLevel{Strings}{2}\vspace{10pt}
+
+Ein Palindrom ist ein Wort, eine Phrase, eine Zahl oder eine andere Sequenz von
+Zeichen, die vorwärts und rückwärts gelesen identisch ist. Typische Beispiele
+für Palindrome sind Wörter wie "Anna" oder "Otto", bei denen die Buchstabenfolge
+von beiden Enden aus gleich bleibt.
+
+Erstellen Sie eine Funktion \mintinline{c}{isPalindrome()}, die überprüft, ob
+eine gegebene Zeichenkette (String) ein Palindrom ist. Die Funktion soll
+\mintinline{c}{true} zurückgeben, wenn der String ein Palindrom ist, und
+\mintinline{c}{false}, wenn er keines ist. Berücksichtigen Sie dabei, dass bei
+der Überprüfung Groß- und Kleinschreibung ignoriert werden sollte.
+
+\Vorlage
+\begin{codebox}[lang=c, fontsize=\small]
+#include <stdio.h>
+#include <stdbool.h>
+
+int main(void) {
+    char string1[] = "Kein Palindrom";
+    char string2[] = "Reliefpfeiler";   // ist ein Palindrom
+    char string3[] = "Rentner";         // ist ein Palindrom
+
+    // Die im Folgenden genutzte isPalindrome()-Funktion
+    // müssen Sie erstellen
+
+    if (isPalindrome(string1))
+        printf("\"%s\" ist ein Palindrom\n", string1);
+    else
+        printf("\"%s\" ist kein Palindrom\n", string1);
+
+    if (isPalindrome(string2))
+        printf("\"%s\" ist ein Palindrom\n", string2);
+    else
+        printf("\"%s\" ist kein Palindrom\n", string2);
+
+    if (isPalindrome(string3))
+        printf("\"%s\" ist ein Palindrom\n", string3);
+    else
+        printf("\"%s\" ist kein Palindrom\n", string3);
+}
+\end{codebox}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+"Kein Palindrom" ist kein Palindrom
+"Reliefpfeiler" ist ein Palindrom
+"Rentner" ist ein Palindrom
+\end{mybox}
+
 
 
 
@@ -365,59 +642,6 @@ Die Prüfziffer lautet: 0
 
 
 
-\chapter{Überprüfen, ob ein String ein Palindrom ist}
-
-\TopicLevel{Strings}{2}\vspace{10pt}
-
-Ein Palindrom ist ein Wort, eine Phrase, eine Zahl oder eine andere Sequenz von
-Zeichen, die vorwärts und rückwärts gelesen identisch ist. Typische Beispiele
-für Palindrome sind Wörter wie "Anna" oder "Otto", bei denen die Buchstabenfolge
-von beiden Enden aus gleich bleibt.
-
-Erstellen Sie eine Funktion \mintinline{c}{isPalindrome()}, die überprüft, ob
-eine gegebene Zeichenkette (String) ein Palindrom ist. Die Funktion soll
-\mintinline{c}{true} zurückgeben, wenn der String ein Palindrom ist, und
-\mintinline{c}{false}, wenn er keines ist. Berücksichtigen Sie dabei, dass bei
-der Überprüfung Groß- und Kleinschreibung ignoriert werden sollte.
-
-\Vorlage
-\begin{codebox}[lang=c, fontsize=\small]
-#include <stdio.h>
-#include <stdbool.h>
-
-int main(void) {
-    char string1[] = "Kein Palindrom";
-    char string2[] = "Reliefpfeiler";   // ist ein Palindrom
-    char string3[] = "Rentner";         // ist ein Palindrom
-
-    // Die im Folgenden genutzte isPalindrome()-Funktion
-    // müssen Sie erstellen
-
-    if (isPalindrome(string1))
-        printf("\"%s\" ist ein Palindrom\n", string1);
-    else
-        printf("\"%s\" ist kein Palindrom\n", string1);
-
-    if (isPalindrome(string2))
-        printf("\"%s\" ist ein Palindrom\n", string2);
-    else
-        printf("\"%s\" ist kein Palindrom\n", string2);
-
-    if (isPalindrome(string3))
-        printf("\"%s\" ist ein Palindrom\n", string3);
-    else
-        printf("\"%s\" ist kein Palindrom\n", string3);
-}
-\end{codebox}
-
-\begin{mybox}[Bildschirmausgabe]{console}
-"Kein Palindrom" ist kein Palindrom
-"Reliefpfeiler" ist ein Palindrom
-"Rentner" ist ein Palindrom
-\end{mybox}
-
-
-
 
 \chapter{Strings unter Verwendung dynamischer Speicherzuweisung verbinden}
 
@@ -448,7 +672,6 @@ int main(void) {
 \begin{mybox}[Bildschirmausgabe]{console}
 Übungsaufgaben Programmieren in C
 \end{mybox}
-
 
 
 
@@ -490,81 +713,65 @@ Ohne Vokale: "n klgr Kpf drchdnkt jds Prblm"
 
 
 
+\chapter{Werte eines Arrays auf einen Maximalwert begrenzen}
 
-\chapter{Häufigste vorkommende Zeichen in einem String finden}
-\TopicLevel{Strings}{2}\vspace{10pt}
+\TopicLevel{Arrays, Dynamische Speicherverwaltung}{2}\vspace{10pt}
 
-Erstellen Sie eine Funktion \mintinline{c}{findMaxChar()}, die basierend auf
-einem an die Funktion übergebenen String das Zeichen ermittelt, das am
-häufigsten in diesem String vorkommt. Die Funktion soll das gefundene Zeichen
-zurückgeben und die zugehörige Anzahl über einen Pointer-Parameter an den
-Aufrufer übergeben.
+Schreiben Sie eine Funktion \mintinline{c}{clampAll()}, die aus einem
+Eingabearray ein neues Array erzeugt, in dem alle Werte größer als ein
+Maximalwert auf diesen Maximalwert begrenzt werden. Werte, die bereits kleiner
+oder gleich dem Maximalwert sind, werden unverändert übernommen.
+
+Das Ergebnisarray soll dynamisch auf dem Heap allokiert und über einen
+Doppel-Pointer-Parameter an den Aufrufer zurückgegeben werden. Die Funktion soll
+\mintinline{text}{0} bei Erfolg und \mintinline{text}{-1} im Fehlerfall
+zurückgeben.
+
+\begin{myboxtext}[title=Beispiel]{example}
+Eingabe: \mintinline{text}{[3, 12, 7, 20, 5]}, Maximalwert \mintinline{text}{10}\\
+Ergebnis: \mintinline{text}{[3, 10, 7, 10, 5]}
+\end{myboxtext}
 
 \Vorlage
 \begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
 
 int main(void) {
-    char string[] = "Fischers Fritze fischt frische Fische, "
-                    "frische Fische fischt Fischers Fritze";
+    int source[] = {3, 12, 7, 20, 5};
+    int n = sizeof(source) / sizeof(source[0]);
+    int max = 10;
+    int *result;
 
-    int occurrence;
-    char maxChar = findMaxChar(string, &occurrence);
-    printf("Zeichen %c kommt %d mal vor.\n", maxChar, occurrence);
+    if (clampAll(source, n, max, &result) != 0) {
+        printf("Allokation fehlgeschlagen\n");
+        return 1;
+    }
+
+    printf("Eingabe:   ");
+    for (int i = 0; i < n; i++) printf("%d ", source[i]);
+    printf("\nErgebnis:  ");
+    for (int i = 0; i < n; i++) printf("%d ", result[i]);
+    printf("\n");
+
+    free(result);
 }
 \end{codebox}
 
 \begin{mybox}[Bildschirmausgabe]{console}
-Zeichen i kommt 10 mal vor.
+Eingabe:   3 12 7 20 5
+Ergebnis:  3 10 7 10 5
 \end{mybox}
 
 
 
-
-
-\chapter{Quadratzahlen der Ziffern einer Zahl zusammensetzen}
-
-\TopicLevel{Zahlen}{2}\vspace{10pt}
-
-Erstellen Sie eine Funktion \mintinline{c}{digitsToSquares()}, die für jede
-Ziffer einer gegebenen Zahl \mintinline{c}{number} das Quadrat der Ziffer
-berechnet und die Quadrate in der ursprünglichen Reihenfolge der Ziffern
-zusammensetzt. Die Funktion soll eine Zahl zurückgeben, die die berechneten
-Quadrate aller Ziffern von \mintinline{c}{number} enthält.
-
-\Vorlage
-\begin{codebox}[lang=c, fontsize=\small]
-#include <stdio.h>
-
-int main(void) {
-    unsigned int inputNumber1 = 123;
-    unsigned long long outputNumber1 = digitsToSquares(inputNumber1);
-    printf("%u --> %lld\n", inputNumber1, outputNumber1);
-
-    unsigned int inputNumber2 = 9119;
-    unsigned long long outputNumber2 = digitsToSquares(inputNumber2);
-    printf("%u --> %lld\n", inputNumber2, outputNumber2);
-
-    unsigned int inputNumber3 = 3210987654;
-    unsigned long long outputNumber3 = digitsToSquares(inputNumber3);
-    printf("%u --> %lld\n", inputNumber3, outputNumber3);
-}
-\end{codebox}
-
-\begin{mybox}[title=Bildschirmausgabe]{console}
-123 --> 149
-9119 --> 811181
-3210987654 --> 9410816449362516
-\end{mybox}
-
-
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Schwierigkeit 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Höchsten und niedrigsten Wert in einem String finden}
 
-\TopicLevel{Strings}{2}\vspace{10pt}
+\TopicLevel{Strings}{3}\vspace{10pt}
 
 Erstellen Sie eine Funktion \mintinline{c}{findHighAndLow()}, die die höchsten
 und niedrigsten Werte aus einer Zeichenkette ("Eingabestring") extrahiert,
@@ -820,6 +1027,287 @@ Man kann sich die Struktur also wie folgt vorstellen:
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Schwierigkeit 4
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Stapel mit dynamisch wachsender Kapazität}
+
+\TopicLevel{Strukturen, Dynamische Speicherverwaltung}{4}\vspace{10pt}
+
+Ein \textit{Stapel} (engl. \textit{Stack}) ist eine Datenstruktur, die nach dem
+LIFO-Prinzip (\textit{Last In, First Out}) arbeitet: Werte werden oben auf den
+Stapel gelegt und auch wieder von oben heruntergenommen. In dieser Aufgabe
+sollen Sie einen Stapel mit dynamisch wachsender Kapazität in C implementieren.
+
+Verwenden Sie dazu folgende Struktur:
+\begin{codebox}[lang=c, fontsize=\small]
+typedef struct {
+    int *data;       /* dynamisch allokierter Buffer */
+    int  size;       /* aktuelle Anzahl Elemente */
+    int  capacity;   /* allokierte Groesse in Elementen */
+} intStack;
+\end{codebox}
+
+Das Feld \mintinline{c}{data} zeigt auf einen Buffer der Größe
+\mintinline{c}{capacity}. Davon sind die ersten \mintinline{c}{size} Elemente
+tatsächlich genutzt; das oberste Stapelelement steht an Index
+\mintinline{c}{size - 1}.
+
+\begin{enumerate}
+
+\item Erstellen Sie eine Funktion \mintinline{c}{stackInit()}, die einen Stapel
+initialisiert. Die Funktion bekommt einen Pointer auf einen
+\mintinline{c}{intStack} sowie eine Anfangskapazität übergeben. Allokieren Sie
+einen Buffer der angegebenen Größe auf dem Heap und setzen Sie die Felder der
+Struktur entsprechend. Im Fehlerfall soll \mintinline{c}{-1} zurückgegeben
+werden, sonst \mintinline{c}{0}.
+
+\item Erstellen Sie eine Funktion \mintinline{c}{stackPush()}, die einen Wert
+oben auf den Stapel legt. Falls der Buffer dafür nicht mehr ausreicht, soll die
+Kapazität \textit{verdoppelt} werden, bevor der Wert hinzugefügt wird. Im
+Fehlerfall soll \mintinline{c}{-1} zurückgegeben werden, sonst
+\mintinline{c}{0}.
+
+\item Erstellen Sie eine Funktion \mintinline{c}{stackPop()}, die das oberste
+Element vom Stapel entfernt und über einen Pointer-Parameter zurückgibt. Ist der
+Stapel leer, soll \mintinline{c}{-1} zurückgegeben werden, sonst
+\mintinline{c}{0}. Die Kapazität des Buffers muss nicht angepasst werden.
+
+\item Erstellen Sie eine Funktion \mintinline{c}{stackFree()}, die den vom
+Stapel belegten Speicher wieder freigibt und die Felder der Struktur
+zurücksetzt.
+
+\end{enumerate}
+
+\Vorlage
+\begin{codebox}[lang=c, fontsize=\small]
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void) {
+    intStack stack;
+    stackInit(&stack, 2);
+
+    stackPush(&stack, 10);
+    stackPush(&stack, 20);
+    stackPush(&stack, 30);
+    stackPush(&stack, 40);
+
+    printf("Stapel hat %d Elemente, Kapazität: %d\n",
+           stack.size, stack.capacity);
+
+    int value;
+    while (stackPop(&stack, &value) == 0) {
+        printf("Pop: %d\n", value);
+    }
+
+    stackFree(&stack);
+}
+\end{codebox}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+Stapel hat 4 Elemente, Kapazität: 4
+Pop: 40
+Pop: 30
+Pop: 20
+Pop: 10
+\end{mybox}
+
+
+
+
+\chapter{Datenstruktur sortieren}
+
+\TopicLevel{Pointer, Dyn. Speicherverwaltung, Sortieren}{4}\vspace{10pt}
+
+Erstellen Sie ein Programm, welches ein Team von Fußballspielern verwalten und
+sortieren kann. Ein Fußballspieler soll durch folgende Datenstruktur
+repräsentiert werden:
+
+\begin{codebox}[lang=c, fontsize=\small]
+#define NAME_LENGTH 64
+
+typedef struct {
+    char firstName[NAME_LENGTH];
+    char lastName[NAME_LENGTH];
+    int age;
+} Player;
+\end{codebox}
+
+\begin{enumerate}
+  \item Erstellen Sie eine Funktion \mintinline{c}{createPlayer()}, die drei
+  Parameter entgegennimmt: den Vornamen, den Nachnamen und das Alter eines
+  Spielers. Die Funktion soll dynamisch Speicher für einen Spieler allokieren,
+  den Speicher gemäß den übergebenen Daten initialisieren und einen Pointer auf
+  den Speicher an den Aufrufer zurückliefern.
+  \item Erstellen Sie eine Funktion \mintinline{c}{printPlayer()}, die einen
+  Pointer auf einen Spieler entgegennimmt und daraufhin die Informationen eines
+  Spielers in formatierter Form auf dem Bildschirm ausgibt.
+  \item Erstellen Sie eine Vergleichsfunktion
+  \mintinline{c}{comparePlayerByLastName(const void *pa, const void *pb)}, die
+  zwei Spieler nach ihren Nachnamen lexikografisch vergleicht. Die beiden
+  Pointer \mintinline{c}{const void *pa} und \mintinline{c}{const void *pb}
+  sollen zwei Pointer auf die zu vergleichenden Array-Elemente darstellen,
+  d.\,h. in unserem Beispiel handelt es sich jeweils um \textit{einen Pointer
+  auf einen Pointer auf ein \mintinline{c}{Player}-Objekt}.
+
+  Damit der Vergleich funktioniert, soll die Funktion folgenden Rückgabewert an
+  den Aufrufer zurückliefern:
+  \begin{itemize}
+    \item Eine negative Zahl, wenn der Nachname von \mintinline{c}{pa}
+    lexikographisch \textit{vor} dem Nachnamen von \mintinline{c}{pb} kommt.
+    \item \mintinline{c}{0}, wenn die Nachnamen gleich sind.
+    \item Eine positive Zahl, wenn der Nachname von \mintinline{c}{pa}
+    lexikographisch \textit{nach} dem Nachnamen von \mintinline{c}{pb} kommt.
+  \end{itemize}
+  \item Eine Funktion \mintinline{c}{freeTeam()}, die den für das Team
+  allokierten Speicher wieder freigibt.
+\end{enumerate}
+
+\Vorlage
+\begin{codebox}[lang=c, fontsize=\small]
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(void) {
+    const int NUM_PLAYERS = 5;
+    Player **team = malloc(NUM_PLAYERS * sizeof(Player *));
+
+    team[0] = createPlayer("Thomas", "Müller", 34);
+    team[1] = createPlayer("Florian", "Wirtz", 21);
+    team[2] = createPlayer("İlkay", "Gündoğan", 33);
+    team[3] = createPlayer("Jamal", "Musiala", 21);
+    team[4] = createPlayer("Manuel", "Neuer", 38);
+
+    printf("Vor der Sortierung:\n");
+    for (int i = 0; i < NUM_PLAYERS; i++)
+        printPlayer(team[i]);
+
+    qsort(team, NUM_PLAYERS, sizeof(Player *), comparePlayerByLastName);
+
+    printf("\nNach der Sortierung:\n");
+    for (int i = 0; i < NUM_PLAYERS; i++)
+        printPlayer(team[i]);
+
+    freeTeam(team, NUM_PLAYERS);
+
+    return 0;
+}
+\end{codebox}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+Vor der Sortierung:
+Thomas Müller, 34 Jahre
+Florian Wirtz, 21 Jahre
+İlkay Gündoğan, 33 Jahre
+Jamal Musiala, 21 Jahre
+Manuel Neuer, 38 Jahre
+
+Nach der Sortierung:
+İlkay Gündoğan, 33 Jahre
+Jamal Musiala, 21 Jahre
+Thomas Müller, 34 Jahre
+Manuel Neuer, 38 Jahre
+Florian Wirtz, 21 Jahre
+\end{mybox}
+
+Die Vorlage verwendet für ein Team aus Spielern ein dynamisch allokiertes Array
+aus Pointern auf \mintinline{c}{Player}-Objekte:
+
+\noindent\mintinline{c}{Player **team = malloc(NUM_PLAYERS * sizeof(Player *));}
+
+Sie können sich die Struktur wie folgt vorstellen:
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[scale=0.7]{images/sortPlayers.pdf}
+    \caption{Darstellung des Pointers auf ein Array von Pointern auf
+    \mintinline{c}{Player}-Objekte}
+    \label{fig:sortPlayer}
+\end{figure}
+
+Vergegenwertigen Sie sich an dieser Stelle auch den Inhalt der Pointer der
+Vergleichsfunktion:
+
+\noindent\mintinline{c}{comparePlayerByLastName(const void *pa, const void *pb)}
+
+Die beiden Pointer \mintinline{c}{pa} und \mintinline{c}{pb} zeigen beide
+jeweils auf ein Array-Element des Arrays \mintinline{c}{team} und enthalten
+dementsprechend selbst wieder einen Pointer auf ein
+\mintinline{c}{Player}-Objekt.
+
+
+
+
+\chapter{Duplikate aus einem Array entfernen}
+
+\TopicLevel{Pointer, Dynamische Speicherverwaltung}{4}\vspace{10pt}
+
+Erstellen Sie eine Funktion \mintinline{c}{removeDuplicates()}, die doppelte
+aufeinanderfolgende Elemente aus einem sortierten Array entfernt. Die Funktion
+soll dabei den Speicherbereich der Liste entsprechend anpassen.
+
+Beachten Sie hierbei folgendes: das Array wird in der
+\mintinline{c}{main()}-Funktion dynamisch auf dem Heap allokiert. Da der
+Speicherbereich durch die \mintinline{c}{removeDuplicates()}-Funktion
+möglicherweise angepasst werden muss, muss die Funktion einen \textit{Pointer
+auf das Array} sowie die Größe des Arrays als Argumente entgegennehmen.
+
+\Vorlage
+\begin{codebox}[lang=c, fontsize=\small]
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void) {
+    int size = 10;
+    int *myArray = malloc((size_t)size * sizeof(int));
+
+    if (myArray == NULL) {
+        printf("Speicher konnte nicht reserviert werden.\n");
+        return 1;
+    }
+
+    // Hilfsarray, um myArray zu initialisieren
+    int initArray[] = {1, 2, 3, 3, 4, 5, 5, 5, 6, 7};
+    for (int i = 0; i < size; i++) {
+        myArray[i] = initArray[i];
+    }
+
+    // Ausgabe der Array-Elemente vor der Bearbeitung
+    printf("Array vor der Bearbeitung:\n");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", myArray[i]);
+    }
+    printf("\n");
+
+    removeDuplicates(&myArray, &size);
+
+    // Ausgabe der Array-Elemente nach der Bearbeitung
+    printf("Array nach der Bearbeitung:\n");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", myArray[i]);
+    }
+    printf("\n");
+
+    free(myArray);
+    return 0;
+}
+\end{codebox}
+
+\begin{mybox}[Bildschirmausgabe]{console}
+Array vor der Bearbeitung:
+1 2 3 3 4 5 5 5 6 7
+Array nach der Bearbeitung:
+1 2 3 4 5 6 7
+\end{mybox}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Schwierigkeit 5
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Verkettete Liste erstellen}
 
@@ -1005,197 +1493,3 @@ Element 2: data = 3
     Alle Knoten, deren \mintinline{c}{data}-Element den Wert enthalten, der an
     die Funktion übergeben wurde, sollen aus der Liste entfernt werden.
 \end{enumerate}
-
-
-
-
-
-
-\chapter{Duplikate aus einem Array entfernen}
-
-\TopicLevel{Pointer, Dynamische Speicherverwaltung}{4}\vspace{10pt}
-
-Erstellen Sie eine Funktion \mintinline{c}{removeDuplicates()}, die doppelte
-aufeinanderfolgende Elemente aus einem sortierten Array entfernt. Die Funktion
-soll dabei den Speicherbereich der Liste entsprechend anpassen.
-
-Beachten Sie hierbei folgendes: das Array wird in der
-\mintinline{c}{main()}-Funktion dynamisch auf dem Heap allokiert. Da der
-Speicherbereich durch die \mintinline{c}{removeDuplicates()}-Funktion
-möglicherweise angepasst werden muss, muss die Funktion einen \textit{Pointer
-auf das Array} sowie die Größe des Arrays als Argumente entgegennehmen.
-
-\Vorlage
-\begin{codebox}[lang=c, fontsize=\small]
-#include <stdio.h>
-#include <stdlib.h>
-
-int main(void) {
-    int size = 10;
-    int *myArray = malloc((size_t)size * sizeof(int));
-
-    if (myArray == NULL) {
-        printf("Speicher konnte nicht reserviert werden.\n");
-        return 1;
-    }
-
-    // Hilfsarray, um myArray zu initialisieren
-    int initArray[] = {1, 2, 3, 3, 4, 5, 5, 5, 6, 7};
-    for (int i = 0; i < size; i++) {
-        myArray[i] = initArray[i];
-    }
-
-    // Ausgabe der Array-Elemente vor der Bearbeitung
-    printf("Array vor der Bearbeitung:\n");
-    for (int i = 0; i < size; i++) {
-        printf("%d ", myArray[i]);
-    }
-    printf("\n");
-
-    removeDuplicates(&myArray, &size);
-
-    // Ausgabe der Array-Elemente nach der Bearbeitung
-    printf("Array nach der Bearbeitung:\n");
-    for (int i = 0; i < size; i++) {
-        printf("%d ", myArray[i]);
-    }
-    printf("\n");
-
-    free(myArray);
-    return 0;
-}
-\end{codebox}
-
-\begin{mybox}[Bildschirmausgabe]{console}
-Array vor der Bearbeitung:
-1 2 3 3 4 5 5 5 6 7
-Array nach der Bearbeitung:
-1 2 3 4 5 6 7
-\end{mybox}
-
-
-
-
-
-
-
-\chapter{Datenstruktur sortieren}
-
-\TopicLevel{Pointer, Dyn. Speicherverwaltung, Sortieren}{3}\vspace{10pt}
-
-Erstellen Sie ein Programm, welches ein Team von Fußballspielern verwalten und
-sortieren kann. Ein Fußballspieler soll durch folgende Datenstruktur
-repräsentiert werden:
-
-\begin{codebox}[lang=c, fontsize=\small]
-#define NAME_LENGTH 64
-
-typedef struct {
-    char firstName[NAME_LENGTH];
-    char lastName[NAME_LENGTH];
-    int age;
-} Player;
-\end{codebox}
-
-\begin{enumerate}
-  \item Erstellen Sie eine Funktion \mintinline{c}{createPlayer()}, die drei
-  Parameter entgegennimmt: den Vornamen, den Nachnamen und das Alter eines
-  Spielers. Die Funktion soll dynamisch Speicher für einen Spieler allokieren,
-  den Speicher gemäß den übergebenen Daten initialisieren und einen Pointer auf
-  den Speicher an den Aufrufer zurückliefern.
-  \item Erstellen Sie eine Funktion \mintinline{c}{printPlayer()}, die einen
-  Pointer auf einen Spieler entgegennimmt und daraufhin die Informationen eines
-  Spielers in formatierter Form auf dem Bildschirm ausgibt.
-  \item Erstellen Sie eine Vergleichsfunktion
-  \mintinline{c}{comparePlayerByLastName(const void *pa, const void *pb)}, die
-  zwei Spieler nach ihren Nachnamen lexikografisch vergleicht. Die beiden
-  Pointer \mintinline{c}{const void *pa} und \mintinline{c}{const void *pb}
-  sollen zwei Pointer auf die zu vergleichenden Array-Elemente darstellen,
-  d.\,h. in unserem Beispiel handelt es sich jeweils um \textit{einen Pointer
-  auf einen Pointer auf ein \mintinline{c}{Player}-Objekt}.
-
-  Damit der Vergleich funktioniert, soll die Funktion folgenden Rückgabewert an
-  den Aufrufer zurückliefern:
-  \begin{itemize}
-    \item Eine negative Zahl, wenn der Nachname von \mintinline{c}{pa}
-    lexikographisch \textit{vor} dem Nachnamen von \mintinline{c}{pb} kommt.
-    \item \mintinline{c}{0}, wenn die Nachnamen gleich sind.
-    \item Eine positive Zahl, wenn der Nachname von \mintinline{c}{pa}
-    lexikographisch \textit{nach} dem Nachnamen von \mintinline{c}{pb} kommt.
-  \end{itemize}
-  \item Eine Funktion \mintinline{c}{freeTeam()}, die den für das Team
-  allokierten Speicher wieder freigibt.
-\end{enumerate}
-
-\Vorlage
-\begin{codebox}[lang=c, fontsize=\small]
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-int main(void) {
-    const int NUM_PLAYERS = 5;
-    Player **team = malloc(NUM_PLAYERS * sizeof(Player *));
-
-    team[0] = createPlayer("Thomas", "Müller", 34);
-    team[1] = createPlayer("Florian", "Wirtz", 21);
-    team[2] = createPlayer("İlkay", "Gündoğan", 33);
-    team[3] = createPlayer("Jamal", "Musiala", 21);
-    team[4] = createPlayer("Manuel", "Neuer", 38);
-
-    printf("Vor der Sortierung:\n");
-    for (int i = 0; i < NUM_PLAYERS; i++)
-        printPlayer(team[i]);
-
-    qsort(team, NUM_PLAYERS, sizeof(Player *), comparePlayerByLastName);
-
-    printf("\nNach der Sortierung:\n");
-    for (int i = 0; i < NUM_PLAYERS; i++)
-        printPlayer(team[i]);
-
-    freeTeam(team, NUM_PLAYERS);
-
-    return 0;
-}
-\end{codebox}
-
-\begin{mybox}[Bildschirmausgabe]{console}
-Vor der Sortierung:
-Thomas Müller, 34 Jahre
-Florian Wirtz, 21 Jahre
-İlkay Gündoğan, 33 Jahre
-Jamal Musiala, 21 Jahre
-Manuel Neuer, 38 Jahre
-
-Nach der Sortierung:
-İlkay Gündoğan, 33 Jahre
-Jamal Musiala, 21 Jahre
-Thomas Müller, 34 Jahre
-Manuel Neuer, 38 Jahre
-Florian Wirtz, 21 Jahre
-\end{mybox}
-
-Die Vorlage verwendet für ein Team aus Spielern ein dynamisch allokiertes Array
-aus Pointern auf \mintinline{c}{Player}-Objekte:
-
-\noindent\mintinline{c}{Player **team = malloc(NUM_PLAYERS * sizeof(Player *));}
-
-Sie können sich die Struktur wie folgt vorstellen:
-
-\begin{figure}[htb!]
-    \centering
-    \includegraphics[scale=0.7]{images/sortPlayers.pdf}
-    \caption{Darstellung des Pointers auf ein Array von Pointern auf
-    \mintinline{c}{Player}-Objekte}
-    \label{fig:sortPlayer}
-\end{figure}
-
-Vergegenwertigen Sie sich an dieser Stelle auch den Inhalt der Pointer der
-Vergleichsfunktion:
-
-\noindent\mintinline{c}{comparePlayerByLastName(const void *pa, const void *pb)}
-
-Die beiden Pointer \mintinline{c}{pa} und \mintinline{c}{pb} zeigen beide
-jeweils auf ein Array-Element des Arrays \mintinline{c}{team} und enthalten
-dementsprechend selbst wieder einen Pointer auf ein
-\mintinline{c}{Player}-Objekt.

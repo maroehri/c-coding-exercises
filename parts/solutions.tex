@@ -42,7 +42,7 @@ int main(void) {
 \begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 
-int find_min(int array[], int size) {
+int findMin(int array[], int size) {
     int min = array[0];
     for (int i = 1; i < size; i++) {
         if (array[i] < min) {
@@ -56,7 +56,7 @@ int main(void) {
     int myArray[] = {4, 2, 9, 24, 4, 8, 5, 24};
     int arraySize = sizeof(myArray) / sizeof(int);
 
-    int min = find_min(myArray, arraySize);
+    int min = findMin(myArray, arraySize);
 
     printf("Kleinstes Element: %d\n", min);
 }
@@ -216,45 +216,6 @@ int main(void) {
 \end{enumerate}
 
 
-
-\chapter{Länge des kürzesten Wortes in einem Satz bestimmen}
-
-Die Funktion \mintinline{c}{shortestWordLength()} berechnet die Länge des
-kürzesten Wortes in einem Satz, indem sie den String Zeichen für Zeichen
-durchläuft und die Länge jedes Wortes zählt, bis ein Leerzeichen gefunden wird.
-Sobald ein Leerzeichen erkannt wird, vergleicht die Funktion die Länge des
-aktuellen Wortes mit der bisher kürzesten gefundenen Länge
-(\mintinline{c}{minLength}) und aktualisiert diese bei Bedarf. Anschließend wird
-der Zähler für die Wortlänge zurückgesetzt, und der Prozess wiederholt sich.
-
-\begin{codebox}[lang=c, fontsize=\small]
-int shortestWordLength(const char *s) {
-    int length = (int)strlen(s);
-    int minLength = length;
-    int wordLength = 0;
-
-    for (int i = 0; i < length; i++) {
-        if (s[i] != ' ') {
-            wordLength++;
-        } else {
-            if (wordLength < minLength) {
-                minLength = wordLength;
-            }
-            wordLength = 0;
-        }
-    }
-
-    if (wordLength < minLength) {
-        minLength = wordLength;
-    }
-
-    return minLength;
-}
-\end{codebox}
-
-
-
-
 \chapter{Text in Leetspeak umwandeln}
 
 Die Funktion \mintinline{c}{getLeetChar()} soll ein einzelnes Zeichen als
@@ -345,6 +306,379 @@ void leetspeak(char *str) {
 
 
 
+\chapter{Länge des kürzesten Wortes in einem Satz bestimmen}
+
+Die Funktion \mintinline{c}{shortestWordLength()} berechnet die Länge des
+kürzesten Wortes in einem Satz, indem sie den String Zeichen für Zeichen
+durchläuft und die Länge jedes Wortes zählt, bis ein Leerzeichen gefunden wird.
+Sobald ein Leerzeichen erkannt wird, vergleicht die Funktion die Länge des
+aktuellen Wortes mit der bisher kürzesten gefundenen Länge
+(\mintinline{c}{minLength}) und aktualisiert diese bei Bedarf. Anschließend wird
+der Zähler für die Wortlänge zurückgesetzt, und der Prozess wiederholt sich.
+
+\begin{codebox}[lang=c, fontsize=\small]
+int shortestWordLength(const char *s) {
+    int length = (int)strlen(s);
+    int minLength = length;
+    int wordLength = 0;
+
+    for (int i = 0; i < length; i++) {
+        if (s[i] != ' ') {
+            wordLength++;
+        } else {
+            if (wordLength < minLength) {
+                minLength = wordLength;
+            }
+            wordLength = 0;
+        }
+    }
+
+    if (wordLength < minLength) {
+        minLength = wordLength;
+    }
+
+    return minLength;
+}
+\end{codebox}
+
+
+
+
+\chapter{Häufigkeiten der Werte 0–9 zählen und als Histogramm ausgeben}
+
+\section*{Funktion \texttt{countNumbers()}}
+
+Die Funktion \mintinline{c}{countNumbers()} ermittelt, wie oft jeder der Werte
+0 bis 9 in einem gegebenen Array vorkommt. Hierfür nutzen wir einen typischen
+Index-Mapping-Ansatz: das Ergebnis-Array \mintinline{c}{count} hat genau 10
+Einträge, wobei der Index dem zu zählenden Wert entspricht. Der Eintrag
+\mintinline{c}{count[3]} enthält also am Ende die Anzahl der 3en im
+Eingabe-Array.
+
+Zunächst muss das Ergebnis-Array mit Nullen initialisiert werden, da wir
+ansonsten mit undefinierten Werten arbeiten würden. Anschließend durchlaufen
+wir das Eingabe-Array und erhöhen für jeden gefundenen Wert im Bereich 0--9
+den entsprechenden Eintrag im Ergebnis-Array. Werte außerhalb dieses Bereichs
+(z.\,B. negative Zahlen oder Zahlen größer 9) werden ignoriert.
+
+\begin{codebox}[lang=c, fontsize=\small]
+void countNumbers(const int *data, int size, int *count) {
+    // Ergebnis-Array mit Nullen initialisieren
+    for (int i = 0; i < 10; i++) {
+        count[i] = 0;
+    }
+
+    // Häufigkeiten zählen
+    for (int i = 0; i < size; i++) {
+        int value = data[i];
+        if (value >= 0 && value <= 9) {
+            count[value]++;
+        }
+    }
+}
+\end{codebox}
+
+\section*{Funktion \texttt{printHistogram()}}
+
+Die Funktion \mintinline{c}{printHistogram()} gibt das Häufigkeits-Array als
+horizontales Balkendiagramm auf der Konsole aus. Hierfür nutzen wir zwei
+verschachtelte Schleifen: die äußere Schleife durchläuft die Werte 0 bis 9,
+die innere Schleife gibt für jeden Wert genau so viele *-Zeichen aus, wie der
+entsprechende Eintrag im Häufigkeits-Array angibt.
+
+Werte mit Häufigkeit 0 werden automatisch korrekt behandelt -- die innere
+Schleife wird in diesem Fall einfach gar nicht ausgeführt, sodass nur die
+Zeilenbeschriftung mit anschließendem Zeilenumbruch ausgegeben wird.
+
+\begin{codebox}[lang=c, fontsize=\small]
+void printHistogram(const int *count) {
+    for (int i = 0; i < 10; i++) {
+        printf("%d: ", i);
+        for (int j = 0; j < count[i]; j++) {
+            printf("*");
+        }
+        printf("\n");
+    }
+}
+\end{codebox}
+
+
+
+
+\chapter{Lauflängenkodierung eines Strings}
+
+Bei der Lauflängenkodierung wird jede Folge gleicher aufeinanderfolgender
+Zeichen durch das Zeichen selbst und die Anzahl seines Auftretens ersetzt.
+Wir benötigen daher zwei Indizes: \mintinline{c}{readPos} zum Lesen aus dem
+Eingabe-String und \mintinline{c}{writePos} zum Schreiben in den
+Ausgabe-String. Beide Indizes laufen unabhängig voneinander, da der Ausgabe-
+String je nach Eingabe kürzer oder länger sein kann als der Eingabe-String.
+
+Die äußere \mintinline{c}{while}-Schleife läuft so lange, bis das Ende des
+Eingabe-Strings (\mintinline{c}{'\0'}) erreicht ist. In jedem Durchlauf der
+äußeren Schleife wird das aktuelle Zeichen in \mintinline{c}{currentChar}
+gespeichert und der Zähler \mintinline{c}{count} mit 1 initialisiert.
+Anschließend wird der \mintinline{c}{readPos}-Index erhöht, da das aktuelle
+Zeichen ja bereits einmal gezählt wurde.
+
+In der inneren \mintinline{c}{while}-Schleife prüfen wir, ob das nächste
+Zeichen im Eingabe-String dem aktuellen Zeichen entspricht. Solange dies der
+Fall ist, erhöhen wir \mintinline{c}{count} und \mintinline{c}{readPos}.
+Endet die innere Schleife, sind wir am Ende einer Zeichenfolge angekommen
+oder am Ende des Eingabe-Strings.
+
+Anschließend schreiben wir das Zeichen und die Anzahl in den Ausgabe-String.
+Da \mintinline{c}{count} eine Ganzzahl ist und im Ausgabe-String ein Zeichen
+benötigt wird, müssen wir die Zahl in das entsprechende Zeichen umwandeln.
+Das geht elegant über den Ausdruck \mintinline{c}{'0' + count}: addiert man
+die ASCII-Werte des Zeichens \mintinline{c}{'0'} (= 48) und der Zahl
+\mintinline{c}{count}, erhält man den ASCII-Wert des entsprechenden
+Zifferzeichens.
+
+Zum Schluss muss der Ausgabe-String mit \mintinline{c}{'\0'} terminiert
+werden, damit er als gültiger String behandelt werden kann.
+
+\begin{codebox}[lang=c, fontsize=\small]
+void compress(const char input[], char output[]) {
+    int readPos = 0;
+    int writePos = 0;
+
+    while (input[readPos] != '\0') {
+        char currentChar = input[readPos];
+        int count = 1;
+        readPos++;
+
+        while (input[readPos] == currentChar) {
+            count++;
+            readPos++;
+        }
+
+        output[writePos] = currentChar;
+        writePos++;
+        output[writePos] = '0' + count;
+        writePos++;
+    }
+
+    output[writePos] = '\0';
+}
+\end{codebox}
+
+
+
+
+\chapter{Quadratzahlen der Ziffern einer Zahl zusammensetzen}
+
+Um die Ziffern einer Zahl einzeln zu quadrieren, wird die Eingabezahl
+ziffernweise von rechts nach links verarbeitet. Dazu wird die letzte Ziffer mit
+der Modulo-Operation (\mintinline{c}{% 10}) extrahiert und die Zahl durch
+Ganzzahldivision (\mintinline{c}{/ 10}) verkleinert. Dieser Prozess wird so
+lange wiederholt, bis alle Ziffern verarbeitet sind.
+
+Die extrahierte Ziffer wird quadriert, und das Quadrat an der passenden
+Dezimalstelle der Zielzahl eingefügt. Dafür wird das Quadrat mit dem aktuellen
+Stellenwert (\mintinline{c}{placeValue}) multipliziert und zur Zielzahl addiert.
+Anschließend wird der Stellenwert für die nächste Ziffer entsprechend angepasst,
+abhängig davon, ob das Quadrat ein- oder zweistellig ist.
+
+\begin{codebox}[lang=c, fontsize=\small]
+unsigned long long digitsToSquares(unsigned number) {
+    unsigned long long transformedNumber = 0;
+    unsigned int currentDigit = 0;
+    unsigned long long digitSquare = 0;
+    unsigned long long placeValue = 1;
+
+    do {
+        currentDigit = number % 10; // Get the last digit
+        number /= 10;               // Remove the last digit
+
+        digitSquare = currentDigit * currentDigit;
+
+        // Determine if the square requires one or two digits
+        unsigned long long digitShiftMultiplier = 1;
+        if (digitSquare > 9)
+            digitShiftMultiplier = 10;
+
+        transformedNumber += digitSquare * placeValue;
+        // Adjust the place value for the next digit
+        placeValue *= digitShiftMultiplier * 10;
+    } while (number != 0);
+
+    return transformedNumber;
+}
+\end{codebox}
+
+
+
+
+\chapter{Häufigste vorkommende Zeichen in einem String finden}
+
+Diese Aufgabe lässt sich auf zwei grundlegend verschiedene Arten lösen. Beide
+Ansätze sind algorithmisch korrekt, unterscheiden sich aber deutlich in
+Effizienz und Speicherverbrauch.
+
+\section*{Ansatz 1: Verschachtelte Schleifen}
+
+Der intuitive Ansatz besteht darin, den String mehrfach zu durchlaufen. In einer
+äußeren Schleife wird jeweils ein Zeichen aus dem String entnommen und in der
+Variablen \mintinline{c}{currentChar} gespeichert. Anschließend zählen wir in
+einer inneren Schleife die Häufigkeit dieses Zeichens im gesamten String, wofür
+die Variable \mintinline{c}{currentOccurrence} verwendet wird. Die innere
+Schleife muss dabei nur ab der aktuellen Position der äußeren Schleife laufen,
+da Zeichen vor dieser Position bereits in einem früheren Durchlauf der äußeren
+Schleife betrachtet wurden.
+
+Falls das aktuell betrachtete Zeichen identisch mit dem bis dahin am häufigsten
+gefundenen Zeichen (\mintinline{c}{maxChar}) ist, können wir dieses Zeichen
+überspringen, um redundante Zählungen zu vermeiden.
+
+In der inneren Schleife vergleichen wir jedes Zeichen des Strings mit
+\mintinline{c}{currentChar}. Stimmen sie überein, erhöhen wir
+\mintinline{c}{currentOccurrence}. Nach Abschluss der inneren Schleife prüfen
+wir, ob \mintinline{c}{currentOccurrence} größer als die bisherige maximale
+Häufigkeit ist. Ist dies der Fall, aktualisieren wir \mintinline{c}{maxChar} und
+\mintinline{c}{maxOccurrence} entsprechend.
+
+Am Ende wird die maximale Häufigkeit über den Pointer-Parameter
+\mintinline{c}{occurrence} an den Aufrufer übergeben, und das Zeichen wird als
+Rückgabewert zurückgegeben.
+
+\begin{codebox}[lang=c, fontsize=\small]
+char findMaxChar(const char *string, int *occurrence) {
+    size_t length = strlen(string);
+    char maxChar = '\0';
+    int maxOccurrence = 0;
+
+    for (size_t i = 0; i < length; i++) {
+        char currentChar = string[i];
+        if (currentChar == maxChar) {
+            continue;
+        }
+
+        int currentOccurrence = 0;
+        for (size_t j = i; j < length; j++) {
+            if (string[j] == currentChar) {
+                currentOccurrence++;
+            }
+        }
+
+        if (currentOccurrence > maxOccurrence) {
+            maxOccurrence = currentOccurrence;
+            maxChar = currentChar;
+        }
+    }
+
+    *occurrence = maxOccurrence;
+    return maxChar;
+}
+\end{codebox}
+
+\section*{Ansatz 2: Häufigkeitsarray}
+
+Ein deutlich effizienterer Ansatz nutzt ein \textit{Häufigkeitsarray}: ein Array
+von ganzen Zahlen, in dem an jedem Index gespeichert wird, wie oft das Zeichen
+mit diesem Wert im String vorkommt. In C werden \mintinline{c}{char}-Werte
+intern als Ganzzahlen gemäß ASCII-Tabelle gespeichert. Das Zeichen
+\mintinline{c}{'a'} hat z.\,B. den Wert \texttt{97} und kann daher direkt als
+Index verwendet werden: \mintinline{c}{frequency['a']} ist gleichbedeutend mit
+\mintinline{c}{frequency[97]}.
+
+Die Lösung läuft in zwei Phasen ab. In der ersten Phase wird der String einmal
+durchlaufen und für jedes Zeichen der entsprechende Eintrag im Häufigkeitsarray
+erhöht. In der zweiten Phase wird das Häufigkeitsarray einmal durchlaufen, um
+den Index mit dem höchsten Wert zu finden -- dieser Index entspricht dem
+gesuchten Zeichen.
+
+\begin{codebox}[lang=c, fontsize=\small]
+char findMaxChar(const char *string, int *occurrence) {
+    int frequency[256] = {0};
+    size_t length = strlen(string);
+
+    // Haeufigkeiten zaehlen
+    for (size_t i = 0; i < length; i++) {
+        int index = string[i];
+        frequency[index]++;
+    }
+
+    // Index mit hoechster Haeufigkeit suchen
+    int maxIndex = 0;
+    for (int i = 1; i < 256; i++) {
+        if (frequency[i] > frequency[maxIndex]) {
+            maxIndex = i;
+        }
+    }
+
+    *occurrence = frequency[maxIndex];
+    return (char)maxIndex;
+}
+\end{codebox}
+
+\section*{Vergleich der beiden Ansätze}
+
+Der erste Ansatz benötigt nur wenige Variablen als Hilfsspeicher, ist dafür aber
+mit zwei verschachtelten Schleifen relativ langsam: bei einem String der Länge
+$n$ werden bis zu $n^2$ Vergleiche durchgeführt. Der zweite Ansatz benötigt
+zusätzlichen Speicher für das Häufigkeitsarray (256 \mintinline{c}{int}-Werte),
+kommt aber mit zwei einfachen Schleifen aus und ist dadurch deutlich schneller.
+Bei einem String mit 10\,000 Zeichen sind das ca. 100\,000\,000 Operationen im
+ersten Ansatz gegenüber nur ca. 10\,256 Operationen im zweiten -- ein
+Unterschied um Faktor 10\,000.
+
+In der Praxis ist der zweite Ansatz fast immer vorzuziehen. Der erste Ansatz hat
+aber den Vorteil, dass er ohne Annahmen über den Wertebereich der Zeichen
+funktioniert. Der Häufigkeitsarray-Ansatz setzt voraus, dass alle Zeichen im
+Bereich \mintinline{c}{0}--\mintinline{c}{255} liegen -- was bei reinen
+ASCII-Strings immer der Fall ist, bei Multibyte-Zeichen (z.\,B. UTF-8 mit
+deutschen Umlauten) aber zu falschen Ergebnissen führen kann.
+
+
+
+
+\chapter{Überprüfen, ob ein String ein Palindrom ist}
+
+Die \mintinline{c}{isPalindrome()}-Funktion bekommt einen String übergeben und
+gibt einen Booleschen Wert (\mintinline{c}{true} oder \mintinline{c}{false}) an
+den Aufrufer zurück. Dafür haben wir den Header \mintinline{c}{stdbool.h}
+eingebunden.
+
+Zuerst ermitteln wir die Länge und die Mitte des Strings mithilfe der
+\mintinline{c}{strlen()}-Funktion aus dem \mintinline{c}{string.h}-Header. Das
+Ergebnis ist der Index, der die Mitte des Strings markiert. Bei der Überprüfung
+auf ein Palindrom wird dieser Wert verwendet, um nur bis zur Mitte des Strings
+zu iterieren, da die zweite Hälfte des Strings spiegelbildlich zur ersten Hälfte
+sein sollte, wenn es sich um ein Palindrom handelt.
+
+In der Funktion wird eine for-Schleife verwendet, die bis zur Mitte des Strings
+läuft. Jedes Zeichen der ersten Stringhälfte wird mit dem korrespondierenden
+Zeichen von hinten verglichen. Da die Groß-/Kleinschreibung keine Rolle spielen
+soll, verwenden wir die \mintinline{c}{tolower()}-Funktion aus dem
+\mintinline{c}{ctype.h}-Header.
+
+Stimmen zwei miteinander verglichenen Zeichen nicht überein, wird die Funktion
+direkt beendet und der Wert \mintinline{c}{false} an den Aufrufer zurückgegeben.
+Falls bis zum Ende des Schleifendurchlaufs keine Unstimmigkeiten aufgetreten
+sind, gibt die Funktion \mintinline{c}{true} zurück.
+
+\begin{codebox}[lang=c, fontsize=\small]
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h> // für strlen()
+#include <ctype.h>  // für tolower()
+
+bool isPalindrome(char string[]) {
+    int len = (int)strlen(string);
+    int middle = len / 2;
+
+    for (int i = 0; i < middle; i++) {
+        if (tolower(string[i]) != tolower(string[len - i - 1]))
+            return false;
+    }
+    return true;
+}
+\end{codebox}
+
+
+
+
 \chapter{Barcode-Prüfziffer berechnen}
 
 Die Funktion \mintinline{c}{convertStringToArray()} nimmt einen String und ein
@@ -425,56 +759,6 @@ int barcodeCheckDigit(int barcode[], int barcodeLength) {
 \end{codebox}
 
 
-
-
-
-
-
-
-
-
-\chapter{Überprüfen, ob ein String ein Palindrom ist}
-
-Die \mintinline{c}{isPalindrome()}-Funktion bekommt einen String übergeben und
-gibt einen Booleschen Wert (\mintinline{c}{true} oder \mintinline{c}{false}) an
-den Aufrufer zurück. Dafür haben wir den Header \mintinline{c}{stdbool.h}
-eingebunden.
-
-Zuerst ermitteln wir die Länge und die Mitte des Strings mithilfe der
-\mintinline{c}{strlen()}-Funktion aus dem \mintinline{c}{string.h}-Header. Das
-Ergebnis ist der Index, der die Mitte des Strings markiert. Bei der Überprüfung
-auf ein Palindrom wird dieser Wert verwendet, um nur bis zur Mitte des Strings
-zu iterieren, da die zweite Hälfte des Strings spiegelbildlich zur ersten Hälfte
-sein sollte, wenn es sich um ein Palindrom handelt.
-
-In der Funktion wird eine for-Schleife verwendet, die bis zur Mitte des Strings
-läuft. Jedes Zeichen der ersten Stringhälfte wird mit dem korrespondierenden
-Zeichen von hinten verglichen. Da die Groß-/Kleinschreibung keine Rolle spielen
-soll, verwenden wir die \mintinline{c}{tolower()}-Funktion aus dem
-\mintinline{c}{ctype.h}-Header.
-
-Stimmen zwei miteinander verglichenen Zeichen nicht überein, wird die Funktion
-direkt beendet und der Wert \mintinline{c}{false} an den Aufrufer zurückgegeben.
-Falls bis zum Ende des Schleifendurchlaufs keine Unstimmigkeiten aufgetreten
-sind, gibt die Funktion \mintinline{c}{true} zurück.
-
-\begin{codebox}[lang=c, fontsize=\small]
-#include <stdio.h>
-#include <stdbool.h>
-#include <string.h> // für strlen()
-#include <ctype.h>  // für tolower()
-
-bool isPalindrome(char string[]) {
-    int len = (int)strlen(string);
-    int middle = len / 2;
-
-    for (int i = 0; i < middle; i++) {
-        if (tolower(string[i]) != tolower(string[len - i - 1]))
-            return false;
-    }
-    return true;
-}
-\end{codebox}
 
 
 
@@ -604,174 +888,59 @@ char *createVowelFreeString(const char *str) {
 
 
 
+\chapter{Werte eines Arrays auf einen Maximalwert begrenzen}
 
+Die Funktion \mintinline{c}{clampAll()} erstellt ein neues Array auf dem Heap,
+das die begrenzten Werte des Eingabe-Arrays enthält. Da die Funktion einen
+Pointer auf das neu allokierte Array an den Aufrufer übergeben muss, wird der
+\textit{Doppel-Pointer} \mintinline{c}{int **target} als Parameter verwendet.
+Über diesen können wir den Pointer im Aufrufer auf den allokierten Speicher
+zeigen lassen.
 
+Im Funktionsrumpf allokieren wir zunächst Speicher für \mintinline{c}{n}
+\mintinline{c}{int}-Werte mit \mintinline{c}{malloc()}. Schlägt die Allokation
+fehl (\mintinline{c}{malloc()} liefert \mintinline{c}{NULL}), gibt die
+Funktion \mintinline{c}{-1} zurück, ohne weitere Operationen durchzuführen.
 
-\chapter{Häufigste vorkommende Zeichen in einem String finden}
+Anschließend durchlaufen wir das Eingabe-Array mit einer for-Schleife. Für
+jeden Wert wird geprüft, ob er größer als der Maximalwert
+\mintinline{c}{max} ist. Falls ja, wird der Wert auf \mintinline{c}{max}
+begrenzt; andernfalls wird er unverändert übernommen.
 
-Diese Aufgabe lässt sich auf zwei grundlegend verschiedene Arten lösen. Beide
-Ansätze sind algorithmisch korrekt, unterscheiden sich aber deutlich in
-Effizienz und Speicherverbrauch.
+Damit die Hilfsvariable \mintinline{c}{result} für den Aufrufer sichtbar
+wird, müssen wir sie am Ende dem Doppel-Pointer-Parameter zuweisen. Mit
+\mintinline{c}{*target = result} schreiben wir den Pointer auf den
+allokierten Speicher in die Variable, auf die \mintinline{c}{target} zeigt --
+also in den Pointer im Aufrufer.
 
-\section*{Ansatz 1: Verschachtelte Schleifen}
+Wichtig ist hier, eine \textit{Hilfsvariable} \mintinline{c}{result} für den
+allokierten Speicher zu verwenden, anstatt direkt mit \mintinline{c}{*target}
+zu arbeiten. So bleibt der Code übersichtlich und die Doppel-Pointer-Logik
+nur am Ende einmal sichtbar.
 
-Der intuitive Ansatz besteht darin, den String mehrfach zu durchlaufen. In einer
-äußeren Schleife wird jeweils ein Zeichen aus dem String entnommen und in der
-Variablen \mintinline{c}{currentChar} gespeichert. Anschließend zählen wir in
-einer inneren Schleife die Häufigkeit dieses Zeichens im gesamten String, wofür
-die Variable \mintinline{c}{currentOccurrence} verwendet wird. Die innere
-Schleife muss dabei nur ab der aktuellen Position der äußeren Schleife laufen,
-da Zeichen vor dieser Position bereits in einem früheren Durchlauf der äußeren
-Schleife betrachtet wurden.
-
-Falls das aktuell betrachtete Zeichen identisch mit dem bis dahin am häufigsten
-gefundenen Zeichen (\mintinline{c}{maxChar}) ist, können wir dieses Zeichen
-überspringen, um redundante Zählungen zu vermeiden.
-
-In der inneren Schleife vergleichen wir jedes Zeichen des Strings mit
-\mintinline{c}{currentChar}. Stimmen sie überein, erhöhen wir
-\mintinline{c}{currentOccurrence}. Nach Abschluss der inneren Schleife prüfen
-wir, ob \mintinline{c}{currentOccurrence} größer als die bisherige maximale
-Häufigkeit ist. Ist dies der Fall, aktualisieren wir \mintinline{c}{maxChar} und
-\mintinline{c}{maxOccurrence} entsprechend.
-
-Am Ende wird die maximale Häufigkeit über den Pointer-Parameter
-\mintinline{c}{occurrence} an den Aufrufer übergeben, und das Zeichen wird als
-Rückgabewert zurückgegeben.
+Der Aufrufer ist nach Abschluss der Funktion dafür verantwortlich, den
+allokierten Speicher mittels \mintinline{c}{free()} wieder freizugeben.
 
 \begin{codebox}[lang=c, fontsize=\small]
-char findMaxChar(const char *string, int *occurrence) {
-    size_t length = strlen(string);
-    char maxChar = '\0';
-    int maxOccurrence = 0;
+int clampAll(const int source[], const int n, const int max,
+             int **target) {
+    int *result = malloc(n * sizeof(int));
+    if (result == NULL) {
+        return -1;
+    }
 
-    for (size_t i = 0; i < length; i++) {
-        char currentChar = string[i];
-        if (currentChar == maxChar) {
-            continue;
-        }
-
-        int currentOccurrence = 0;
-        for (size_t j = i; j < length; j++) {
-            if (string[j] == currentChar) {
-                currentOccurrence++;
-            }
-        }
-
-        if (currentOccurrence > maxOccurrence) {
-            maxOccurrence = currentOccurrence;
-            maxChar = currentChar;
+    for (int i = 0; i < n; i++) {
+        if (source[i] > max) {
+            result[i] = max;
+        } else {
+            result[i] = source[i];
         }
     }
 
-    *occurrence = maxOccurrence;
-    return maxChar;
+    *target = result;
+    return 0;
 }
 \end{codebox}
-
-\section*{Ansatz 2: Häufigkeitsarray}
-
-Ein deutlich effizienterer Ansatz nutzt ein \textit{Häufigkeitsarray}: ein Array
-von ganzen Zahlen, in dem an jedem Index gespeichert wird, wie oft das Zeichen
-mit diesem Wert im String vorkommt. In C werden \mintinline{c}{char}-Werte
-intern als Ganzzahlen gemäß ASCII-Tabelle gespeichert. Das Zeichen
-\mintinline{c}{'a'} hat z.\,B. den Wert \texttt{97} und kann daher direkt als
-Index verwendet werden: \mintinline{c}{frequency['a']} ist gleichbedeutend mit
-\mintinline{c}{frequency[97]}.
-
-Die Lösung läuft in zwei Phasen ab. In der ersten Phase wird der String einmal
-durchlaufen und für jedes Zeichen der entsprechende Eintrag im Häufigkeitsarray
-erhöht. In der zweiten Phase wird das Häufigkeitsarray einmal durchlaufen, um
-den Index mit dem höchsten Wert zu finden -- dieser Index entspricht dem
-gesuchten Zeichen.
-
-\begin{codebox}[lang=c, fontsize=\small]
-char findMaxChar(const char *string, int *occurrence) {
-    int frequency[256] = {0};
-    size_t length = strlen(string);
-
-    // Haeufigkeiten zaehlen
-    for (size_t i = 0; i < length; i++) {
-        int index = string[i];
-        frequency[index]++;
-    }
-
-    // Index mit hoechster Haeufigkeit suchen
-    int maxIndex = 0;
-    for (int i = 1; i < 256; i++) {
-        if (frequency[i] > frequency[maxIndex]) {
-            maxIndex = i;
-        }
-    }
-
-    *occurrence = frequency[maxIndex];
-    return (char)maxIndex;
-}
-\end{codebox}
-
-\section*{Vergleich der beiden Ansätze}
-
-Der erste Ansatz benötigt nur wenige Variablen als Hilfsspeicher, ist dafür aber
-mit zwei verschachtelten Schleifen relativ langsam: bei einem String der Länge
-$n$ werden bis zu $n^2$ Vergleiche durchgeführt. Der zweite Ansatz benötigt
-zusätzlichen Speicher für das Häufigkeitsarray (256 \mintinline{c}{int}-Werte),
-kommt aber mit zwei einfachen Schleifen aus und ist dadurch deutlich schneller.
-Bei einem String mit 10\,000 Zeichen sind das ca. 100\,000\,000 Operationen im
-ersten Ansatz gegenüber nur ca. 10\,256 Operationen im zweiten -- ein
-Unterschied um Faktor 10\,000.
-
-In der Praxis ist der zweite Ansatz fast immer vorzuziehen. Der erste Ansatz hat
-aber den Vorteil, dass er ohne Annahmen über den Wertebereich der Zeichen
-funktioniert. Der Häufigkeitsarray-Ansatz setzt voraus, dass alle Zeichen im
-Bereich \mintinline{c}{0}--\mintinline{c}{255} liegen -- was bei reinen
-ASCII-Strings immer der Fall ist, bei Multibyte-Zeichen (z.\,B. UTF-8 mit
-deutschen Umlauten) aber zu falschen Ergebnissen führen kann.
-
-
-
-
-
-\chapter{Quadratzahlen der Ziffern einer Zahl zusammensetzen}
-
-Um die Ziffern einer Zahl einzeln zu quadrieren, wird die Eingabezahl
-ziffernweise von rechts nach links verarbeitet. Dazu wird die letzte Ziffer mit
-der Modulo-Operation (\mintinline{c}{% 10}) extrahiert und die Zahl durch
-Ganzzahldivision (\mintinline{c}{/ 10}) verkleinert. Dieser Prozess wird so
-lange wiederholt, bis alle Ziffern verarbeitet sind.
-
-Die extrahierte Ziffer wird quadriert, und das Quadrat an der passenden
-Dezimalstelle der Zielzahl eingefügt. Dafür wird das Quadrat mit dem aktuellen
-Stellenwert (\mintinline{c}{placeValue}) multipliziert und zur Zielzahl addiert.
-Anschließend wird der Stellenwert für die nächste Ziffer entsprechend angepasst,
-abhängig davon, ob das Quadrat ein- oder zweistellig ist.
-
-\begin{codebox}[lang=c, fontsize=\small]
-unsigned long long digitsToSquares(unsigned number) {
-    unsigned long long transformedNumber = 0;
-    unsigned int currentDigit = 0;
-    unsigned long long digitSquare = 0;
-    unsigned long long placeValue = 1;
-
-    do {
-        currentDigit = number % 10; // Get the last digit
-        number /= 10;               // Remove the last digit
-
-        digitSquare = currentDigit * currentDigit;
-
-        // Determine if the square requires one or two digits
-        unsigned long long digitShiftMultiplier = 1;
-        if (digitSquare > 9)
-            digitShiftMultiplier = 10;
-
-        transformedNumber += digitSquare * placeValue;
-        // Adjust the place value for the next digit
-        placeValue *= digitShiftMultiplier * 10;
-    } while (number != 0);
-
-    return transformedNumber;
-}
-\end{codebox}
-
 
 
 
@@ -883,8 +1052,6 @@ void findHighAndLow(const char *inputString, char *output) {
     free(workingCopy);
 }
 \end{codebox}
-
-
 
 
 
@@ -1040,9 +1207,6 @@ int countWords(char string[], char word[]) {
     return wordCount;
 }
 \end{codebox}
-
-
-
 
 
 
@@ -1217,6 +1381,7 @@ int main(void) {
 
 
 
+
 \chapter{Überprüfen, ob eine Zeichenkette eine gültige IPv4-Adresse ist}
 
 Die Funktion \mintinline{c}{isValidIpv4()} prüft, ob ein gegebener String eine
@@ -1310,7 +1475,6 @@ bool isValidIpv4(const char *ipAddress) {
 
 
 
-
 \chapter{Jüngste Person in einer Datenstruktur finden}
 
 Die Funktion \mintinline{c}{findYoungestPerson()} nimmt zwei Parameter entgegen:
@@ -1358,6 +1522,340 @@ Person *findYoungestPerson(Person *persons[], int size) {
 }
 \end{codebox}
 
+
+
+
+\chapter{Stapel mit dynamisch wachsender Kapazität}
+
+\section*{Funktion \texttt{stackInit()}}
+
+Die Funktion \mintinline{c}{stackInit()} initialisiert einen Stapel mit einer
+gegebenen Anfangskapazität. Hierfür wird mit \mintinline{c}{malloc()}
+Speicher für \mintinline{c}{initialCapacity} \mintinline{c}{int}-Werte auf
+dem Heap reserviert. Schlägt die Allokation fehl, wird \mintinline{c}{-1}
+zurückgegeben, ohne weitere Felder der Struktur zu setzen.
+
+Im Erfolgsfall werden die Strukturfelder \mintinline{c}{size} (auf 0) und
+\mintinline{c}{capacity} (auf \mintinline{c}{initialCapacity}) initialisiert.
+Der Stapel ist jetzt einsatzbereit, aber noch leer.
+
+\begin{codebox}[lang=c, fontsize=\small]
+int stackInit(intStack *stack, const int initialCapacity) {
+    stack->data = malloc(initialCapacity * sizeof(int));
+    if (stack->data == NULL) {
+        return -1;
+    }
+    stack->size = 0;
+    stack->capacity = initialCapacity;
+    return 0;
+}
+\end{codebox}
+
+\section*{Funktion \texttt{stackPush()}}
+
+Die Funktion \mintinline{c}{stackPush()} legt einen Wert oben auf den Stapel.
+Zunächst wird geprüft, ob der Buffer noch ausreichend groß ist
+(\mintinline{c}{size < capacity}). Ist dies nicht der Fall, muss die
+Kapazität verdoppelt werden, bevor der Wert angefügt werden kann.
+
+Für die Vergrößerung des Buffers verwenden wir die
+\mintinline{c}{realloc()}-Funktion. Wichtig ist dabei, das Ergebnis von
+\mintinline{c}{realloc()} \textit{nicht} direkt
+\mintinline{c}{stack->data} zuzuweisen: schlägt \mintinline{c}{realloc()}
+fehl, würde der ursprüngliche Pointer dabei verloren gehen, was zu einem
+Memory Leak führen würde. Stattdessen nutzen wir eine Hilfsvariable
+\mintinline{c}{newData}, die wir erst nach erfolgreicher Reallokation dem
+\mintinline{c}{stack->data}-Feld zuweisen.
+
+Nach der erfolgreichen Vergrößerung (oder wenn keine Vergrößerung nötig war)
+wird der neue Wert an die nächste freie Position
+(\mintinline{c}{stack->data[stack->size]}) geschrieben und
+\mintinline{c}{size} um eins erhöht.
+
+\begin{codebox}[lang=c, fontsize=\small]
+int stackPush(intStack *stack, const int value) {
+    if (stack->size == stack->capacity) {
+        int newCapacity = stack->capacity * 2;
+        int *newData = realloc(stack->data, newCapacity * sizeof(int));
+
+        if (newData == NULL) {
+            return -1;
+        }
+
+        stack->data = newData;
+        stack->capacity = newCapacity;
+    }
+
+    stack->data[stack->size] = value;
+    stack->size++;
+    return 0;
+}
+\end{codebox}
+
+\section*{Funktion \texttt{stackPop()}}
+
+Die Funktion \mintinline{c}{stackPop()} entfernt das oberste Element vom
+Stapel und gibt dessen Wert über den Pointer-Parameter
+\mintinline{c}{value} zurück. Zunächst wird geprüft, ob der Stapel überhaupt
+Elemente enthält. Ist er leer, wird \mintinline{c}{-1} zurückgegeben, ohne
+\mintinline{c}{value} zu verändern.
+
+Andernfalls wird zuerst \mintinline{c}{size} dekrementiert und anschließend
+das Element an dieser neuen Position gelesen. Diese Reihenfolge ist wichtig:
+das oberste Element steht an Index \mintinline{c}{size - 1}, also genau dort,
+wo \mintinline{c}{size} nach der Dekrementierung hinzeigt. Würden wir die
+Reihenfolge umdrehen, müssten wir mit dem Index \mintinline{c}{size}
+arbeiten, was leicht zu Verwirrung führen kann.
+
+Die Kapazität des Buffers muss nicht angepasst werden -- der freigewordene
+Speicher kann in einem späteren \mintinline{c}{stackPush()}-Aufruf
+wiederverwendet werden.
+
+\begin{codebox}[lang=c, fontsize=\small]
+int stackPop(intStack *stack, int *value) {
+    if (stack->size == 0) {
+        return -1;
+    }
+
+    stack->size--;
+    *value = stack->data[stack->size];
+    return 0;
+}
+\end{codebox}
+
+\section*{Funktion \texttt{stackFree()}}
+
+Die Funktion \mintinline{c}{stackFree()} gibt den Speicher des Buffers wieder
+frei und setzt die Strukturfelder auf ihre Initialwerte zurück. Das Setzen
+von \mintinline{c}{stack->data} auf \mintinline{c}{NULL} ist wichtig, um
+sogenannte \textit{Dangling Pointer} zu vermeiden -- also Pointer, die auf
+bereits freigegebenen Speicher zeigen und bei einem versehentlichen Zugriff
+zu undefinierten Verhalten führen würden.
+
+\begin{codebox}[lang=c, fontsize=\small]
+void stackFree(intStack *stack) {
+    free(stack->data);
+    stack->data = NULL;
+    stack->size = 0;
+    stack->capacity = 0;
+}
+\end{codebox}
+
+
+
+
+\chapter{Datenstruktur sortieren}
+
+\section*{Funktion \texttt{createPlayer()}}
+
+Die Funktion \mintinline{c}{createPlayer()} soll dynamisch Speicher für einen
+Spieler allokieren. Dazu müssen wir mittels \mintinline{c}{malloc} entsprechend
+Speicher reservieren:
+
+\noindent\mintinline{c}{Player* player = malloc(sizeof(Player));}
+
+Sofern die Allokation erfolgreich war, können die Daten initialisiert werden.
+Die Initialisierung von Zeichenketten erfolgt wie gewohnt nicht einfach mittels
+des Zuweisungsoperators, sondern indem die Zeichen von einem Speicherbereich
+(Quelle) in einen anderen Speicherbereich (Ziel) kopiert werden.
+
+Dies kann beispielsweise mittels der \mintinline{c}{strncpy()}-Funktion
+erfolgen. Hierbei müsste man dann allerdings sicherstellen, dass der Puffer nach
+dem Kopieren der Zeichenkette manuell null-terminiert wird, falls die Quelle
+länger als der Zielpuffer ist. Beispielsweise wie folgt:
+
+\noindent\mintinline{c}{strncpy(player->firstName, firstName, NAMELENGTH - 1);}
+
+\noindent\mintinline{c}{player->firstName[NAMELENGTH - 1] = '\0';}
+
+Eine gute Alternative dazu ist die \mintinline{c}{snprintf()}-Funktion, die
+sicherstellt, dass die Zielzeichenkette immer null-terminiert ist, solange die
+Größe des Puffers größer als 0 ist.
+
+\begin{codebox}[lang=c, fontsize=\small]
+Player* createPlayer(const char firstName[], const char lastName[], int age) {
+    Player* player = malloc(sizeof(Player));
+    if (player == NULL) {
+        fprintf(stderr, "Fehler: Speicherallokation fehlgeschlagen\n");
+        return NULL;
+    }
+
+    snprintf(player->firstName, NAME_LENGTH, "%s", firstName);
+    snprintf(player->lastName, NAME_LENGTH, "%s", lastName);
+    player->age = age;
+
+    return player;
+}
+\end{codebox}
+
+\section*{Funktion \texttt{printPlayer()}}
+
+Die Funktion \mintinline{c}{printPlayer()} empfängt einen Pointer auf ein
+\mintinline{c}{Player}-Objekt. Über diesen Pointer können wir auf die
+Strukturelemente zugreifen und die einzelnen Elemente in gewünschter Weise per
+\mintinline{c}{printf()} auf dem Bildschirm ausgeben.
+
+\begin{codebox}[lang=c, fontsize=\small]
+void printPlayer(Player *player) {
+    printf("%s %s, %d Jahre\n", player->firstName, player->lastName, player->age);
+}
+\end{codebox}
+
+\section*{Funktion \texttt{comparePlayerByLastName()}}
+
+Die Funktion \mintinline{c}{comparePlayerByLastName()} ist so konzipiert, dass
+sie durch eine der Sortierfunktionen (bspw. \mintinline{c}{qsort}) zum Vergleich
+von zwei Elementen genutzt werden kann. Grundsätzlich ist es möglich, eine
+beliebige Vergleichsfunktion zu erstellen, die die Vornamen, Nachnamen oder das
+Alter aufsteigend oder absteigend miteinander vergleicht.
+
+Um einen Vergleich nach Nachnamen durchzuführen, müssen wir das entsprechende
+Strukturelement der beiden übergebenen Objekte A und B auswerten. Wie in der
+Aufgabenstellung beschrieben, handelt es sich bei den beiden Pointern
+\mintinline{c}{pa} und \mintinline{c}{pb} jeweils um einen Pointer auf ein
+Array-Element des \mintinline{c}{teams}-Arrays, also jeweils um einen Pointer
+auf einen Pointer auf ein \mintinline{c}{Player}-Objekt.
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[scale=0.7]{images/sortPlayersCompareExample.pdf}
+    \caption{Darstellung der beiden Pointer \mintinline{c}{pa} und
+    \mintinline{c}{pb} auf jeweils ein Array-Element des
+    \mintinline{c}{teams}-Array}
+    \label{fig:sortPlayerCompareExample}
+\end{figure}
+
+Aus diesem Grund müssen wir diese Pointer als \mintinline{c}{Player**}
+interpretieren, so dass wir durch eine Dereferenzierung einen Pointer auf ein
+\mintinline{c}{Player}-Objekt erhalten:
+
+\noindent\mintinline{c}{const Player *A = *(const Player**)pa;}
+
+Sobald wir Pointer auf die beiden zu vergleichenden
+\mintinline{c}{Player}-Objekte haben, können wir deren Nachnamen mittels der
+\mintinline{c}{strcmp()}-Funktion lexikografisch vergleichen.
+
+\begin{codebox}[lang=c, fontsize=\small]
+int comparePlayerByLastName(const void *pa, const void *pb) {
+    const Player *A = *(const Player**)pa;
+    const Player *B = *(const Player**)pb;
+
+    return strcmp(A->lastName, B->lastName);
+}
+\end{codebox}
+
+\section*{Funktion \texttt{freeTeam()}}
+
+Die Funktion \mintinline{c}{freeTeam()} soll dazu dienen, den dynamisch
+allokierten Speicher in geordneter Weise für ein ganzes Team wieder freizugeben.
+Im Gegensatz zur Allokation des Speichers müssen wir jetzt in ungekehrter
+Reihenfolge vorgehen, d.\,h. zuerst müssen wir den Speicher jedes einzelnen
+\mintinline{c}{Player}-Objekts freigeben und im Anschluss den Speicher des
+Arrays, in dem die Pointer auf die \mintinline{c}{Player}-Objekte abgelegt
+wurden.
+
+\begin{codebox}[lang=c, fontsize=\small]
+void freeTeam(Player **team, int numPlayers) {
+    for (int i = 0; i < numPlayers; i++) {
+        free(team[i]);
+    }
+    free(team);
+}
+\end{codebox}
+
+Diese Reihenfolge muss eingehalten werden, denn hätten wir zuerst den Speicher
+des Arrays freigegeben, hätten wir die Pointer auf die einzelnen
+\mintinline{c}{Player}-Objekte verloren.
+
+
+
+
+\chapter{Duplikate aus einem Array entfernen}
+
+Grundsätzlich gibt es verschiedene Ansätze, um die Duplikate aus einem Array zu
+entfernen: wir könnten zuerst einen neuen Speicherbereich allokieren, in den wir
+die Unikate des ursprünglichen Arrays kopieren. Anschließend könnten wir den
+Speicher des neuen Arrays entsprechend der neuen Größe anpassen und den Speicher
+auf das alte Array freigeben.
+
+Oder wir könnten das ursprüngliche Array direkt im Speicher verändern und die
+Größe des Arrays entsprechend anpassen. Das wäre eine effizientere Lösung, die
+im Folgenden vorgestellt wird.
+
+Die Funktion \mintinline{c}{removeDuplicates()} akzeptiert zwei Parameter: einen
+\textit{Doppel-Pointer} auf ein Array (\mintinline{c}{int **array}) und einen
+Pointer auf die Größe dieses Arrays (\mintinline{c}{int *size}). Sie gibt keinen
+Wert zurück, da sie das Array direkt im Speicher modifiziert.
+
+Der Einsatz eines Doppel-Pointers ist hier entscheidend. Bei der Reduzierung der
+Größe des Arrays könnte die \mintinline{c}{realloc()}-Funktion eine neue
+Speicheradresse zuweisen. Mit einem einfachen Pointer (also nur
+\mintinline{c}{int *array}) könnten wir zwar die Elemente des Arrays
+manipulieren, jedoch wäre es uns nicht möglich, die Adresse des Zeigers selbst
+zu ändern, die außerhalb der Funktion \mintinline{c}{removeDuplicates()}
+definiert ist. Der Doppel-Pointer ermöglicht es uns, genau diese Adresse zu
+aktualisieren. So stellen wir sicher, dass nach einer erfolgreichen
+\mintinline{c}{realloc()}-Operation der in \mintinline{c}{main()} oder einer
+anderen aufrufenden Funktion verwendete Zeiger auf die korrekte, möglicherweise
+neue Speicheradresse des nun verkleinerten Arrays zeigt.
+
+Zuerst wird überprüft, ob die Größe des Arrays kleiner als 2 ist. Falls dies der
+Fall ist, können wir direkt aus der Funktion heraus springen, da es keine
+Duplikate geben kann.
+
+Die neue Größe des Arrays wird mittels \mintinline{c}{newSize = 1} mit Eins
+initialisiert, da das erste Element des (sortierten) Arrays immer das erste
+Element bleiben wird. Die for-Schleife durchläuft das Array beginnend vom
+zweiten Element (Index 1). Für jedes Element überprüft sie, ob es gleich dem
+vorherigen Element im "neuen" Array ist. Das vorherige Element im "neuen" Array
+bleibt dabei immer an der Position \mintinline{c}{newSize - 1}. Wenn ein Element
+nicht gleich seinem Vorgänger ist (d.h. kein Duplikat des vorherigen Elements),
+wird es in das Array an der aktuellen Position \mintinline{c}{newSize} kopiert
+und \mintinline{c}{newSize} wird inkrementiert.
+
+Nachdem die for-Schleife durchlaufen wurde, wird der Speicher des Arrays auf die
+neue Größe angepasst. Hierfür wird die \mintinline{c}{realloc()}-Funktion aus
+dem \mintinline{c}{stdlib.h}-Header verwendet. \mintinline{c}{realloc()} kann
+dabei entweder die gleiche Adresse zurückgeben oder eine neue. Wenn
+\mintinline{c}{realloc()} eine neue Adresse zurückgibt, repräsentiert diese den
+verkleinerten Speicherbereich und der ursprüngliche Speicher wird automatisch
+freigegeben.
+
+Falls \mintinline{c}{realloc()} fehlschlägt, wird der ursprüngliche
+Speicherbereich hinter \mintinline{c}{*array} nicht freigegeben. Stattdessen
+gibt die Funktion \mintinline{c}{NULL} zurück, um zu signalisieren, dass die
+Größenänderung nicht erfolgreich war.
+
+Falls \mintinline{c}{realloc()} erfolgreich ist und eine neue oder gleiche
+Adresse zurückgibt, aktualisieren wir den ursprünglichen Array-Zeiger
+(\mintinline{c}{*array}) auf diese (möglicherweise neue) Adresse. Dies ist
+wichtig, da sich die Adresse des Arrays geändert haben könnte. Nur im
+Erfolgsfall wird die Größe (\mintinline{c}{*size}) auf \mintinline{c}{newSize}
+aktualisiert, um die neue Anzahl der Elemente im Array widerzuspiegeln.
+
+\begin{codebox}[lang=c, fontsize=\small]
+void removeDuplicates(int **array, int *size) {
+    if (*size < 2) {
+        return;
+    }
+
+    int newSize = 1;
+    for (int i = 1; i < *size; i++) {
+        if ((*array)[i] != (*array)[newSize - 1]) {
+            (*array)[newSize] = (*array)[i];
+            newSize++;
+        }
+    }
+
+    int *tempArray = realloc(*array, (size_t)newSize * sizeof(int));
+    if (tempArray != NULL) {
+        // Zeiger und Größe nur aktualisieren,
+        // wenn realloc() erfolgreich war
+        *array = tempArray;
+        *size = newSize;
+    }
+}
+\end{codebox}
 
 
 
@@ -1551,223 +2049,3 @@ void removeNodesWithValue(List *list, int value) {
     }
 }
 \end{codebox}
-
-
-
-
-
-\chapter{Duplikate aus einem Array entfernen}
-
-Grundsätzlich gibt es verschiedene Ansätze, um die Duplikate aus einem Array zu
-entfernen: wir könnten zuerst einen neuen Speicherbereich allokieren, in den wir
-die Unikate des ursprünglichen Arrays kopieren. Anschließend könnten wir den
-Speicher des neuen Arrays entsprechend der neuen Größe anpassen und den Speicher
-auf das alte Array freigeben.
-
-Oder wir könnten das ursprüngliche Array direkt im Speicher verändern und die
-Größe des Arrays entsprechend anpassen. Das wäre eine effizientere Lösung, die
-im Folgenden vorgestellt wird.
-
-Die Funktion \mintinline{c}{removeDuplicates()} akzeptiert zwei Parameter: einen
-\textit{Doppel-Pointer} auf ein Array (\mintinline{c}{int **array}) und einen
-Pointer auf die Größe dieses Arrays (\mintinline{c}{int *size}). Sie gibt keinen
-Wert zurück, da sie das Array direkt im Speicher modifiziert.
-
-Der Einsatz eines Doppel-Pointers ist hier entscheidend. Bei der Reduzierung der
-Größe des Arrays könnte die \mintinline{c}{realloc()}-Funktion eine neue
-Speicheradresse zuweisen. Mit einem einfachen Pointer (also nur
-\mintinline{c}{int *array}) könnten wir zwar die Elemente des Arrays
-manipulieren, jedoch wäre es uns nicht möglich, die Adresse des Zeigers selbst
-zu ändern, die außerhalb der Funktion \mintinline{c}{removeDuplicates()}
-definiert ist. Der Doppel-Pointer ermöglicht es uns, genau diese Adresse zu
-aktualisieren. So stellen wir sicher, dass nach einer erfolgreichen
-\mintinline{c}{realloc()}-Operation der in \mintinline{c}{main()} oder einer
-anderen aufrufenden Funktion verwendete Zeiger auf die korrekte, möglicherweise
-neue Speicheradresse des nun verkleinerten Arrays zeigt.
-
-Zuerst wird überprüft, ob die Größe des Arrays kleiner als 2 ist. Falls dies der
-Fall ist, können wir direkt aus der Funktion heraus springen, da es keine
-Duplikate geben kann.
-
-Die neue Größe des Arrays wird mittels \mintinline{c}{newSize = 1} mit Eins
-initialisiert, da das erste Element des (sortierten) Arrays immer das erste
-Element bleiben wird. Die for-Schleife durchläuft das Array beginnend vom
-zweiten Element (Index 1). Für jedes Element überprüft sie, ob es gleich dem
-vorherigen Element im "neuen" Array ist. Das vorherige Element im "neuen" Array
-bleibt dabei immer an der Position \mintinline{c}{newSize - 1}. Wenn ein Element
-nicht gleich seinem Vorgänger ist (d.h. kein Duplikat des vorherigen Elements),
-wird es in das Array an der aktuellen Position \mintinline{c}{newSize} kopiert
-und \mintinline{c}{newSize} wird inkrementiert.
-
-Nachdem die for-Schleife durchlaufen wurde, wird der Speicher des Arrays auf die
-neue Größe angepasst. Hierfür wird die \mintinline{c}{realloc()}-Funktion aus
-dem \mintinline{c}{stdlib.h}-Header verwendet. \mintinline{c}{realloc()} kann
-dabei entweder die gleiche Adresse zurückgeben oder eine neue. Wenn
-\mintinline{c}{realloc()} eine neue Adresse zurückgibt, repräsentiert diese den
-verkleinerten Speicherbereich und der ursprüngliche Speicher wird automatisch
-freigegeben.
-
-Falls \mintinline{c}{realloc()} fehlschlägt, wird der ursprüngliche
-Speicherbereich hinter \mintinline{c}{*array} nicht freigegeben. Stattdessen
-gibt die Funktion \mintinline{c}{NULL} zurück, um zu signalisieren, dass die
-Größenänderung nicht erfolgreich war.
-
-Falls \mintinline{c}{realloc()} erfolgreich ist und eine neue oder gleiche
-Adresse zurückgibt, aktualisieren wir den ursprünglichen Array-Zeiger
-(\mintinline{c}{*array}) auf diese (möglicherweise neue) Adresse. Dies ist
-wichtig, da sich die Adresse des Arrays geändert haben könnte. Nur im
-Erfolgsfall wird die Größe (\mintinline{c}{*size}) auf \mintinline{c}{newSize}
-aktualisiert, um die neue Anzahl der Elemente im Array widerzuspiegeln.
-
-\begin{codebox}[lang=c, fontsize=\small]
-void removeDuplicates(int **array, int *size) {
-    if (*size < 2) {
-        return;
-    }
-
-    int newSize = 1;
-    for (int i = 1; i < *size; i++) {
-        if ((*array)[i] != (*array)[newSize - 1]) {
-            (*array)[newSize] = (*array)[i];
-            newSize++;
-        }
-    }
-
-    int *tempArray = realloc(*array, (size_t)newSize * sizeof(int));
-    if (tempArray != NULL) {
-        // Zeiger und Größe nur aktualisieren,
-        // wenn realloc() erfolgreich war
-        *array = tempArray;
-        *size = newSize;
-    }
-}
-\end{codebox}
-
-
-
-
-
-
-
-\chapter{Datenstruktur sortieren}
-
-\section*{Funktion \texttt{createPlayer()}}
-
-Die Funktion \mintinline{c}{createPlayer()} soll dynamisch Speicher für einen
-Spieler allokieren. Dazu müssen wir mittels \mintinline{c}{malloc} entsprechend
-Speicher reservieren:
-
-\noindent\mintinline{c}{Player* player = malloc(sizeof(Player));}
-
-Sofern die Allokation erfolgreich war, können die Daten initialisiert werden.
-Die Initialisierung von Zeichenketten erfolgt wie gewohnt nicht einfach mittels
-des Zuweisungsoperators, sondern indem die Zeichen von einem Speicherbereich
-(Quelle) in einen anderen Speicherbereich (Ziel) kopiert werden.
-
-Dies kann beispielsweise mittels der \mintinline{c}{strncpy()}-Funktion
-erfolgen. Hierbei müsste man dann allerdings sicherstellen, dass der Puffer nach
-dem Kopieren der Zeichenkette manuell null-terminiert wird, falls die Quelle
-länger als der Zielpuffer ist. Beispielsweise wie folgt:
-
-\noindent\mintinline{c}{strncpy(player->firstName, firstName, NAMELENGTH - 1);}
-
-\noindent\mintinline{c}{player->firstName[NAMELENGTH - 1] = '\0';}
-
-Eine gute Alternative dazu ist die \mintinline{c}{snprintf()}-Funktion, die
-sicherstellt, dass die Zielzeichenkette immer null-terminiert ist, solange die
-Größe des Puffers größer als 0 ist.
-
-\begin{codebox}[lang=c, fontsize=\small]
-Player* createPlayer(const char firstName[], const char lastName[], int age) {
-    Player* player = malloc(sizeof(Player));
-    if (player == NULL) {
-        fprintf(stderr, "Fehler: Speicherallokation fehlgeschlagen\n");
-        return NULL;
-    }
-
-    snprintf(player->firstName, NAME_LENGTH, "%s", firstName);
-    snprintf(player->lastName, NAME_LENGTH, "%s", lastName);
-    player->age = age;
-
-    return player;
-}
-\end{codebox}
-
-\section*{Funktion \texttt{printPlayer()}}
-
-Die Funktion \mintinline{c}{printPlayer()} empfängt einen Pointer auf ein
-\mintinline{c}{Player}-Objekt. Über diesen Pointer können wir auf die
-Strukturelemente zugreifen und die einzelnen Elemente in gewünschter Weise per
-\mintinline{c}{printf()} auf dem Bildschirm ausgeben.
-
-\begin{codebox}[lang=c, fontsize=\small]
-void printPlayer(Player *player) {
-    printf("%s %s, %d Jahre\n", player->firstName, player->lastName, player->age);
-}
-\end{codebox}
-
-\section*{Funktion \texttt{comparePlayerByLastName()}}
-
-Die Funktion \mintinline{c}{comparePlayerByLastName()} ist so konzipiert, dass
-sie durch eine der Sortierfunktionen (bspw. \mintinline{c}{qsort}) zum Vergleich
-von zwei Elementen genutzt werden kann. Grundsätzlich ist es möglich, eine
-beliebige Vergleichsfunktion zu erstellen, die die Vornamen, Nachnamen oder das
-Alter aufsteigend oder absteigend miteinander vergleicht.
-
-Um einen Vergleich nach Nachnamen durchzuführen, müssen wir das entsprechende
-Strukturelement der beiden übergebenen Objekte A und B auswerten. Wie in der
-Aufgabenstellung beschrieben, handelt es sich bei den beiden Pointern
-\mintinline{c}{pa} und \mintinline{c}{pb} jeweils um einen Pointer auf ein
-Array-Element des \mintinline{c}{teams}-Arrays, also jeweils um einen Pointer
-auf einen Pointer auf ein \mintinline{c}{Player}-Objekt.
-
-\begin{figure}[htb!]
-    \centering
-    \includegraphics[scale=0.7]{images/sortPlayersCompareExample.pdf}
-    \caption{Darstellung der beiden Pointer \mintinline{c}{pa} und
-    \mintinline{c}{pb} auf jeweils ein Array-Element des
-    \mintinline{c}{teams}-Array}
-    \label{fig:sortPlayerCompareExample}
-\end{figure}
-
-Aus diesem Grund müssen wir diese Pointer als \mintinline{c}{Player**}
-interpretieren, so dass wir durch eine Dereferenzierung einen Pointer auf ein
-\mintinline{c}{Player}-Objekt erhalten:
-
-\noindent\mintinline{c}{const Player *A = *(const Player**)pa;}
-
-Sobald wir Pointer auf die beiden zu vergleichenden
-\mintinline{c}{Player}-Objekte haben, können wir deren Nachnamen mittels der
-\mintinline{c}{strcmp()}-Funktion lexikografisch vergleichen.
-
-\begin{codebox}[lang=c, fontsize=\small]
-int comparePlayerByLastName(const void *pa, const void *pb) {
-    const Player *A = *(const Player**)pa;
-    const Player *B = *(const Player**)pb;
-
-    return strcmp(A->lastName, B->lastName);
-}
-\end{codebox}
-
-\section*{Funktion \texttt{freeTeam()}}
-
-Die Funktion \mintinline{c}{freeTeam()} soll dazu dienen, den dynamisch
-allokierten Speicher in geordneter Weise für ein ganzes Team wieder freizugeben.
-Im Gegensatz zur Allokation des Speichers müssen wir jetzt in ungekehrter
-Reihenfolge vorgehen, d.\,h. zuerst müssen wir den Speicher jedes einzelnen
-\mintinline{c}{Player}-Objekts freigeben und im Anschluss den Speicher des
-Arrays, in dem die Pointer auf die \mintinline{c}{Player}-Objekte abgelegt
-wurden.
-
-\begin{codebox}[lang=c, fontsize=\small]
-void freeTeam(Player **team, int numPlayers) {
-    for (int i = 0; i < numPlayers; i++) {
-        free(team[i]);
-    }
-    free(team);
-}
-\end{codebox}
-
-Diese Reihenfolge muss eingehalten werden, denn hätten wir zuerst den Speicher
-des Arrays freigegeben, hätten wir die Pointer auf die einzelnen
-\mintinline{c}{Player}-Objekte verloren.
