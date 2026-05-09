@@ -609,58 +609,123 @@ char *createVowelFreeString(const char *str) {
 
 \chapter{Häufigste vorkommende Zeichen in einem String finden}
 
-Um das am häufigsten vorkommende Zeichen in einem String zu ermitteln, ist es
-notwendig, den String mehrfach zu durchlaufen. Dies erfordert zwei ineinander
-verschachtelte Schleifen: In der äußeren Schleife wird jeweils ein Zeichen aus
-dem String entnommen und in der Variablen \mintinline{c}{currentChar}
-gespeichert. Anschließend zählen wir in der inneren Schleife die Häufigkeit
-dieses Zeichens im gesamten String, wofür die Variable
-\mintinline{c}{currentOccurrence} verwendet wird. Hierfür reicht es, wenn die
-innere Schleife von der aktuellen Position der äußeren Schleife bis zum Ende des
-Strings läuft.
+Diese Aufgabe lässt sich auf zwei grundlegend verschiedene Arten lösen. Beide
+Ansätze sind algorithmisch korrekt, unterscheiden sich aber deutlich in
+Effizienz und Speicherverbrauch.
 
-Wichtig ist, dass wir bei jedem neuen Durchlauf der äußeren Schleife die
-Variablen \mintinline{c}{currentChar} und \mintinline{c}{currentOccurrence} neu
-initialisieren. Falls das aktuell betrachtete Zeichen
-(\mintinline{c}{currentChar}) identisch mit dem bis dahin am häufigsten
+\section*{Ansatz 1: Verschachtelte Schleifen}
+
+Der intuitive Ansatz besteht darin, den String mehrfach zu durchlaufen. In einer
+äußeren Schleife wird jeweils ein Zeichen aus dem String entnommen und in der
+Variablen \mintinline{c}{currentChar} gespeichert. Anschließend zählen wir in
+einer inneren Schleife die Häufigkeit dieses Zeichens im gesamten String, wofür
+die Variable \mintinline{c}{currentOccurrence} verwendet wird. Die innere
+Schleife muss dabei nur ab der aktuellen Position der äußeren Schleife laufen,
+da Zeichen vor dieser Position bereits in einem früheren Durchlauf der äußeren
+Schleife betrachtet wurden.
+
+Falls das aktuell betrachtete Zeichen identisch mit dem bis dahin am häufigsten
 gefundenen Zeichen (\mintinline{c}{maxChar}) ist, können wir dieses Zeichen
-überspringen und direkt zum nächsten fortschreiten, um redundante Zählungen zu
-vermeiden.
+überspringen, um redundante Zählungen zu vermeiden.
 
 In der inneren Schleife vergleichen wir jedes Zeichen des Strings mit
 \mintinline{c}{currentChar}. Stimmen sie überein, erhöhen wir
 \mintinline{c}{currentOccurrence}. Nach Abschluss der inneren Schleife prüfen
 wir, ob \mintinline{c}{currentOccurrence} größer als die bisherige maximale
-Häufigkeit (\mintinline{c}{maxOccurrence}) ist. Ist dies der Fall, aktualisieren
-wir die Variablen \mintinline{c}{maxChar} und \mintinline{c}{maxOccurrence}
-entsprechend.
+Häufigkeit ist. Ist dies der Fall, aktualisieren wir \mintinline{c}{maxChar} und
+\mintinline{c}{maxOccurrence} entsprechend.
+
+Am Ende wird die maximale Häufigkeit über den Pointer-Parameter
+\mintinline{c}{occurrence} an den Aufrufer übergeben, und das Zeichen wird als
+Rückgabewert zurückgegeben.
 
 \begin{minted}{c}
-void printMaxChars(char *string) {
+char findMaxChar(const char *string, int *occurrence) {
     size_t length = strlen(string);
     char maxChar = '\0';
-    char currentChar;
     int maxOccurrence = 0;
-    int currentOccurrence = 0;
 
     for (size_t i = 0; i < length; i++) {
-        currentChar = string[i];
-        currentOccurrence = 0;
-        if (currentChar == maxChar)
+        char currentChar = string[i];
+        if (currentChar == maxChar) {
             continue;
-        for (size_t j = i; j < length; j++) {
-            if (string[j] == currentChar)
-                currentOccurrence++;
         }
+
+        int currentOccurrence = 0;
+        for (size_t j = i; j < length; j++) {
+            if (string[j] == currentChar) {
+                currentOccurrence++;
+            }
+        }
+
         if (currentOccurrence > maxOccurrence) {
             maxOccurrence = currentOccurrence;
             maxChar = currentChar;
         }
     }
 
-    printf("Zeichen %c kommt %d mal vor.\n", maxChar, maxOccurrence);
+    *occurrence = maxOccurrence;
+    return maxChar;
 }
 \end{minted}
+
+\section*{Ansatz 2: Häufigkeitsarray}
+
+Ein deutlich effizienterer Ansatz nutzt ein \textit{Häufigkeitsarray}: ein Array
+von ganzen Zahlen, in dem an jedem Index gespeichert wird, wie oft das Zeichen
+mit diesem Wert im String vorkommt. In C werden \mintinline{c}{char}-Werte
+intern als Ganzzahlen gemäß ASCII-Tabelle gespeichert. Das Zeichen
+\mintinline{c}{'a'} hat z.\,B. den Wert \texttt{97} und kann daher direkt als
+Index verwendet werden: \mintinline{c}{frequency['a']} ist gleichbedeutend mit
+\mintinline{c}{frequency[97]}.
+
+Die Lösung läuft in zwei Phasen ab. In der ersten Phase wird der String einmal
+durchlaufen und für jedes Zeichen der entsprechende Eintrag im Häufigkeitsarray
+erhöht. In der zweiten Phase wird das Häufigkeitsarray einmal durchlaufen, um
+den Index mit dem höchsten Wert zu finden -- dieser Index entspricht dem
+gesuchten Zeichen.
+
+\begin{minted}{c}
+char findMaxChar(const char *string, int *occurrence) {
+    int frequency[256] = {0};
+    size_t length = strlen(string);
+
+    // Haeufigkeiten zaehlen
+    for (size_t i = 0; i < length; i++) {
+        int index = string[i];
+        frequency[index]++;
+    }
+
+    // Index mit hoechster Haeufigkeit suchen
+    int maxIndex = 0;
+    for (int i = 1; i < 256; i++) {
+        if (frequency[i] > frequency[maxIndex]) {
+            maxIndex = i;
+        }
+    }
+
+    *occurrence = frequency[maxIndex];
+    return (char)maxIndex;
+}
+\end{minted}
+
+\section*{Vergleich der beiden Ansätze}
+
+Der erste Ansatz benötigt nur wenige Variablen als Hilfsspeicher, ist dafür aber
+mit zwei verschachtelten Schleifen relativ langsam: bei einem String der Länge
+$n$ werden bis zu $n^2$ Vergleiche durchgeführt. Der zweite Ansatz benötigt
+zusätzlichen Speicher für das Häufigkeitsarray (256 \mintinline{c}{int}-Werte),
+kommt aber mit zwei einfachen Schleifen aus und ist dadurch deutlich schneller.
+Bei einem String mit 10\,000 Zeichen sind das ca. 100\,000\,000 Operationen im
+ersten Ansatz gegenüber nur ca. 10\,256 Operationen im zweiten -- ein
+Unterschied um Faktor 10\,000.
+
+In der Praxis ist der zweite Ansatz fast immer vorzuziehen. Der erste Ansatz hat
+aber den Vorteil, dass er ohne Annahmen über den Wertebereich der Zeichen
+funktioniert. Der Häufigkeitsarray-Ansatz setzt voraus, dass alle Zeichen im
+Bereich \mintinline{c}{0}--\mintinline{c}{255} liegen -- was bei reinen
+ASCII-Strings immer der Fall ist, bei Multibyte-Zeichen (z.\,B. UTF-8 mit
+deutschen Umlauten) aber zu falschen Ergebnissen führen kann.
 
 
 

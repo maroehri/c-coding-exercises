@@ -492,13 +492,13 @@ Ohne Vokale: "n klgr Kpf drchdnkt jds Prblm"
 
 
 \chapter{Häufigste vorkommende Zeichen in einem String finden}
-
 \TopicLevel{Strings}{2}\vspace{10pt}
 
-Erstellen Sie eine Funktion \mintinline{c}{printMaxChars()}, die basierend auf
+Erstellen Sie eine Funktion \mintinline{c}{findMaxChar()}, die basierend auf
 einem an die Funktion übergebenen String das Zeichen ermittelt, das am
-häufigsten in diesem String vorkommt und sowohl das Zeichen als auch die Anzahl
-auf dem Bildschirm ausgibt.
+häufigsten in diesem String vorkommt. Die Funktion soll das gefundene Zeichen
+zurückgeben und die zugehörige Anzahl über einen Pointer-Parameter an den
+Aufrufer übergeben.
 
 \Vorlage
 \begin{minted}{c}
@@ -506,9 +506,12 @@ auf dem Bildschirm ausgibt.
 #include <string.h>
 
 int main(void) {
-    char string[] = "Fischers Fritze fischt frische Fische, frische Fische fischt Fischers Fritze";
+    char string[] = "Fischers Fritze fischt frische Fische, "
+                    "frische Fische fischt Fischers Fritze";
 
-    printMaxChars(string);
+    int occurrence;
+    char maxChar = findMaxChar(string, &occurrence);
+    printf("Zeichen %c kommt %d mal vor.\n", maxChar, occurrence);
 }
 \end{minted}
 
