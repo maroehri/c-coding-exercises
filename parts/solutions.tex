@@ -12,7 +12,7 @@
 
 \noindent\mintinline{c}{int arraySize = sizeof(myArray) / sizeof(int);}
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 
 int main(void) {
@@ -30,7 +30,7 @@ int main(void) {
 
     printf("Kleinstes Element: %d\n", min);
 }
-\end{minted}
+\end{codebox}
 
   \item In diesem Fall erstellen wir eine Funktion, die zwei Eingabeparameter
   besitzt: ein int-Array und einmal die Größe des Arrays. Der Funktionssignatur
@@ -39,7 +39,7 @@ int main(void) {
   des Arrays muss der Funktion übergeben werden, da sie diese ansonsten nicht
   erkennen kann.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 
 int find_min(int array[], int size) {
@@ -60,7 +60,7 @@ int main(void) {
 
     printf("Kleinstes Element: %d\n", min);
 }
-\end{minted}
+\end{codebox}
 
 \end{enumerate}
 
@@ -79,7 +79,7 @@ Größe des Arrays verwenden wir hier den Ausdruck:
 
 \noindent\mintinline{c}{int arraySize = sizeof(myArray) / sizeof(int);}
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 
 int main(void) {
@@ -95,7 +95,7 @@ int main(void) {
 
     printf("Anzahl in Array: %d\n", count);
 }
-\end{minted}
+\end{codebox}
 
 \item In diesem Fall erstellen wir eine Funktion, die drei Eingabeparameter
 besitzt: ein int-Array, dann die Größe des Arrays und schließlich noch die
@@ -104,7 +104,7 @@ Zahl, nach der gesucht werden soll.
 Auch hier ist es so, dass wir die Größe des Arrays an die Funktion übergeben
 müssen, da sie sonst innerhalb der Funktion nicht ermittelt werden kann.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 
 int occurrences(int array[], int size, int to_find) {
@@ -126,7 +126,7 @@ int main(void) {
 
     printf("Anzahl in Array: %d\n", count);
 }
-\end{minted}
+\end{codebox}
 
 \end{enumerate}
 
@@ -161,7 +161,7 @@ int main(void) {
 
     \noindent\mintinline{c}{int arraySize = sizeof(myArray) / sizeof(int);}
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 
 int main(void) {
@@ -180,14 +180,14 @@ int main(void) {
         printf("myArray[%d] = %d\n", i, myArray[i]);
     }
 }
-\end{minted}
+\end{codebox}
 
 \item Bei der Auslagerung der Berechnung in eine eigenständige Funktion müssen
 enstprechend das Array und die Größe an die Funktion übergeben werden. Der
 Rückgabewert ist \mintinline{c}{void}, da die Funktion die Elemente im Array
 direkt umkehrt und daher keinen Wert an den Aufrufer zurückliefern muss.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 
 void reverse(int array[], int size) {
@@ -211,7 +211,7 @@ int main(void) {
         printf("myArray[%d] = %d\n", i, myArray[i]);
     }
 }
-\end{minted}
+\end{codebox}
 
 \end{enumerate}
 
@@ -227,7 +227,7 @@ aktuellen Wortes mit der bisher kürzesten gefundenen Länge
 (\mintinline{c}{minLength}) und aktualisiert diese bei Bedarf. Anschließend wird
 der Zähler für die Wortlänge zurückgesetzt, und der Prozess wiederholt sich.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 int shortestWordLength(const char *s) {
     int length = (int)strlen(s);
     int minLength = length;
@@ -250,7 +250,7 @@ int shortestWordLength(const char *s) {
 
     return minLength;
 }
-\end{minted}
+\end{codebox}
 
 
 
@@ -272,7 +272,7 @@ Es ist dabei wichtig zu beachten, dass sowohl Groß- als auch Kleinschreibung
 berücksichtigt werden müssen und die \mintinline{c}{break}-Anweisungen nicht
 vergessen werden dürfen.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 char getLeetChar(char c) {
     switch (c) {
     case 'A':
@@ -321,7 +321,7 @@ char getLeetChar(char c) {
 
     return c;
 }
-\end{minted}
+\end{codebox}
 
 Die Funktion \mintinline{c}{leetspeak()} nimmt einen String als Argument und
 wandelt ihn mithilfe der Funktion \mintinline{c}{getLeetChar()} in Leetspeak um.
@@ -335,13 +335,13 @@ erreicht wird. Jedes Zeichen wird an die \mintinline{c}{getLeetChar()}-Funktion
 Original-String. Auf diese Weise wird der gesamte String in Leetspeak
 konvertiert.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 void leetspeak(char *str) {
     for (int i = 0; str[i] != '\0'; i++) {
         str[i] = getLeetChar(str[i]);
     }
 }
-\end{minted}
+\end{codebox}
 
 
 
@@ -362,7 +362,7 @@ entsprechende Zahl, indem sie den ASCII-Wert von \mintinline{c}{'0'} vom Zeichen
 subtrahiert, und speichert die Ziffern im Array. Abschließend wird der Erfolg
 durch Rückgabe von 0 signalisiert.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 int convertStringToArray(const char *str, int barcode[]) {
     // Überprüfen, ob der String genau 12 Ziffern enthält
     if (strlen(str) != BARCODE_LENGTH) {
@@ -387,14 +387,14 @@ int convertStringToArray(const char *str, int barcode[]) {
 
     return 0;  // Erfolgscode zurückgeben
 }
-\end{minted}
+\end{codebox}
 
 Die Funktion \mintinline{c}{barcodeCheckDigit()} berechnet die Prüfziffer eines
 EAN-Barcodes basierend auf einem gegebenen Integer-Array und dessen Länge.
 Hierzu wird der Algorithmus aus der Aufgabenstellung entsprechend angewendet.
 Die Funktion gibt schließlich die berechnete Prüfziffer zurück.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 int barcodeCheckDigit(int barcode[], int barcodeLength) {
     int oddSum = 0, evenSum = 0, totalSum = 0;
     int checkDigit = 0;
@@ -422,7 +422,7 @@ int barcodeCheckDigit(int barcode[], int barcodeLength) {
 
     return checkDigit;
 }
-\end{minted}
+\end{codebox}
 
 
 
@@ -458,7 +458,7 @@ direkt beendet und der Wert \mintinline{c}{false} an den Aufrufer zurückgegeben
 Falls bis zum Ende des Schleifendurchlaufs keine Unstimmigkeiten aufgetreten
 sind, gibt die Funktion \mintinline{c}{true} zurück.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h> // für strlen()
@@ -474,7 +474,7 @@ bool isPalindrome(char string[]) {
     }
     return true;
 }
-\end{minted}
+\end{codebox}
 
 
 
@@ -506,7 +506,7 @@ Bei einer Lösung wie dieser ist es wichtig, daran zu denken, dass der Speicher
 für diesen neuen String später mit \mintinline{c}{free()} freigegeben wird, um
 Speicherlecks zu vermeiden.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 char *stringAppend(char *firstString, char *secondString) {
     size_t length1 = strlen(firstString);
     size_t length2 = strlen(secondString);
@@ -524,7 +524,7 @@ char *stringAppend(char *firstString, char *secondString) {
 
     return concatenatedString;
 }
-\end{minted}
+\end{codebox}
 
 
 
@@ -546,7 +546,7 @@ alle Nicht-Vokale werden in den neuen String kopiert. Vokale werden dabei
 Nullterminator abgeschlossen und zurückgegeben. Der Aufrufer der Funktion ist
 für das Freigeben des dynamisch allokierten Speichers verantwortlich.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 bool isVowel(char c) {
     switch (c) {
     case 'a': case 'A':
@@ -599,7 +599,7 @@ char *createVowelFreeString(const char *str) {
 
     return newString;
 }
-\end{minted}
+\end{codebox}
 
 
 
@@ -639,7 +639,7 @@ Am Ende wird die maximale Häufigkeit über den Pointer-Parameter
 \mintinline{c}{occurrence} an den Aufrufer übergeben, und das Zeichen wird als
 Rückgabewert zurückgegeben.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 char findMaxChar(const char *string, int *occurrence) {
     size_t length = strlen(string);
     char maxChar = '\0';
@@ -667,7 +667,7 @@ char findMaxChar(const char *string, int *occurrence) {
     *occurrence = maxOccurrence;
     return maxChar;
 }
-\end{minted}
+\end{codebox}
 
 \section*{Ansatz 2: Häufigkeitsarray}
 
@@ -685,7 +685,7 @@ erhöht. In der zweiten Phase wird das Häufigkeitsarray einmal durchlaufen, um
 den Index mit dem höchsten Wert zu finden -- dieser Index entspricht dem
 gesuchten Zeichen.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 char findMaxChar(const char *string, int *occurrence) {
     int frequency[256] = {0};
     size_t length = strlen(string);
@@ -707,7 +707,7 @@ char findMaxChar(const char *string, int *occurrence) {
     *occurrence = frequency[maxIndex];
     return (char)maxIndex;
 }
-\end{minted}
+\end{codebox}
 
 \section*{Vergleich der beiden Ansätze}
 
@@ -745,7 +745,7 @@ Stellenwert (\mintinline{c}{placeValue}) multipliziert und zur Zielzahl addiert.
 Anschließend wird der Stellenwert für die nächste Ziffer entsprechend angepasst,
 abhängig davon, ob das Quadrat ein- oder zweistellig ist.
 
-\begin{minted}[fontsize=\smallish]{c}
+\begin{codebox}[lang=c, fontsize=\small]
 unsigned long long digitsToSquares(unsigned number) {
     unsigned long long transformedNumber = 0;
     unsigned int currentDigit = 0;
@@ -770,7 +770,7 @@ unsigned long long digitsToSquares(unsigned number) {
 
     return transformedNumber;
 }
-\end{minted}
+\end{codebox}
 
 
 
@@ -794,7 +794,7 @@ Das Ergebnis wird am Ende mithilfe der Funktion \mintinline{c}{sprintf()} in
 das Format \mintinline{c}{"max min"} gebracht und in den Ergebnisstring
 geschrieben.
 
-\begin{minted}[fontsize=\smallish]{c}
+\begin{codebox}[lang=c, fontsize=\small]
 void findHighAndLow(const char *inputString, char *output) {
     long currentValue;
     char *parsePtr = (char *)inputString;
@@ -817,7 +817,7 @@ void findHighAndLow(const char *inputString, char *output) {
 
     sprintf(output, "%ld %ld", max, min);
 }
-\end{minted}
+\end{codebox}
 
 \section*{Lösungsansatz mit \texttt{strtok()}}
 
@@ -837,7 +837,7 @@ allozierte Speicher wieder freigegeben und das Ergebnis mithilfe von
 \mintinline{c}{sprintf()} im Format \mintinline{c}{"max min"} in den
 Ergebnisstring geschrieben.
 
-\begin{minted}[fontsize=\smallish]{c}
+\begin{codebox}[lang=c, fontsize=\small]
 void findHighAndLow(const char *inputString, char *output) {
     if (inputString == NULL || output == NULL) {
         return;
@@ -882,7 +882,7 @@ void findHighAndLow(const char *inputString, char *output) {
     sprintf(output, "%ld %ld", max, min);
     free(workingCopy);
 }
-\end{minted}
+\end{codebox}
 
 
 
@@ -994,7 +994,7 @@ Zähler \mintinline{c}{wordCount} um Eins erhöhen (Zeile 37-38).
 Abschließend müssen wir für die while-Schleife noch dafür sorgen, dass der Index
 für den nächsten Schleifendurchlauf um Eins erhöht wird.
 
-\begin{minted}[linenos]{c}
+\begin{codebox}[lang=c, fontsize=\small, linenos=true]
 #include <stdio.h>
 #include <string.h> // für strlen()
 #include <ctype.h>  // für tolower() und isalpha()
@@ -1039,7 +1039,7 @@ int countWords(char string[], char word[]) {
 
     return wordCount;
 }
-\end{minted}
+\end{codebox}
 
 
 
@@ -1087,7 +1087,7 @@ Funktion am Zeilenende \mintinline{c}{NULL} zurückliefert und wir
 dementsprechend den Aufruf in einer \mintinline{c}{while}-Schleife anwenden
 können.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 #include <string.h> // für strtok()
 #include <stdlib.h> // für atoi()
@@ -1132,13 +1132,13 @@ int main(void) {
 
     fclose(fp);
 }
-\end{minted}
+\end{codebox}
 
 Statt eine statische Puffergröße von 256 Zeichen festzulegen, könnten wir zuerst
 auslesen, wie lang die Zeile in der Datei ist und daraufhin entsprechend viel
 dynamischen Speicher allokieren:
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 // Ermittle die Länge der Zeile
 fseek(fp, 0, SEEK_END);
 long length = ftell(fp);
@@ -1163,7 +1163,7 @@ if (fgets(buf, (int)length + 1, fp) == NULL) {
 
 free(buf);
 fclose(fp);
-\end{minted}
+\end{codebox}
 
 \section*{Variante mit \texttt{fscanf}}
 
@@ -1178,7 +1178,7 @@ interne "\textit{File Position Pointer}" weiter, sodass kontinuierlich durch die
 Datei gelesen wird. Dieser Ansatz eliminiert die Notwendigkeit, die gesamte
 Zeile zuerst in einen Puffer zu lesen und dann zu zerlegen
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 #include <stdlib.h> // für malloc und free
 
@@ -1213,7 +1213,7 @@ int main(void) {
     fclose(fp);
     return 0;
 }
-\end{minted}
+\end{codebox}
 
 
 
@@ -1243,7 +1243,7 @@ oder nicht genau vier Oktette vorhanden sind. Nur wenn alle diese Kriterien
 erfüllt sind und keine weiteren Zeichen nach dem letzten Oktett folgen, wird
 \mintinline{c}{true} zurückgegeben.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #define MAX_IP_LENGTH 15
 #define MIN_IP_LENGTH 7
 
@@ -1305,7 +1305,7 @@ bool isValidIpv4(const char *ipAddress) {
     free(copy);
     return true;
 }
-\end{minted}
+\end{codebox}
 
 
 
@@ -1341,7 +1341,7 @@ Nachdem das gesamte Array durchlaufen wurde, gibt die Funktion den Pointer
 \mintinline{c}{youngest} zurück. Dieser zeigt auf die Struktur der jüngsten
 Person im Array.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 Person *findYoungestPerson(Person *persons[], int size) {
     if (size <= 0) {
         return NULL;
@@ -1356,7 +1356,7 @@ Person *findYoungestPerson(Person *persons[], int size) {
 
     return youngest;
 }
-\end{minted}
+\end{codebox}
 
 
 
@@ -1376,12 +1376,12 @@ Typ noch nicht innerhalb der Deklaration verwendet werden kann, so dass das
 Schlüsselwort \mintinline{c}{struct} noch innerhalb der Deklaration vor
 \mintinline{c}{Node *next} aufgeführt werden muss.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 typedef struct Node {
     int data;
     struct Node *next;
 } Node;
-\end{minted}
+\end{codebox}
 
 \section*{Datenstruktur \texttt{List}}
 
@@ -1389,12 +1389,12 @@ Die Datenstruktur \mintinline{c}{List} soll nur ein Element enthalten, nämlich
 einen Pointer auf einen Knoten. Dieser Pointer ist sozusagen der
 \mintinline{c}{head}-Pointer, der immer auf den Anfang der Liste zeigt.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 typedef struct {
     Node *head;
     int size;
 } List;
-\end{minted}
+\end{codebox}
 
 \section*{Funktion \texttt{initList()}}
 
@@ -1403,12 +1403,12 @@ Die \mintinline{c}{initiList()}-Funktion bekommt einen Pointer auf eine Liste
 \mintinline{c}{size} entsprechend auf die Werte \mintinline{c}{NULL} und
 \mintinline{c}{0}.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 void initList(List *list) {
     list->head = NULL;
     list->size = 0;
 }
-\end{minted}
+\end{codebox}
 
 \section*{Funktion \texttt{addNode()}}
 
@@ -1430,7 +1430,7 @@ Andernfalls müssen wir bis ans Ende der Liste laufen und den
 \mintinline{c}{newNode} zeigen lassen. Schließlich noch den Zähler
 \mintinline{c}{size} der Liste um Eins erhöhen.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 void addNode(List *list, int data) {
     Node *newNode = malloc(sizeof(Node));
     if (newNode == NULL) {
@@ -1452,7 +1452,7 @@ void addNode(List *list, int data) {
 
     list->size++;
 }
-\end{minted}
+\end{codebox}
 
 \section*{Funktion \texttt{printList()}}
 
@@ -1461,7 +1461,7 @@ Die \mintinline{c}{printList()}-Funktion bekommt einen Pointer auf eine Liste
 gibt sie entsprechend den Index und den Wert (\mintinline{c}{current->data}) auf
 dem Bildschirm aus.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 void printList(const List *list) {
     Node *current = list->head;
     int i = 1;
@@ -1471,7 +1471,7 @@ void printList(const List *list) {
         i++;
     }
 }
-\end{minted}
+\end{codebox}
 
 \section*{Funktion \texttt{freeList()}}
 
@@ -1484,7 +1484,7 @@ für den zu löschenden Knoten freigibt.
 Wenn dies für alle Knoten in der List durchgeführt wurde, kann die Liste wieder
 auf die Initialwerte zurückgesetzt werden.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 void freeList(List *list) {
     Node *current = list->head;
     while (current != NULL) {
@@ -1495,7 +1495,7 @@ void freeList(List *list) {
     list->head = NULL;
     list->size = 0;
 }
-\end{minted}
+\end{codebox}
 
 \section*{Funktion \texttt{removeNodesWithValue()}}
 
@@ -1528,7 +1528,7 @@ Für den Fall, dass das \mintinline{c}{data}-Element nicht den gesuchten Wert
 hat, wird \mintinline{c}{prev} auf \mintinline{c}{current} gesetzt und
 \mintinline{c}{current} bewegt sich zum nächsten Knoten.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 void removeNodesWithValue(List *list, int value) {
     Node *current = list->head;
     Node *prev = NULL;
@@ -1550,7 +1550,7 @@ void removeNodesWithValue(List *list, int value) {
         }
     }
 }
-\end{minted}
+\end{codebox}
 
 
 
@@ -1619,7 +1619,7 @@ wichtig, da sich die Adresse des Arrays geändert haben könnte. Nur im
 Erfolgsfall wird die Größe (\mintinline{c}{*size}) auf \mintinline{c}{newSize}
 aktualisiert, um die neue Anzahl der Elemente im Array widerzuspiegeln.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 void removeDuplicates(int **array, int *size) {
     if (*size < 2) {
         return;
@@ -1641,7 +1641,7 @@ void removeDuplicates(int **array, int *size) {
         *size = newSize;
     }
 }
-\end{minted}
+\end{codebox}
 
 
 
@@ -1677,7 +1677,7 @@ Eine gute Alternative dazu ist die \mintinline{c}{snprintf()}-Funktion, die
 sicherstellt, dass die Zielzeichenkette immer null-terminiert ist, solange die
 Größe des Puffers größer als 0 ist.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 Player* createPlayer(const char firstName[], const char lastName[], int age) {
     Player* player = malloc(sizeof(Player));
     if (player == NULL) {
@@ -1691,7 +1691,7 @@ Player* createPlayer(const char firstName[], const char lastName[], int age) {
 
     return player;
 }
-\end{minted}
+\end{codebox}
 
 \section*{Funktion \texttt{printPlayer()}}
 
@@ -1700,11 +1700,11 @@ Die Funktion \mintinline{c}{printPlayer()} empfängt einen Pointer auf ein
 Strukturelemente zugreifen und die einzelnen Elemente in gewünschter Weise per
 \mintinline{c}{printf()} auf dem Bildschirm ausgeben.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 void printPlayer(Player *player) {
     printf("%s %s, %d Jahre\n", player->firstName, player->lastName, player->age);
 }
-\end{minted}
+\end{codebox}
 
 \section*{Funktion \texttt{comparePlayerByLastName()}}
 
@@ -1740,14 +1740,14 @@ Sobald wir Pointer auf die beiden zu vergleichenden
 \mintinline{c}{Player}-Objekte haben, können wir deren Nachnamen mittels der
 \mintinline{c}{strcmp()}-Funktion lexikografisch vergleichen.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 int comparePlayerByLastName(const void *pa, const void *pb) {
     const Player *A = *(const Player**)pa;
     const Player *B = *(const Player**)pb;
 
     return strcmp(A->lastName, B->lastName);
 }
-\end{minted}
+\end{codebox}
 
 \section*{Funktion \texttt{freeTeam()}}
 
@@ -1759,14 +1759,14 @@ Reihenfolge vorgehen, d.\,h. zuerst müssen wir den Speicher jedes einzelnen
 Arrays, in dem die Pointer auf die \mintinline{c}{Player}-Objekte abgelegt
 wurden.
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 void freeTeam(Player **team, int numPlayers) {
     for (int i = 0; i < numPlayers; i++) {
         free(team[i]);
     }
     free(team);
 }
-\end{minted}
+\end{codebox}
 
 Diese Reihenfolge muss eingehalten werden, denn hätten wir zuerst den Speicher
 des Arrays freigegeben, hätten wir die Pointer auf die einzelnen

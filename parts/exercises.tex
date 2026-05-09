@@ -7,7 +7,7 @@
   Zahlen die kleinste Zahl ermittelt.
 
 \Vorlage
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 
 int main(void) {
@@ -19,7 +19,7 @@ int main(void) {
 
     printf("Kleinstes Element: %d\n", min);
 }
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[Bildschirmausgabe]{console}
 Kleinstes Element: 2
@@ -44,7 +44,7 @@ Aufrufer zurückliefert.
   Zahl im Array vorkam.
 
 \Vorlage
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 
 int main(void) {
@@ -57,7 +57,7 @@ int main(void) {
 
     printf("Anzahl in Array: %d\n", count);
 }
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[Bildschirmausgabe]{console}
 Anzahl in Array: 2
@@ -82,7 +82,7 @@ Anzahl in Array: 2
     Arrays aus Zahlen umkehrt.
 
 \Vorlage
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 
 int main(void) {
@@ -95,7 +95,7 @@ int main(void) {
 
     // Geben Sie die umgekehrte Reihenfolge aus ...
 }
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[Bildschirmausgabe]{console}
 Umgekehrte Reihenfolge:
@@ -128,7 +128,7 @@ sind. Die Funktion soll die Länge des kürzesten Wortes berechnen und diesen We
 an den Aufrufer zurückgeben.
 
 \Vorlage
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 int main(void) {
     char string1[] = "Ein Tag am Meer";
     printf("\"%s\"\n", string1);
@@ -138,7 +138,7 @@ int main(void) {
     printf("\"%s\"\n", string2);
     printf("Kürzestes Wort hat %d Zeichen\n\n", shortestWordLength(string2));
 }
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[Bildschirmausgabe]{console}
 "Ein Tag am Meer"
@@ -178,7 +178,7 @@ ggf. verändert. Der gesamte String soll schließlich von der Funktion in
 Leetspeak umgewandelt werden.
 
 \Vorlage
-\begin{minted}[fontsize=\small]{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 
 int main(void) {
@@ -194,7 +194,7 @@ int main(void) {
 
     return 0;
 }
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[Bildschirmausgabe]{console}
 Satz eingeben: \highlight{Das ist ein Test}
@@ -246,7 +246,7 @@ von dem aktuellen Zeichen subtrahieren.
 \pagebreak
 
 \Vorlage
-\begin{minted}[fontsize=\small]{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 #include <string.h> // für strlen() und strcspn()
 #include <ctype.h>  // für isdigit()
@@ -280,7 +280,7 @@ int main(void) {
 
     return 0;
 }
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[Bildschirmausgabe]{console}
 Ersten 12 Ziffern des EAN-13 Barcodes eingeben:
@@ -310,7 +310,7 @@ Form eines Integer-Arrays, sowie die Länge des Arrays als Funktionsargumente
 \end{enumerate}
 
 \Vorlage
-\begin{minted}[fontsize=\small]{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 #include <string.h> // für strlen() und strcspn()
 #include <ctype.h>  // für isdigit()
@@ -345,7 +345,7 @@ int main(void) {
 
     return 0;
 }
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[Bildschirmausgabe]{console}
 Ersten 12 Ziffern des EAN-13 Barcodes eingeben:
@@ -381,7 +381,7 @@ eine gegebene Zeichenkette (String) ein Palindrom ist. Die Funktion soll
 der Überprüfung Groß- und Kleinschreibung ignoriert werden sollte.
 
 \Vorlage
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -408,7 +408,7 @@ int main(void) {
     else
         printf("\"%s\" ist kein Palindrom\n", string3);
 }
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[Bildschirmausgabe]{console}
 "Kein Palindrom" ist kein Palindrom
@@ -429,7 +429,7 @@ soll für den neuen, verbundenen String dynamisch Speicher auf dem Heap
 reservieren und einen Pointer auf diesen Speicher an den Aufrufer zurückgeben.
 
 \Vorlage
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -443,7 +443,7 @@ int main(void) {
 
     free(newString);
 }
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[Bildschirmausgabe]{console}
 Übungsaufgaben Programmieren in C
@@ -465,7 +465,7 @@ String allokieren und als Rückgabewert einen Zeiger auf diesen Speicher liefern
 Der Aufrufer ist für das Freigeben des Speichers verantwortlich.
 
 \Vorlage
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -480,7 +480,7 @@ int main(void) {
 
     free(vowelFreeString);
 }
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[Bildschirmausgabe]{console}
 Original:    "Ein kluger Kopf durchdenkt jedes Problem"
@@ -501,7 +501,7 @@ zurückgeben und die zugehörige Anzahl über einen Pointer-Parameter an den
 Aufrufer übergeben.
 
 \Vorlage
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 #include <string.h>
 
@@ -513,7 +513,7 @@ int main(void) {
     char maxChar = findMaxChar(string, &occurrence);
     printf("Zeichen %c kommt %d mal vor.\n", maxChar, occurrence);
 }
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[Bildschirmausgabe]{console}
 Zeichen i kommt 10 mal vor.
@@ -534,7 +534,7 @@ zusammensetzt. Die Funktion soll eine Zahl zurückgeben, die die berechneten
 Quadrate aller Ziffern von \mintinline{c}{number} enthält.
 
 \Vorlage
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 
 int main(void) {
@@ -550,7 +550,7 @@ int main(void) {
     unsigned long long outputNumber3 = digitsToSquares(inputNumber3);
     printf("%u --> %lld\n", inputNumber3, outputNumber3);
 }
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[title=Bildschirmausgabe]{console}
 123 --> 149
@@ -577,7 +577,7 @@ um die ermittelten höchsten und niedrigsten Werte im gewünschten Format in den
 Ergebnisstring zu schreiben.
 
 \Vorlage
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -595,7 +595,7 @@ int main(void) {
     findHighAndLow(testString, output);
     printf("Ergebnisstring: %s\n", output);
 }
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[title=Bildschirmausgabe]{console}
 Eingabestring:  15 -3 22 0 -45 67 89 -12 34 23 -56 78
@@ -616,7 +616,7 @@ den Aufrufer zurückliefern. Berücksichtigen Sie dabei, dass bei der Überprüf
 Groß- und Kleinschreibung ignoriert werden sollen.
 
 \Vorlage
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 
 int main(void) {
@@ -629,7 +629,7 @@ int main(void) {
 
     printf("Das Wort \"%s\" kam %d-mal im String vor", word, count);
 }
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[Bildschirmausgabe]{console}
 Das Wort "Fische" kam 2-mal im String vor
@@ -682,7 +682,7 @@ Nullen enthalten (außer das Oktett ist die Zahl 0). Die Funktion soll
 ist, und andernfalls \mintinline{c}{false}.
 
 \Vorlage
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -717,7 +717,7 @@ int main(void) {
     printf("%-15s: %s\n", address8, isValidIpv4(address8) ? "valid" : "invalid");
 }
 
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[title=Bildschirmausgabe]{console}
 10.0.0.1       : valid
@@ -746,7 +746,7 @@ Die Funktion soll nun die Einträge des Arrays nach der jüngsten Person
 durchsuchen und einen Pointer auf diesen Array-Eintrag zurückliefern.
 
 \Vorlage
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 
 typedef struct {
@@ -770,7 +770,7 @@ int main(void) {
 
     return 0;
 }
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[Bildschirmausgabe]{console}
 Name: Anna Schmidt, Age: 25
@@ -914,7 +914,7 @@ Knoten und dann noch Funktionen zum
 Auf Basis des folgenden Codes, sollte dann die dahinterstehende Ausgabe
 erfolgen:
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -957,7 +957,7 @@ int main(void) {
 
     freeList(&myList);
 }
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[Bildschirmausgabe]{console}
 Original Liste:
@@ -1026,7 +1026,7 @@ möglicherweise angepasst werden muss, muss die Funktion einen \textit{Pointer
 auf das Array} sowie die Größe des Arrays als Argumente entgegennehmen.
 
 \Vorlage
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -1064,7 +1064,7 @@ int main(void) {
     free(myArray);
     return 0;
 }
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[Bildschirmausgabe]{console}
 Array vor der Bearbeitung:
@@ -1087,7 +1087,7 @@ Erstellen Sie ein Programm, welches ein Team von Fußballspielern verwalten und
 sortieren kann. Ein Fußballspieler soll durch folgende Datenstruktur
 repräsentiert werden:
 
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #define NAME_LENGTH 64
 
 typedef struct {
@@ -1095,7 +1095,7 @@ typedef struct {
     char lastName[NAME_LENGTH];
     int age;
 } Player;
-\end{minted}
+\end{codebox}
 
 \begin{enumerate}
   \item Erstellen Sie eine Funktion \mintinline{c}{createPlayer()}, die drei
@@ -1128,7 +1128,7 @@ typedef struct {
 \end{enumerate}
 
 \Vorlage
-\begin{minted}{c}
+\begin{codebox}[lang=c, fontsize=\small]
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -1157,7 +1157,7 @@ int main(void) {
 
     return 0;
 }
-\end{minted}
+\end{codebox}
 
 \begin{mybox}[Bildschirmausgabe]{console}
 Vor der Sortierung:

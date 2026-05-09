@@ -278,64 +278,57 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Hier wird eine eigene "codebox"-Umgebung definiert
-%%% Optionale Argument:
-%%%   title=<Beliebiger Titel>
-%%%   fontsize=<Angabe der Schriftgröße>
-%%%   lang=<Sprache für Syntax-Highlighting>
-%%% Ein verpflichtendes Argument gibt den Typ an, um ein passendes Symbol zu
-%%% zeichnen:
-%%%   file: zeichnet ein Dateisystem
-%%%   console: zeichnet ein Konsolensymbol
-%%%   book: zeichnet ein Symbol eines geöffneten Buchs
-%%%   infi: zeichnet ein Symbol eines Info-i
-%%% Beispiel:
-% \begin{codebox}[title=include/adjustSpeed.hpp, lang=cpp, font=\small]{file}
-% #pragma once
-% #include <string>
-
-% std::string adjustSpeed(double currentSpeed,
-%                         double frontVehicleSpeed,
-%                         double distance);
-% \end{codebox}
+%%% Hier wird eine eigene "codebox"-Umgebung definiert.
+%%% Sie zeigt einen Code-Block mit hellgrauem Hintergrund und etwas Innenabstand,
+%%% ohne Titelzeile oder sichtbaren Rahmen.
+%%%
+%%% Optionale Argumente:
+%%%   lang=<Sprache>           Sprache für Syntax-Highlighting (Default: c)
+%%%   linenos                  Aktiviert Zeilennummern
+%%%   fontsize=<Schriftgröße>  Schriftgröße des Codes (Default: \normalsize)
+%%%
+%%% Beispiele:
+%%% \begin{codebox}
+%%% int main(void) { ... }
+%%% \end{codebox}
+%%%
+%%% \begin{codebox}[lang=python, linenos]
+%%% def hello():
+%%%     print("Hello")
+%%% \end{codebox}
 
 \ekvdefinekeys{codebox}
 {
-   store title = \mycodeboxTitle
-  ,store font = \mycodeboxFont
-  ,store lang = \mycodeboxLang
-  ,initial lang = cpp
+   store lang     = \mycodeboxLang
+  ,store fontsize = \mycodeboxFontsize
+  ,store linenos  = \mycodeboxLinenos
+  ,initial lang     = c
+  ,initial fontsize = \normalsize
+  ,initial linenos  = false
 }
 
-\newtcblisting{codebox}[2][]{%
+\newtcblisting{codebox}[1][]{%
+    enhanced,
     breakable,
-    colback=hellgrau,
-    coltitle=weiss,
-    colbacktitle=dunkelgrau,
+    parbox=false,
+    colback=codebg,
     colframe=dunkelgrau,
-    boxrule=0.9pt,
-    boxsep=5pt,
-    arc=1pt,
-    fonttitle=\sffamily,
-    toptitle=0mm,
-    bottomtitle=0mm,
-    left=3pt,
-    right=3pt,
+    boxrule=0.5pt,
+    arc=2pt,
+    boxsep=0pt,
+    left=3mm,
+    right=3mm,
+    top=2mm,
+    bottom=2mm,
     listing only,
     code={\ekvset{codebox}{#1}},
-    title={
-      \ifstrequal{#2}{file}{\faFile*[regular]\hspace{5mm}}{%
-        \ifstrequal{#2}{console}{\faTerminal\hspace{5mm}}{%
-          \ifstrequal{#2}{info}{\faInfo\hspace{5mm}}{%
-            \ifstrequal{#2}{book}{\faBookOpen\hspace{5mm}}{}%
-          }
-        }
-      }\mycodeboxTitle
-    },
-    minted options app={
-        fontsize=\mycodeboxFont
-    },
     minted language=\mycodeboxLang,
+    minted options app={
+        fontsize=\mycodeboxFontsize,
+        breaklines,
+        style=friendly,
+        linenos=\mycodeboxLinenos
+    }
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
